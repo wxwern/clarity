@@ -4,29 +4,27 @@ import run from "uebersicht";
 const containerStyle = {
   display: "grid",
   gridAutoFlow: "column",
-  gridGap: "8px"
+  gridGap: "8px",
+  fontFamily: "'Font Awesome 5 Free Solid'"
 };
 
 const desktopStyle = {
-  width: "3ch",
+  width: "20px",
 };
 
+const symbols = ["terminal", "globe", "code", "comment", "list", "desktop", "gamepad", "couch"];
 
 const renderSpace = (index, focused, visible, windows) => {
   let contentStyle = JSON.parse(JSON.stringify(desktopStyle));
   let hasWindows = windows.length > 0;
   if (focused == 1) {
     contentStyle.color = styles.colors.fg;
-    contentStyle.fontWeight = "700";
   } else if (visible == 1) {
     contentStyle.color = styles.colors.fg;
   }
   return (
     <div style={contentStyle}>
-      {focused ? "[" : <span>&nbsp;</span> }
-      {index}
-      {!focused && hasWindows ? "°" : null }
-      {focused ? "]" : <span>&nbsp;</span> }
+      {index - 1 < symbols.length ? symbols[index - 1] : "•"}
     </div>
   );
 };
@@ -37,7 +35,8 @@ const render = ({ output }) => {
   const spaces = [];
 
   output.forEach(function(space) {
-    spaces.push(renderSpace(space.index, space.focused, space.visible, space.windows));
+      spaces.push(renderSpace(space.index, space.focused, space.visible, space.windows));
+      console.log(spaces);
   });
 
   return (
