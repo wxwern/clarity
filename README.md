@@ -1,12 +1,8 @@
-# nibar
+# miniyabar
 
-Simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support.
+A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support, inspired by and is a fork of [nibar](https://github.com/kkga/nibar) (originally a fork of [powerbar](https://github.com/ajdnik/powerbar)). 
 
-Originally forked from https://github.com/ajdnik/powerbar. I made it work with yabai and tweaked the aesthetics to match my preference.
-
-## Screenshot
-
-![img](./ss.png)
+`nibar` provides a great launchpad to jump right into custom status bars, and it's then tweaked and touched up to satisfy my taste.
 
 ## Installation
 
@@ -20,7 +16,7 @@ $ git clone https://github.com/kkga/nibar $HOME/Library/Application\ Support/Üb
 
 - [jq](https://github.com/stedolan/jq) — used for parsing json output and displaying the workspaces widget
     - install with homebrew: `brew install jq`
-- [SF Fonts](https://developer.apple.com/fonts/) (optional) — used for symbols in the statusbar widget
+- [Font Awesome 5 Free Solid](https://fontawesome.com/) — used for symbols in the statusbar widget
 
 ## Usage
 
