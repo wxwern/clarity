@@ -13,7 +13,7 @@ const style = {
     display: "grid",
     padding: "0 12px",
     gridAutoFlow: "column",
-    gridGap: "20px",
+    gridGap: "16px",
     position: "fixed",
     overflow: "hidden",
     right: "0px",
@@ -43,9 +43,9 @@ export const render = ({ output }) => {
             <Wifi output={data.wifi} />
             <Ethernet output={data.ethernet}/>
             <VPN output={data.vpn}/>
-            <TimeMachine output={data.timemachine}/>
             <Battery output={data.battery} />
             <DateTime output={data.datetime} />
+            <TimeMachine output={data.timemachine}/>
             <Dnd output={data.dnd} />
         </div>
     );

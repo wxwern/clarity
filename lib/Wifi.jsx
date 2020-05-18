@@ -1,5 +1,6 @@
 const iconStyle = {
-    fontFamily: "'Font Awesome 5 Free Solid'"
+    fontFamily: "'Font Awesome 5 Free Solid'",
+    paddingRight: "6px"
 };
 
 const render = ({ output }) => {
@@ -7,7 +8,7 @@ const render = ({ output }) => {
     const status = output.status;
     const ssid = output.ssid;
     if (status !== "active") return null;
-    return <div><span style={iconStyle}>wifi</span>&nbsp;&nbsp;{output.ssid}</div>;
+    return <div><span style={iconStyle}>wifi</span>{output.ssid}</div>;
 };
 
 export default render;
