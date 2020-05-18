@@ -4,12 +4,14 @@ import run from "uebersicht";
 const containerStyle = {
     display: "grid",
     gridAutoFlow: "column",
-    gridGap: "8px",
+    gridGap: "12px",
     fontFamily: "'Font Awesome 5 Free Solid'"
 };
 
 const desktopStyle = {
-    width: "20px",
+    width: "16px",
+    height: "20px",
+    textAlign: "center"
 };
 
 const symbols = ["terminal", "globe", "code", "comment", "list", "desktop", "gamepad", "couch"];
@@ -17,14 +19,17 @@ const symbols = ["terminal", "globe", "code", "comment", "list", "desktop", "gam
 const renderSpace = (display_index, index, focused, visible, windows) => {
     let contentStyle = JSON.parse(JSON.stringify(desktopStyle));
     let hasWindows = windows.length > 0;
+    let shouldUseSymbols = display_index == 1 && index - 1 < symbols.length;
     if (focused == 1) {
         contentStyle.color = styles.colors.fg;
-    } else if (visible == 1) {
-        contentStyle.color = styles.colors.fg;
+        contentStyle.borderBottom = '1px solid white';
     }
+    if (!shouldUseSymbols) {
+        contentStyle.fontFamily = "monospace";
+    } 
     return (
         <div style={contentStyle}>
-            {display_index == 1 && index - 1 < symbols.length ? symbols[index - 1] : "•"}
+            {shouldUseSymbols ? symbols[index - 1] : (index)}
         </div>
     );
 };

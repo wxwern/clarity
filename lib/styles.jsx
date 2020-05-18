@@ -7,7 +7,7 @@ export default {
     orange: "#ff8700",
     accent: "#5fafaf"
   },
-  fontSize: "11px",
+  fontSize: "10px",
   lineHeight: "24px",
   fontWeight: 500,
   fontFamily: "'Avenir Next Medium'"

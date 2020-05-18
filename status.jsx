@@ -25,7 +25,7 @@ const style = {
     fontWeight: styles.fontWeight
 };
 
-export const refreshFrequency = 5000;
+export const refreshFrequency = 2000;
 
 export const command = "./miniyabar/scripts/status.sh";
 

@@ -6,7 +6,7 @@ const render = ({ output }) => {
     if (typeof output === "undefined") return null;
     const status = output.status;
     if (status !== "active") return null;
-    return <div><span style={iconStyle}>download</span>&nbsp;&nbsp;Backing Up...</div>;
+    return <div><span style={iconStyle}>download spinner</span></div>;
 };
 
 export default render;
