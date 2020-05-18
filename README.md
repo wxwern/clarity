@@ -34,6 +34,12 @@ The widgets for displaying yabai workspaces aren't refreshing automatically (to 
 ```sh
 yabai -m signal --add event=space_changed \
     action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-primary-jsx\"'"
+yabai -m signal --add event=window_title_changed \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+yabai -m signal --add event=window_focused \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+yabai -m signal --add event=application_front_switched \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
 ```
 
 #### When using dual displays
@@ -48,6 +54,18 @@ yabai -m signal --add event=space_changed \
     action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-secondary-jsx\"'"
 yabai -m signal --add event=display_changed \
     action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-secondary-jsx\"'"
+yabai -m signal --add event=window_title_changed \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+yabai -m signal --add event=window_focused \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+yabai -m signal --add event=application_front_switched \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+yabai -m signal --add event=window_title_changed \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-secondary-jsx\"'"
+yabai -m signal --add event=window_focused \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-secondary-jsx\"'"
+yabai -m signal --add event=application_front_switched \
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-secondary-jsx\"'"
 ```
 
 
