@@ -19,7 +19,7 @@ const style = {
 
 export const refreshFrequency = false;
 
-export const command = "./miniyabar/scripts/title.sh 2";
+export const command = "./clarity/scripts/title.sh 2";
 
 export const render = ({ output }) => {
     return (

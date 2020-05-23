@@ -1,15 +1,19 @@
-# miniyabar
+# clarity
 
-A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support, inspired by and is a fork of [nibar](https://github.com/kkga/nibar) (originally a fork of [powerbar](https://github.com/ajdnik/powerbar)). 
+A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support, using [nibar](https://github.com/kkga/nibar) as a base.
 
-`nibar` provides a great launchpad to jump right into custom status bars, and it's then tweaked and touched up to satisfy my taste.
+`nibar` provided a great launchpad to jump right into custom status bars. It was utilised as a starting point, then overhauled to satisfy my taste.
+
+## Screenshot
+
+![](screenshot.png)
 
 ## Installation
 
 Clone this repo to your Übersicht widgets directory.
 
 ```bash
-$ git clone https://github.com/kkga/nibar $HOME/Library/Application\ Support/Übersicht/widgets/nibar
+$ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
 ```
 
 ## Dependencies
@@ -20,52 +24,62 @@ $ git clone https://github.com/kkga/nibar $HOME/Library/Application\ Support/Üb
 
 ## Usage
 
-### Yabai workspaces widgets
+### Yabai workspaces and title widgets
 
-There are 2 widgets for displaying workspaces: `spaces-primary` and `spaces-secondary`. The `spaces-secondary` is used when working with dual displays.
-If you're using a single display, disable it in the Übersicht's menu.
+There are 2 widgets for displaying workspaces: `spaces-primary` and `spaces-secondary`, and 2 widgets for displaying window titles: `title-primary` and `title-secondary`.
+
+All `*-secondary` widgets are used when working with dual displays.
+
+If you're using a single display, disable the secondary display widgets in the Übersicht's menu. If you're working with dual displays, configure them accordingly.
 
 ### Refreshing yabai workspaces widget
 
-The widgets for displaying yabai workspaces aren't refreshing automatically (to preserve battery). To refresh them, you can add these lines utilizing [yabai's signals](https://github.com/koekeishiya/yabai/wiki/Commands#automation-with-rules-and-signals) at the end of `.yabairc`:
+The widgets for displaying yabai workspaces and window titles don't refresh automatically (to preserve battery). To refresh them, you can add these lines utilizing [yabai's signals](https://github.com/koekeishiya/yabai/wiki/Commands#automation-with-rules-and-signals) at the end of `.yabairc`:
 
 #### When using a single display
 
 ```sh
 yabai -m signal --add event=space_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-primary-jsx\"'"
 yabai -m signal --add event=window_title_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=window_focused \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=application_front_switched \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 ```
 
 #### When using dual displays
 
 ```sh
 yabai -m signal --add event=space_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-primary-jsx\"'"
 yabai -m signal --add event=display_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-primary-jsx\"'"
 
 yabai -m signal --add event=space_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-secondary-jsx\"'"
 yabai -m signal --add event=display_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-spaces-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-secondary-jsx\"'"
+
 yabai -m signal --add event=window_title_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=window_focused \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=application_front_switched \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+
 yabai -m signal --add event=window_title_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
 yabai -m signal --add event=window_focused \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
 yabai -m signal --add event=application_front_switched \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"miniyabar-title-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
 ```
+
+### Caveats
+
+- Ethernet and VPN detection is customised to work only on my system. Please change up the relevant modules to suit your needs. If you've a better way, feel free to open an issue!
+- Your wallpaper should not be too busy or too bright, as this status bar has no background.
 
 

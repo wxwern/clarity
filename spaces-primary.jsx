@@ -20,7 +20,7 @@ const style = {
 };
 
 export const refreshFrequency = false;
-export const command = "./miniyabar/scripts/spaces.sh 1";
+export const command = "./clarity/scripts/spaces.sh 1";
 
 export const render = ({ output }) => {
     const data = parse(output);

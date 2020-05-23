@@ -27,7 +27,7 @@ const style = {
 
 export const refreshFrequency = 2000;
 
-export const command = "./miniyabar/scripts/status.sh";
+export const command = "./clarity/scripts/status.sh";
 
 export const render = ({ output }) => {
     const data = parse(output);
