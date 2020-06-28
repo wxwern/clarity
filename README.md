@@ -42,11 +42,11 @@ The widgets for displaying yabai workspaces and window titles don't refresh auto
 yabai -m signal --add event=space_changed \
     action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-primary-jsx\"'"
 yabai -m signal --add event=window_title_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=window_focused \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=application_front_switched \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 ```
 
 #### When using dual displays
@@ -63,18 +63,18 @@ yabai -m signal --add event=display_changed \
     action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-spaces-secondary-jsx\"'"
 
 yabai -m signal --add event=window_title_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=window_focused \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 yabai -m signal --add event=application_front_switched \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-primary-jsx\"'"
 
 yabai -m signal --add event=window_title_changed \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
 yabai -m signal --add event=window_focused \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
 yabai -m signal --add event=application_front_switched \
-    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
+    action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"clarity-title-secondary-jsx\"'"
 ```
 
 ### Caveats
