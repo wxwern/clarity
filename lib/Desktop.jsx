@@ -14,7 +14,7 @@ const desktopStyle = {
     textAlign: "center"
 };
 
-const symbols = ["terminal", "globe", "code", "comment", "list", "desktop", "gamepad", "couch"];
+const symbols = ["terminal", "globe", "code", "comment", "list", "desktop", "gamepad", "couch", "brush"];
 
 const renderSpace = (display_index, index, focused, visible, windows) => {
     let contentStyle = JSON.parse(JSON.stringify(desktopStyle));

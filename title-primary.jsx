@@ -7,14 +7,15 @@ const style = {
     position: "fixed",
     overflow: "hidden",
     top: "0px",
-    left: "320px",
-    right: "320px",
+    left: "0px",
+    right: "0px",
     textAlign: "center",
     color: styles.colors.fg,
     fontFamily: styles.fontFamily,
     fontSize: styles.fontSize,
     lineHeight: styles.lineHeight,
-    fontWeight: styles.fontWeight
+    fontWeight: styles.fontWeight,
+    //background: "#0003",
 };
 
 export const refreshFrequency = false;
