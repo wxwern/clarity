@@ -1,6 +1,5 @@
 {
-  "name": "nibar",
-  "description": "Displays a bar at the top of the screen with system stats.",
-  "author": "Gadzhi Kharkharov",
-  "email": "me@kkga.me"
+  "name": "clarity",
+  "description": "Displays a bar at the top of the screen with system stats, intended for use with yabai.",
+  "author": "Wern Jie Lim"
 }
