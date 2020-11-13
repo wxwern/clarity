@@ -4,13 +4,14 @@ import run from "uebersicht";
 const containerStyle = {
     display: "grid",
     gridAutoFlow: "column",
-    gridGap: "12px",
+    gridGap: "16px",
+    fontSize: "8px",
     fontFamily: "'Font Awesome 5 Free Solid'"
 };
 
 const desktopStyle = {
-    width: "16px",
-    height: "20px",
+    width: "20px",
+    height: "16px",
     textAlign: "center"
 };
 
@@ -21,12 +22,15 @@ const renderSpace = (display_index, index, focused, visible, windows) => {
     let hasWindows = windows.length > 0;
     let shouldUseSymbols = display_index == 1 && index - 1 < symbols.length;
     if (focused == 1) {
-        contentStyle.color = styles.colors.fg;
-        contentStyle.borderBottom = '1px solid white';
+        contentStyle.color = "#ffffff22";
+        contentStyle.borderTop = '3px solid #ffffffaa';
+    } else {
+        contentStyle.color = "#ffffff22";
+        contentStyle.borderTop = '3px solid #ffffff22';
     }
     if (!shouldUseSymbols) {
         contentStyle.fontFamily = "monospace";
-    } 
+    }
     return (
         <div style={contentStyle}>
             {shouldUseSymbols ? symbols[index - 1] : (index)}
