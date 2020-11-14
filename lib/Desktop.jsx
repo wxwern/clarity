@@ -4,13 +4,13 @@ import run from "uebersicht";
 const containerStyle = {
     display: "grid",
     gridAutoFlow: "column",
-    gridGap: "16px",
+    gridGap: "14px",
     fontSize: "8px",
     fontFamily: "'Font Awesome 5 Free Solid'"
 };
 
 const desktopStyle = {
-    width: "20px",
+    width: "24px",
     height: "16px",
     textAlign: "center"
 };
@@ -22,11 +22,13 @@ const renderSpace = (display_index, index, focused, visible, windows) => {
     let hasWindows = windows.length > 0;
     let shouldUseSymbols = display_index == 1 && index - 1 < symbols.length;
     if (focused == 1) {
-        contentStyle.color = "#ffffff22";
-        contentStyle.borderTop = '3px solid #ffffffaa';
+        contentStyle.color = "#ffffff88";
+        contentStyle.borderTop = '3px solid #ffffffbb';
+        contentStyle.backgroundImage = "linear-gradient(#ffffff66, #fff0)";
     } else {
         contentStyle.color = "#ffffff22";
         contentStyle.borderTop = '3px solid #ffffff22';
+        contentStyle.backgroundImage = "linear-gradient(#ffffff05, #fff0)";
     }
     if (!shouldUseSymbols) {
         contentStyle.fontFamily = "monospace";

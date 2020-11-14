@@ -13,7 +13,7 @@ const style = {
     padding: "0px",
     width: "auto",
     top: "0px",
-    left: "18px",//"50%",
+    left: "16px",//"50%",
     //transform: "translate(-50%, 0)",
     fontFamily: styles.fontFamily,
     lineHeight: styles.lineHeight,
