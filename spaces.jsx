@@ -22,9 +22,9 @@ const style = {
 };
 
 export const refreshFrequency = false;
-export const command = "./clarity/scripts/spaces.sh 2";
+export const command = "./clarity/scripts/spaces.sh";
 
-export const render = ({ output }) => {
+export const render = ({ output }, ...args) => {
     const data = parse(output);
     if (typeof data === "undefined") {
         return (
@@ -40,9 +40,11 @@ export const render = ({ output }) => {
             </div>
         );
     }
+    const displayId = Number(window.location.pathname.replace(/\//g, ''));
+    const display = data.displays.find(d => d.id === displayId);
     return (
         <div style={style}>
-            <Desktop output={data} />
+            <Desktop output={data.spaces.filter(s => s.display === display.index)} />
         </div>
     );
 };

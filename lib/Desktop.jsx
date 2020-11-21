@@ -43,11 +43,10 @@ const renderSpace = (display_index, index, focused, visible, windows) => {
 const render = ({ output }) => {
     if (typeof output === "undefined") return null;
 
-    const display = output;
     const spaces = [];
 
-    display.spaces.forEach(function(space) {
-        spaces.push(renderSpace(display.index, space.index, space.focused, space.visible, space.windows));
+    output.forEach(function(space) {
+        spaces.push(renderSpace(space.display, space.index, space.focused, space.visible, space.windows));
     });
 
     return (
