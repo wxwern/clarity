@@ -1,4 +1,4 @@
-# clarity
+# Clarity
 
 A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support, using [nibar](https://github.com/kkga/nibar) as a base.
 
@@ -24,7 +24,10 @@ Clone this repo to your Übersicht widgets directory.
 $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
 ```
 
-If you prefer the v1 version of clarity, switch to the commit for version 1. You should also refer to the Usage as listed in clarity v1 instead.
+If you prefer Clarity v1, switch to the `v1` branch. Then, refer to [the README for Clarity v1](https://github.com/wernjie/clarity/blob/v1/README.md) instead.
+```
+$ cd $HOME/Library/Application\ Support/Übersicht/widgets/clarity && git checkout v1
+```
 
 ## Dependencies
 
