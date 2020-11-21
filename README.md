@@ -31,8 +31,6 @@ $ cd $HOME/Library/Application\ Support/Übersicht/widgets/clarity && git checko
 
 ## Dependencies
 
-- [jq](https://github.com/stedolan/jq) — used for parsing json output and displaying the workspaces widget
-    - install with homebrew: `brew install jq`
 - [Font Awesome 5 Free Solid](https://fontawesome.com/) — used for symbols in the statusbar widget
 
 ## Usage
