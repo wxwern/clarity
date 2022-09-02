@@ -6,28 +6,29 @@ A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status 
 
 ## Screenshots
 
-### Clarity v2
+### Clarity: Workspace Indicators only
 ![](showcase/screenshot_v2L.png)
 ![](showcase/screenshot_v2W.png)
 ![](showcase/screenshot_v2D.png)
 This version is designed to blend with macOS Big Sur's new menu bar, with a workspace indicator that's visible when a padding of 8px is set on all sides of the screen using yabai.
 
-### Clarity v1
+### Clarity: Workspace Indicators + Main Status Bar items
 ![](showcase/screenshot_v1.png)
 This version is designed as a full width custom menu bar with workspace indicators, app title, and status bar items, while the built-in macOS menu bar is hidden. The height is approximately 20px, and is best used with an additional 8px padding set to all sides of the screen using yabai, in addition to padding for the top bar.
 
 ## Installation
 
 Clone this repo to your Übersicht widgets directory.
-
 ```bash
 $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
 ```
+Choose the branch you prefer.
+```bash
+$ cd $HOME/Library/Application\ Support/Übersicht/widgets/clarity && git checkout <branch>
+```
+Refer to the README file in the specified branch for details, as they may differ from this one.
 
-If you prefer Clarity v1, switch to the `v1` branch. Then, refer to [the README for Clarity v1](https://github.com/wernjie/clarity/blob/v1/README.md) instead.
-```
-$ cd $HOME/Library/Application\ Support/Übersicht/widgets/clarity && git checkout v1
-```
+You can also go with whatever defaults I'm using right now if you don't do that. If you're forking this repository, I recommend forking from a specific branch if you want to fix a style, as I may change things frequently.
 
 ## Dependencies
 
