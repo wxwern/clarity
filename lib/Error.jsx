@@ -4,7 +4,7 @@ const style = {
   color: styles.colors.red
 };
 
-const render = ({ msg, side }) => {
+const render = ({ msg }) => {
   if (typeof msg === "undefined") return null;
   return <div style={style}>{msg}</div>;
 };

@@ -1,18 +1,25 @@
 export default {
   colors: {
-    fg: "rgba(255,255,255,0.95)",
-    dim: "rgba(255,255,255,0.5)",
-    bg: "#1c1c1caa",
-    red: "#ff2000",
+    fg: "#fffc",
+    dim: "#fff3",
+    bg: "#1014",
+    minimalFg: "#fff8",
+    minimalDim: "#fff3",
+    minimalBg: "#ffffff0a",
+    red: "#ff4020",
     orange: "#ff8700",
-    accent: "#5fafaf"
+    button: {
+      bg: "#fff4",
+      halfDimBg: "#fff2",
+      dimBg: "#ffffff0a",
+      fg: "#fffe",
+      halfDimFg: "#fff8",
+      dimFg: "#fff3",
+    }
   },
-  fontSize: "10px",
+  fontSize: "13px",
   lineHeight: "24px",
-  fontWeight: 500,
-  fontFamily: "'Avenir Next Medium'"
+  fontWeight: 400,
+  fontFamily: "SF Pro"
 }
-const iconStyle = {
-    fontFamily: "'Font Awesome 5 Free Solid'"
-};
 

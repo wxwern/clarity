@@ -10,41 +10,38 @@ const style = {
     gridGap: "16px",
     position: "fixed",
     overflow: "hidden",
-    padding: "0px",
+    padding: "4px 8px",
     width: "auto",
-    top: "0px",
-    left: "16px",
+    bottom: "0px",
+    left: "0px",
     fontFamily: styles.fontFamily,
     lineHeight: styles.lineHeight,
     fontSize: styles.fontSize,
     color: styles.colors.dim,
-    fontWeight: styles.fontWeight
+    fontWeight: styles.fontWeight,
+    zIndex: 101,
 };
 
 export const refreshFrequency = false;
-export const command = "./clarity/scripts/spaces.sh";
+export const command = "./clarity/scripts/windows.sh";
 
 export const render = ({ output }, ...args) => {
     const data = parse(output);
     if (typeof data === "undefined") {
-        return (
-            <div style={style}>
-                <Error msg="Error: unknown script output" side="left" />
-            </div>
-        );
+        return null;
     }
     if (typeof data.error !== "undefined") {
-        return (
-            <div style={style}>
-                <Error msg={`Error: ${data.error}`} side="left" />
-            </div>
-        );
+        return null;
     }
-    const displayId = Number(window.location.pathname.replace(/\//g, ''));
+    const displayId = Number(window.location.pathname.split("/")[1]);
     const display = data.displays.find(d => d.id === displayId);
     return (
         <div style={style}>
-            <Desktop output={data.spaces.filter(s => s.display === display.index)} />
+            <Desktop
+                displayData={display}
+                spaceData={data.spaces.filter(s => s.display === display.index)}
+                windowData={data.windows.filter(w => w.display === display.index)}
+            />
         </div>
     );
 };
