@@ -32,7 +32,7 @@ const appIconStyle = {
     verticalAlign: "top",
     width: "16px",
     height: "16px",
-    margin: "2px 4px",
+    margin: "2px",
     objectFit: "contain",
 };
 
@@ -95,7 +95,7 @@ const renderStickyWindow = (displayData, stickyWindow) => {
         }
     }
 
-    let contentStyle = desktopBaseStyle;
+    let contentStyle = {...desktopBaseStyle, ...selectedStyleInactiveDisplay};
     return (
         <div style={contentStyle} onClick={async () => {
                 stickyWindow.id && await run('/usr/local/bin/yabai -m window --focus ' + stickyWindow.id);
@@ -105,7 +105,7 @@ const renderStickyWindow = (displayData, stickyWindow) => {
     );
 }
 
-const renderSpace = (display_index, index, focused, visible, nativeFullscreen, windows) => {
+const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
     let contentStyle = desktopBaseStyle;
     if (focused == 1) {
         contentStyle = {...contentStyle, ...selectedStyle};
@@ -117,7 +117,7 @@ const renderSpace = (display_index, index, focused, visible, nativeFullscreen, w
 
     let nonStickyWindows = windows.filter(w => !w["is-sticky"])
 
-    let str = "" + index;
+    let str = ""+index;
     if (nativeFullscreen) {
         str += " ";
         if (windows.length > 1) {
@@ -125,8 +125,18 @@ const renderSpace = (display_index, index, focused, visible, nativeFullscreen, w
         } else {
             str += symbols.fullscreen;
         }
-    } else if (nonStickyWindows.length > 0) {
+    }
+    if (nonStickyWindows.length > 0) {
         str += " ";
+        nonStickyWindows.sort((a,b) => {
+            if (a.frame.x == b.frame.x) {
+                if (a.frame.y == b.frame.y) {
+                    return a["stack-index"] - b["stack-index"];
+                }
+                return a.frame.y - b.frame.y;
+            }
+            return a.frame.x - b.frame.x;
+        })
     }
     return (
         <div style={contentStyle} onClick={async () => {
@@ -146,7 +156,6 @@ const render = ({ displayData, spaceData, windowData }) => {
 
     spaceData.forEach(function(space) {
         spaces.push(renderSpace(
-            space.display,
             space.index,
             space["has-focus"],
             space["is-visible"],

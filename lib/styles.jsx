@@ -14,7 +14,7 @@ export default {
       dimBg: "#ffffff0a",
       fg: "#fffe",
       halfDimFg: "#fff8",
-      dimFg: "#fff3",
+      dimFg: "#ffffff33",
     }
   },
   fontSize: "13px",
