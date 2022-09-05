@@ -85,11 +85,11 @@ const renderStickyWindow = (displayData, stickyWindow) => {
         if (yMid <= H/2) {
             stickyWindowSymbol = (symbols.pipTopLeft);
         } else {
-            stickyWindowSymbol = (symbols.pipTopRight);
+            stickyWindowSymbol = (symbols.pipBottomLeft);
         }
     } else {
         if (yMid <= H/2) {
-            stickyWindowSymbol = (symbols.pipBottomLeft);
+            stickyWindowSymbol = (symbols.pipTopRight);
         } else {
             stickyWindowSymbol = (symbols.pipBottomRight);
         }
