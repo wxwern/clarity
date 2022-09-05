@@ -9,7 +9,7 @@ const style = {
     gridGap: "16px",
     position: "fixed",
     overflow: "hidden",
-    padding: "4px 8px",
+    padding: "4px 16px", //should be 4px 8px but inner cells aren't ready yet
     height: "20px",
     width: "auto",
     bottom: "0px",

@@ -1,7 +1,11 @@
 import symbols from "./symbols.jsx";
 import styles from "./styles.jsx";
-import getAppIcon from "./getAppIcon.jsx";
+import { getAppIconPath, getAppIconName } from "./getAppIcon.jsx";
 import { run } from "uebersicht";
+
+//
+// Styles
+//
 
 const containerStyle = {
     display: "grid",
@@ -29,6 +33,7 @@ const appIconStyle = {
     width: "16px",
     height: "16px",
     margin: "2px 4px",
+    objectFit: "contain",
 };
 
 const unselectedStyle = {
@@ -46,6 +51,59 @@ const selectedStyle = {
     fontWeight: "bold",
 }
 
+
+
+//
+// Functions
+//
+
+let obtainIconRan = {};
+const getAppIconImgTag = (appName) => {
+    let appIconName = getAppIconName(appName)
+    let path = getAppIconPath(appName)
+    let obtainIconScript = "./clarity/scripts/prepAppIcon.sh " + appIconName;
+
+    let runScript = () => {
+        if (obtainIconRan[appIconName] == null) {
+            return (obtainIconRan[appIconName] = run(obtainIconScript));
+        } else {
+            return obtainIconRan[appIconName];
+        }
+    }
+    return (<img style={appIconStyle} src={path} alt={appName} onError={runScript()}></img>)
+}
+
+const renderStickyWindow = (displayData, stickyWindow) => {
+    let X = displayData.frame.x;
+    let Y = displayData.frame.y;
+    let W = displayData.frame.w;
+    let H = displayData.frame.h;
+    let xMid = stickyWindow.frame.x - X + stickyWindow.frame.w/2;
+    let yMid = stickyWindow.frame.y - Y + stickyWindow.frame.h/2;
+    let stickyWindowSymbol = "";
+    if (xMid <= W/2) {
+        if (yMid <= H/2) {
+            stickyWindowSymbol = (symbols.pipTopLeft);
+        } else {
+            stickyWindowSymbol = (symbols.pipTopRight);
+        }
+    } else {
+        if (yMid <= H/2) {
+            stickyWindowSymbol = (symbols.pipBottomLeft);
+        } else {
+            stickyWindowSymbol = (symbols.pipBottomRight);
+        }
+    }
+
+    let contentStyle = desktopBaseStyle;
+    return (
+        <div style={contentStyle} onClick={async () => {
+                stickyWindow.id && await run('/usr/local/bin/yabai -m window --focus ' + stickyWindow.id);
+            }}>
+            {stickyWindowSymbol} {getAppIconImgTag(stickyWindow["app"])}
+        </div>
+    );
+}
 
 const renderSpace = (display_index, index, focused, visible, nativeFullscreen, windows) => {
     let contentStyle = desktopBaseStyle;
@@ -69,21 +127,13 @@ const renderSpace = (display_index, index, focused, visible, nativeFullscreen, w
         }
     } else if (nonStickyWindows.length > 0) {
         str += " ";
-        for (let i = 0; i < nonStickyWindows.length; i++) {
-            str += symbols.app;
-        }
     }
-
-
-
     return (
         <div style={contentStyle} onClick={async () => {
                 await run('/usr/local/bin/yabai -m space --focus ' + index)
             }}>
             {str}{
-                /*nonStickyWindows.map(w => (
-                    <img style={appIconStyle} src={getAppIcon(w["app"])} alt={w["app"]}></img>
-                ))*/
+                nonStickyWindows.map(w => getAppIconImgTag(w["app"]))
             }
         </div>
     );
@@ -106,30 +156,14 @@ const render = ({ displayData, spaceData, windowData }) => {
     });
 
     let stickyWindows = windowData.filter(w => w["is-sticky"]);
-    let stickyWindowSymbols = [];
+    let stickyWindowElements = [];
     stickyWindows.forEach(stickyWindow => {
-        let W = displayData.frame.w;
-        let H = displayData.frame.h;
-        let xMid = stickyWindow.frame.x + stickyWindow.frame.w/2;
-        let yMid = stickyWindow.frame.y + stickyWindow.frame.h/2;
-        if (xMid <= W/2) {
-            if (yMid <= H/2) {
-                stickyWindowSymbols.push(symbols.pipTopLeft);
-            } else {
-                stickyWindowSymbols.push(symbols.pipTopRight);
-            }
-        } else {
-            if (yMid <= H/2) {
-                stickyWindowSymbols.push(symbols.pipBottomLeft);
-            } else {
-                stickyWindowSymbols.push(symbols.pipBottomRight);
-            }
-        }
+        stickyWindowElements.push(renderStickyWindow(displayData, stickyWindow))
     });
 
     return (
         <div style={containerStyle}>
-            {stickyWindowSymbols.join(" ")}
+            {stickyWindowElements}
             {spaces}
         </div>
     );

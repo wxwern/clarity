@@ -1,11 +1,13 @@
 const autosub = {
     "iTerm2": "iTerm",
 }
-const getAppIcon = (appName) => {
+const getAppIconName = (appName) => {
     if (autosub[appName] != null) {
         appName = autosub[appName];
     }
-
-    return "file:///Applications/" + encodeURIComponent(appName) + ".app/Contents/Resources/AppIcon.icns"
+    return appName;
 }
-export default getAppIcon;
+const getAppIconPath = (appName) => {
+    return "/clarity/appIcons/" + encodeURIComponent(getAppIconName(appName) + ".png")
+}
+export { getAppIconPath, getAppIconName };

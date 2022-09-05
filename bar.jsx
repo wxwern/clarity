@@ -42,7 +42,7 @@ export const refreshFrequency = false;
 export const command = "./clarity/scripts/spaces.sh";
 export const render = ({ output }) => {
     const data = parse(output);
-    if (typeof data === "undefined") {
+    if (typeof data === "undefined" || !data.spaces || !data.displays) {
         return (
             <div style={style}>
                 <Error msg="Error: Unknown Output" />
@@ -57,32 +57,39 @@ export const render = ({ output }) => {
         );
     }
 
-
     const numDisplays = data.displays.length;
     const displayId = Number(window.location.pathname.split("/")[1]);
-    const display = data.displays.find(d => d.id === displayId);
-    const visibleSpace = data.spaces.filter(s => s.display === display.index && s["is-visible"])[0];
+    const displayData      = data.displays.find(d => d.id === displayId) || data.displays[0];
+    const visibleSpaceData = displayData && data.spaces.filter(s => s.display === displayData.index && s["is-visible"])[0];
 
-    let currentStyle = visibleSpace["has-focus"] ? style : {...style, ...dimmedStyle};
-    let backgroundStyle = visibleSpace.windows.length > 0 ? wallpaperBlurStyle : {...wallpaperBlurStyle, opacity: 0};
+    if (!displayData || !visibleSpaceData) {
+        return (
+            <div style={style}>
+                <Error msg="Error: Can't detect display and/or space!" />
+            </div>
+        );
+    }
+
+    let currentStyle    = visibleSpaceData["has-focus"] ? style : {...style, ...dimmedStyle};
+    let backgroundStyle = visibleSpaceData.windows.length > 0 ? wallpaperBlurStyle : {...wallpaperBlurStyle, opacity: 0};
 
     let outComps = [];
     if (numDisplays > 1) {
-        outComps.push(symbols.display + " " + display.index);
+        outComps.push(symbols.display + " " + displayData.index);
     }
-    if (visibleSpace) {
+    if (visibleSpaceData) {
         outComps.push(
-            (visibleSpace.type === "bsp" ? symbols.bsp : symbols.float)
-            + " " + visibleSpace.type
+            (visibleSpaceData.type === "bsp" ? symbols.bsp : symbols.float)
+            + " " + visibleSpaceData.type
         );
     }
-    outComps.push(symbols.space + " " + visibleSpace.index)
+    outComps.push(symbols.space + " " + visibleSpaceData.index)
 
     let outStr = outComps.join(" / ");
     return (
         <div>
-        <div style={backgroundStyle}></div>
-        <div style={currentStyle}>{outStr}</div>
+            <div style={backgroundStyle}></div>
+            <div style={currentStyle}>{outStr}</div>
         </div>
     );
 };
