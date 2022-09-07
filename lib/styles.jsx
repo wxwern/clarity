@@ -10,7 +10,7 @@ export default {
     orange: "#ff8700",
     button: {
       bg: "#fff4",
-      halfDimBg: "#fff2",
+      halfDimBg: "#ffffff1a",
       dimBg: "#ffffff0a",
       fg: "#fffe",
       halfDimFg: "#fff8",

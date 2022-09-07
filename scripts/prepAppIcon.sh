@@ -32,7 +32,11 @@ if [[ ! -f "$1.icns" ]]; then
     echo "App found at $BASE_APP_URL"
 
     cd "$BASE_APP_URL/Contents/Resources/"
-    APP_ICON_NAME="$(ls *.icns | head -n 1)"
+    APP_ICON_NAME="$(ls *AppIcon*.icns | head -n 1)"
+
+    if [[ -z "$APP_ICON_NAME" ]]; then
+        APP_ICON_NAME="$(ls *.icns | head -n 1)"
+    fi
 
     if [[ -z "$APP_ICON_NAME" ]]; then
         echo "App icon not found!"

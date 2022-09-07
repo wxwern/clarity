@@ -19,8 +19,8 @@ const containerStyle = {
 const desktopBaseStyle = {
     minWidth: "12px",
     height: "20px",
-    margin: "0px",
     padding: "0 11px",
+    margin: "0px",
     borderRadius: "8px",
     textAlign: "center",
     cursor: "pointer",
@@ -41,6 +41,7 @@ const unselectedStyle = {
     background: styles.colors.button.dimBg
 }
 const selectedStyleInactiveDisplay = {
+    fontWeight: "bold",
     color: styles.colors.button.halfDimFg,
     background: styles.colors.button.halfDimBg,
 }
@@ -61,16 +62,22 @@ let obtainIconRan = {};
 const getAppIconImgTag = (appName) => {
     let appIconName = getAppIconName(appName)
     let path = getAppIconPath(appName)
-    let obtainIconScript = "./clarity/scripts/prepAppIcon.sh " + appIconName;
-
-    let runScript = () => {
+    let obtainIconScript = "./clarity/scripts/prepAppIcon.sh " + JSON.stringify(appIconName);
+    let runScript = async () => {
         if (obtainIconRan[appIconName] == null) {
+            console.log("Attempting auto retrieval of app icon for " + appIconName + "!");
             return (obtainIconRan[appIconName] = run(obtainIconScript));
         } else {
             return obtainIconRan[appIconName];
         }
     }
-    return (<img style={appIconStyle} src={path} alt={appName} onError={runScript()}></img>)
+    return (<img style={appIconStyle} src={path} alt={appName} onError={async e => {
+        let target = e.target;
+        target.onerror = null;
+        await runScript();
+        console.log("Reloading app icon at path: " + path);
+        target.src = path;
+    }}></img>)
 }
 
 const renderStickyWindow = (displayData, stickyWindow) => {
@@ -117,34 +124,31 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
 
     let nonStickyWindows = windows.filter(w => !w["is-sticky"])
 
-    let str = ""+index;
+    let leadingStr = ""
+    let trailingStr = "";
+
+    leadingStr += index;
     if (nativeFullscreen) {
-        str += " ";
-        if (windows.length > 1) {
-            str += symbols.splitScreen;
-        } else {
-            str += symbols.fullscreen;
-        }
+        trailingStr += symbols.zoom;
     }
-    if (nonStickyWindows.length > 0) {
-        str += " ";
-        nonStickyWindows.sort((a,b) => {
-            if (a.frame.x == b.frame.x) {
-                if (a.frame.y == b.frame.y) {
-                    return a["stack-index"] - b["stack-index"];
-                }
-                return a.frame.y - b.frame.y;
+
+    nonStickyWindows.sort((a,b) => {
+        if (a.frame.x == b.frame.x) {
+            if (a.frame.y == b.frame.y) {
+                return -(a["stack-index"] - b["stack-index"]);
             }
-            return a.frame.x - b.frame.x;
-        })
-    }
+            return a.frame.y - b.frame.y;
+        }
+        return a.frame.x - b.frame.x;
+    });
+
     return (
         <div style={contentStyle} onClick={async () => {
                 await run('/usr/local/bin/yabai -m space --focus ' + index)
             }}>
-            {str}{
+            {leadingStr} {
                 nonStickyWindows.map(w => getAppIconImgTag(w["app"]))
-            }
+            } {trailingStr}
         </div>
     );
 };

@@ -1,6 +1,14 @@
 const autosub = {
+    "Chrome": "Google Chrome",
     "iTerm2": "iTerm",
+    "Word": "Microsoft Word",
+    "Excel": "Microsoft Excel",
+    "PowerPoint": "Microsoft PowerPoint",
+    "OneNote": "Microsoft OneNote",
+    "Outlook": "Microsoft Outlook",
 }
+
+
 const getAppIconName = (appName) => {
     if (autosub[appName] != null) {
         appName = autosub[appName];
