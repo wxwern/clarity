@@ -49,12 +49,19 @@ export const command = (dispatch) => {
         }, nextTimeout);
     }
     refresh(dispatch);
-    scheduleUpdate(() => refresh(dispatch), refreshFrequency);
+    scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), 60000);
+}
+export const updateState = (event, previousState) => {
+  switch(event.type) {
+      case 'DATA_UPDATE':
+          return {output: event.output};
+      case 'TIME_UPDATE':
+      default:
+          return previousState;
+  }
 }
 
 export const render = ({ output }) => {
-
-    const data = parse(output);
     if (typeof output === "undefined") {
         return (
             <div style={style}>
@@ -62,6 +69,8 @@ export const render = ({ output }) => {
             </div>
         );
     }
+
+    const data = parse(output);
     if (typeof data === "undefined") {
         return (
             <div style={style}>
@@ -78,7 +87,7 @@ export const render = ({ output }) => {
             </div>
         );
     }
-    
+
     return (
         <div style={style}>
             <CPU cpuData={data.cpu}/>
