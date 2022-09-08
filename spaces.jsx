@@ -30,7 +30,7 @@ export const render = ({ output }, ...args) => {
     if (typeof data === "undefined") {
         return null;
     }
-    if (typeof data.error !== "undefined") {
+    if (typeof data.error !== "undefined" || !data.spaces || !data.windows) {
         return null;
     }
     const displayId = Number(window.location.pathname.split("/")[1]);

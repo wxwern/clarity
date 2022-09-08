@@ -17,6 +17,7 @@ const symbols = {
     laptop: "􀟛",
     tablet: "􀏃",
     cpu: "􀫥",
+    work: "􀥏",
     overheat: "􀙭",
     battery: [
         "􀛪",
@@ -27,9 +28,10 @@ const symbols = {
     ],
     batteryCharging: "􀢋",
     power: "􀋦",
-    acPower: "􀡸",
+    powerPassthrough: "􀋨",
     powerSaving: "􀥳",
     clock: "􀐫",
+    calendar: "􀉉",
     numbers: [
         "􀃈",
         "􀃊",
@@ -47,11 +49,11 @@ const symbols = {
         "􀔶",
         "􀔷",
         "􀔸",
-        "",
-        "",
-        "",
-        "",
-        "",
+        "􀔹",
+        "􀔺",
+        "􀔻",
+        "􀔼",
+        "􀔽",
     ]
 }
 export default symbols;

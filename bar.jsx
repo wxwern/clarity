@@ -5,7 +5,7 @@ import Error from "./lib/Error.jsx";
 
 const wallpaperBlurStyle = {
     backgroundColor: styles.colors.bg,
-    webkitBackdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
     position: "fixed",
     bottom: "28px",
     left: "0",
@@ -23,8 +23,8 @@ const style = {
     height: "28px",
     lineHeight: "28px",
     width: "auto",
-    webkitBackdropFilter: "blur(20px)",
-    webkitUserSelect: "none",
+    WebkitBackdropFilter: "blur(20px)",
+    WebkitUserSelect: "none",
     cursor: "default",
     fontFamily: styles.fontFamily,
     fontWeight: styles.fontWeight,
@@ -41,11 +41,23 @@ const dimmedStyle = {
 export const refreshFrequency = false;
 export const command = "./clarity/scripts/spaces.sh";
 export const render = ({ output }) => {
+    if (typeof output === "undefined") {
+        return (
+            <div style={style}>Loading...</div>
+        )
+    }
     const data = parse(output);
-    if (typeof data === "undefined" || !data.spaces || !data.displays) {
+    if (typeof data === "undefined") {
         return (
             <div style={style}>
-                <Error msg="Error: Unknown Output" />
+                <Error msg="Unrecognised script output!" />
+            </div>
+        );
+    }
+    if (!data.spaces || !data.displays) {
+        return (
+            <div style={style}>
+                <Error msg="Script output has missing data!" />
             </div>
         );
     }
@@ -65,7 +77,7 @@ export const render = ({ output }) => {
     if (!displayData || !visibleSpaceData) {
         return (
             <div style={style}>
-                <Error msg="Error: Can't detect display and/or space!" />
+                <Error msg="No visible space!" />
             </div>
         );
     }

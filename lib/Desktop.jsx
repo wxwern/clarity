@@ -13,7 +13,7 @@ const containerStyle = {
     gridGap: "8px",
     fontSize: "12px",
     lineHeight: "20px",
-    webkitUserSelect: "none",
+    WebkitUserSelect: "none",
 };
 
 const desktopBaseStyle = {

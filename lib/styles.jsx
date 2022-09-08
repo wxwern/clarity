@@ -8,6 +8,7 @@ export default {
     minimalBg: "#ffffff0a",
     red: "#ff4020",
     orange: "#ff8700",
+    green: "#0aaa1a",
     button: {
       bg: "#fff4",
       halfDimBg: "#ffffff1a",
@@ -17,8 +18,7 @@ export default {
       dimFg: "#ffffff33",
     }
   },
-  fontSize: "13px",
-  lineHeight: "24px",
+  fontSize: "12px",
   fontWeight: 400,
   fontFamily: "SF Pro"
 }
