@@ -3,22 +3,24 @@ import parse from "./lib/parse.jsx";
 import { run } from "uebersicht";
 import Error from "./lib/Error.jsx";
 import Clock from "./lib/Clock.jsx";
-import Date from "./lib/Date.jsx";
 import Power from "./lib/Power.jsx";
 import CPU from "./lib/CPU.jsx";
+import WiFi from "./lib/WiFi.jsx";
+import Ethernet from "./lib/Ethernet.jsx";
+import TimeMachine from "./lib/TimeMachine.jsx";
 
 const style = {
     padding: "0 8px",
     display: "grid",
     gridAutoFlow: "column",
-    gridGap: "12px",
+    gridGap: "16px",
     position: "fixed",
     overflow: "hidden",
     padding: "4px 16px",
     height: "20px",
     lineHeight: "20px",
     width: "auto",
-    bottom: "0px",
+    ...(styles.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     right: "0px",
     fontFamily: styles.fontFamily,
     fontSize: styles.fontSize,
@@ -37,7 +39,7 @@ const showDesktopHitboxStyle = {
     right: "0px",
     zIndex: 110
 }
-const renderShowDesktop = () => {
+const renderShowDesktopButton = () => {
     return (
         <div style={showDesktopHitboxStyle} onClick={() => {
             run("skhd -k f11")
@@ -84,7 +86,7 @@ export const render = ({ output }) => {
     if (typeof output === "undefined") {
         return (
             <div style={style}>
-                <Date/><Clock/>
+                <Clock/>
             </div>
         );
     }
@@ -94,7 +96,7 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg="Can't parse status output!"/>
-                <Date/><Clock/>
+                <Clock/>
             </div>
         );
     }
@@ -102,17 +104,20 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg={data.error}/>
-                <Date/><Clock/>
+                <Clock/>
             </div>
         );
     }
 
     return (
         <div style={style}>
+            <WiFi wifiData={data.wifi}/>
+            <Ethernet ethernetData={data.ethernet}/>
+            <TimeMachine tmData={data.timeMachine}/>
             <CPU cpuData={data.cpu}/>
             <Power powerData={data.power}/>
-            <Date/><Clock/>
-            {renderShowDesktop()}
+            <Clock/>
+            {renderShowDesktopButton()}
         </div>
     );
 };

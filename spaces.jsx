@@ -12,7 +12,7 @@ const style = {
     overflow: "hidden",
     padding: "4px 8px",
     width: "auto",
-    bottom: "0px",
+    ...(styles.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     left: "0px",
     fontFamily: styles.fontFamily,
     lineHeight: styles.lineHeight,

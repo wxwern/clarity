@@ -30,6 +30,11 @@ const symbols = {
     power: "􀋦",
     powerPassthrough: "􀋨",
     powerSaving: "􀥳",
+    wifi: "􀙇",
+    ethernet: "􀩲",
+    vpn: "􁆬",
+    timeMachine: "􀣔",
+    timeMachineAlt: "􀯛",
     clock: "􀐫",
     calendar: "􀉉",
     numbers: [

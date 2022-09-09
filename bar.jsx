@@ -4,22 +4,27 @@ import symbols from "./lib/symbols.jsx";
 import Error from "./lib/Error.jsx";
 
 const wallpaperBlurStyle = {
-    backgroundColor: styles.colors.bg,
+    backgroundColor: styles.colors.bgTint,
     WebkitBackdropFilter: "blur(10px)",
     position: "fixed",
-    bottom: "28px",
+    ...(styles.alignBottom ? {
+        bottom: "28px",
+        top: "0"
+    } : {
+        top: "28px",
+        bottom: "0"
+    }),
     left: "0",
     right: "0",
-    top: "0",
     zIndex: 99,
     transition: "opacity 1s ease-out",
 }
 const style = {
-    backgroundColor: styles.colors.bg,
+    backgroundColor: styles.colors.bgTint,
     position: "fixed",
-    bottom: "0",
-    left: "0",
-    right: "0",
+    ...(styles.alignBottom ? {bottom: "0px"} : {top: "0px"}),
+    left: "0px",
+    right: "0px",
     height: "28px",
     lineHeight: "28px",
     width: "auto",

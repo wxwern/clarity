@@ -2,7 +2,8 @@ export default {
   colors: {
     fg: "#fffc",
     dim: "#fff3",
-    bg: "#1014",
+    bg: "#1114",
+    bgTint: "#1014",
     minimalFg: "#fff8",
     minimalDim: "#fff3",
     minimalBg: "#ffffff0a",
@@ -20,6 +21,7 @@ export default {
   },
   fontSize: "12px",
   fontWeight: 400,
-  fontFamily: "SF Pro"
+  fontFamily: "SF Pro",
+  alignBottom: true
 }
 
