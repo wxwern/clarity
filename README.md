@@ -6,27 +6,22 @@ A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status 
 
 ## Screenshots
 
-### Clarity: Workspace Indicators + Supplementary Status Bar items
+### Clarity: Workspace Indicators with Status Bar items
 
-Branch: `workspace-and-supplementary-status`
+Branch: `workspace-and-status`
 
-This version is designed to complement macOS Big Sur+ menu bar by adding a new bar at the bottom.
+![](showcase/screenshot_v3.png)
 
-This provides workspace indicators on the bottom left, yabai status at the bottom center and some other miscellaneous status items at the bottom right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
+This version is designed to complement macOS Big Sur+ menu bar by adding a new bottom bar. It may also replace the macOS menu bar if toggled to a top bar.
+
+This provides workspace indicators on the left, yabai status at the center and some other miscellaneous status items at the right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
 
 *Config Notes:*
 - The height of this bar is **28px**.
 - If used with Übersicht interaction enabled, set `bar.jsx` to the background, `status.jsx` and `spaces.jsx` to the foreground.
-- You may need to configure the background tint colour of this bar at `lib/styles.jsx` - `.colors.bg` property to match your wallpaper.
+- You may need to configure the background tint colour of this bar at `lib/styles.jsx` - `.colors.bgTint` property to match your wallpaper.
+- You need to set `.alignBottom` to `false` in `lib/styles.jsx` to switch it to a top bar.
 - Some app icons may not load correctly if they're not in a standard location or not found as a `.icns` file (e.g. in a `.car` asset bundle instead). You can manually create a 16x16 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
-
-### Clarity: Workspace Indicators + Main Status Bar items
-
-Branch: `workspace-and-main-status`
-
-![](showcase/screenshot_v1.png)
-
-This version is designed as a full width custom menu bar with workspace indicators, app title, and status bar items, while the built-in macOS menu bar is hidden. The height is approximately 20px, and is best used with an additional 8px padding set to all sides of the screen using yabai, in addition to padding for the top bar.
 
 ### Clarity: Workspace Indicators only
 
