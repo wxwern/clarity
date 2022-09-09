@@ -12,7 +12,9 @@ const render = ({ cpuData }) => {
         color: isThermalLimited ? styles.colors.red : (hasSignificantLoad ? styles.colors.orange : "inherit")
     }
     return (
-        <div style={cpuStyle}>{symbols.cpu} {isThermalLimited ? symbols.overheat : ""} {cpuStatus}</div>
+        <div style={cpuStyle}>
+            {symbols.cpu} {isThermalLimited ? symbols.overheat : ""} {cpuStatus}
+        </div>
     );
 };
 

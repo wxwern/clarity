@@ -15,8 +15,7 @@ const containerStyle = {
     lineHeight: "20px",
     WebkitUserSelect: "none",
 };
-
-const desktopBaseStyle = {
+const desktopGroupBaseStyle = {
     minWidth: "12px",
     height: "20px",
     padding: "0 11px",
@@ -26,16 +25,13 @@ const desktopBaseStyle = {
     cursor: "pointer",
     transition: "all 100ms ease-out",
 };
-
-const appIconStyle = {
+const stackDesktopSubgroupStyle = {
     display: "inline-block",
-    verticalAlign: "top",
-    width: "16px",
-    height: "16px",
-    margin: "2px",
-    objectFit: "contain",
-};
-
+    height: "100%",
+    width: "auto",
+    margin: "0",
+    paddingLeft: "10px"
+}
 const unselectedStyle = {
     color: styles.colors.button.dimFg,
     background: styles.colors.button.dimBg
@@ -45,12 +41,26 @@ const selectedStyleInactiveDisplay = {
     color: styles.colors.button.halfDimFg,
     background: styles.colors.button.halfDimBg,
 }
-
 const selectedStyle = {
     color: styles.colors.button.fg,
     background: styles.colors.button.bg,
     fontWeight: "bold",
 }
+
+
+const appIconStyle = {
+    display: "inline-block",
+    verticalAlign: "top",
+    width: "16px",
+    height: "16px",
+    margin: "2px 1px",
+    objectFit: "contain",
+    filter: "drop-shadow(0 0 6px #333a)"
+};
+const stackAppIconStyleOverride = {
+    marginLeft: "-8px",
+    filter: "drop-shadow(0 0 6px #333f)"
+};
 
 
 
@@ -59,7 +69,7 @@ const selectedStyle = {
 //
 
 let obtainIconRan = {};
-const getAppIconImgTag = (appName) => {
+const getAppIconImgTag = (appName, styleOverrides) => {
     let appIconName = getAppIconName(appName)
     let path = getAppIconPath(appName)
     let obtainIconScript = "./clarity/scripts/prepAppIcon.sh " + JSON.stringify(appIconName);
@@ -71,15 +81,21 @@ const getAppIconImgTag = (appName) => {
             return obtainIconRan[appIconName];
         }
     }
-    return (<img style={appIconStyle} src={path} alt={appName} onError={async e => {
-        let target = e.target;
-        target.onerror = null;
-        await runScript();
-        console.log("Reloading app icon at path: " + path);
-        target.src = path;
-    }}></img>)
+    if (!styleOverrides) styleOverrides = {};
+    return (
+        <img style={{...appIconStyle, ...styleOverrides}} src={path} alt={appName}
+            onError={async e => {
+                let target = e.target;
+                target.onerror = null;
+                await runScript();
+                console.log("Reloading app icon at path: " + path);
+                target.src = path;
+            }}>
+        </img>
+    );
 }
 
+// Renders single sticky window element
 const renderStickyWindow = (displayData, stickyWindow) => {
     let X = displayData.frame.x;
     let Y = displayData.frame.y;
@@ -102,18 +118,19 @@ const renderStickyWindow = (displayData, stickyWindow) => {
         }
     }
 
-    let contentStyle = {...desktopBaseStyle, ...selectedStyleInactiveDisplay};
+    let contentStyle = {...desktopGroupBaseStyle, ...selectedStyleInactiveDisplay};
     return (
         <div style={contentStyle} onClick={async () => {
-                stickyWindow.id && await run('/usr/local/bin/yabai -m window --focus ' + stickyWindow.id);
+                stickyWindow.id && await run('yabai -m window --focus ' + stickyWindow.id);
             }}>
             {stickyWindowSymbol} {getAppIconImgTag(stickyWindow["app"])}
         </div>
     );
 }
 
+// Renders single space element
 const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
-    let contentStyle = desktopBaseStyle;
+    let contentStyle = desktopGroupBaseStyle;
     if (focused == 1) {
         contentStyle = {...contentStyle, ...selectedStyle};
     } else if (visible == 1) {
@@ -142,13 +159,34 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
         return a.frame.x - b.frame.x;
     });
 
+    let itemRenders = [];
+    let tempStackData = [];
+    function renderStack() {
+        if (tempStackData.length == 0) return;
+        itemRenders.push((
+            <div style={stackDesktopSubgroupStyle}>
+                {tempStackData.map(w =>
+                    getAppIconImgTag(w["app"], stackAppIconStyleOverride)
+                )}
+            </div>
+        ));
+        tempStackData = [];
+    }
+    for (let w of nonStickyWindows) {
+        if (w["stack-index"] == 0) {
+            renderStack();
+            itemRenders.push(getAppIconImgTag(w["app"]));
+        } else {
+            tempStackData.push(w);
+        }
+    }
+    renderStack();
+
     return (
         <div style={contentStyle} onClick={async () => {
-                await run('/usr/local/bin/yabai -m space --focus ' + index)
+                await run('yabai -m space --focus ' + index)
             }}>
-            {leadingStr} {
-                nonStickyWindows.map(w => getAppIconImgTag(w["app"]))
-            } {trailingStr}
+            {leadingStr} {itemRenders} {trailingStr}
         </div>
     );
 };

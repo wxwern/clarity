@@ -1,7 +1,12 @@
 import symbols from "./symbols.jsx";
+import { run } from "uebersicht";
+
 const render = () => {
-    const dateFormatOptions = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
-    const dateStr = symbols.clock + " " + new Date(Date.now()+2000).toLocaleString("en-SG", dateFormatOptions);
-    return (<div>{dateStr}</div>);
+    const date = new Date();
+    const timeFormatOptions = { hour: 'numeric', minute: 'numeric', hour12: false };
+
+    const timeStr = symbols.clock + " " + date.toLocaleTimeString("en-SG", timeFormatOptions);
+
+    return (<div onClick={() => run("open /System/Applications/Clock.app")}>{timeStr}</div>);
 }
 export default render;

@@ -3,6 +3,7 @@ import parse from "./lib/parse.jsx";
 import { run } from "uebersicht";
 import Error from "./lib/Error.jsx";
 import Clock from "./lib/Clock.jsx";
+import Date from "./lib/Date.jsx";
 import Power from "./lib/Power.jsx";
 import CPU from "./lib/CPU.jsx";
 
@@ -10,7 +11,7 @@ const style = {
     padding: "0 8px",
     display: "grid",
     gridAutoFlow: "column",
-    gridGap: "16px",
+    gridGap: "12px",
     position: "fixed",
     overflow: "hidden",
     padding: "4px 16px",
@@ -23,8 +24,26 @@ const style = {
     fontSize: styles.fontSize,
     color: styles.colors.minimalFg,
     fontWeight: styles.fontWeight,
+    WebkitUserSelect: "none",
+    cursor: "default",
     zIndex: 102,
 };
+
+const showDesktopHitboxStyle = {
+    width: "20px",
+    height: "20px",
+    position: "fixed",
+    bottom: "0px",
+    right: "0px",
+    zIndex: 110
+}
+const renderShowDesktop = () => {
+    return (
+        <div style={showDesktopHitboxStyle} onClick={() => {
+            run("skhd -k f11")
+        }}></div>
+    )
+}
 
 const refresh = (dispatch) => {
     run("./clarity/scripts/status.sh").then( (output) => {
@@ -65,7 +84,7 @@ export const render = ({ output }) => {
     if (typeof output === "undefined") {
         return (
             <div style={style}>
-                <Clock/>
+                <Date/><Clock/>
             </div>
         );
     }
@@ -75,7 +94,7 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg="Can't parse status output!"/>
-                <Clock/>
+                <Date/><Clock/>
             </div>
         );
     }
@@ -83,7 +102,7 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg={data.error}/>
-                <Clock/>
+                <Date/><Clock/>
             </div>
         );
     }
@@ -92,7 +111,8 @@ export const render = ({ output }) => {
         <div style={style}>
             <CPU cpuData={data.cpu}/>
             <Power powerData={data.power}/>
-            <Clock/>
+            <Date/><Clock/>
+            {renderShowDesktop()}
         </div>
     );
 };
