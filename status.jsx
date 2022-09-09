@@ -109,12 +109,20 @@ export const render = ({ output }) => {
         );
     }
 
+    /*
+    Available status items:
+
+    <WiFi wifiData={data.wifi}/>
+    <Ethernet ethernetData={data.ethernet}/>
+    <TimeMachine tmData={data.timeMachine}/>
+    <CPU cpuData={data.cpu}/>
+    <Power powerData={data.power}/>
+    <Clock/>
+    */
     return (
         <div style={style}>
-            <WiFi wifiData={data.wifi}/>
-            <Ethernet ethernetData={data.ethernet}/>
-            <TimeMachine tmData={data.timeMachine}/>
             <CPU cpuData={data.cpu}/>
+            <TimeMachine tmData={data.timeMachine}/>
             <Power powerData={data.power}/>
             <Clock/>
             {renderShowDesktopButton()}

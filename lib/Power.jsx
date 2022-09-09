@@ -14,8 +14,7 @@ const render = ({ powerData }) => {
     const chargingSymbol = isCharging ? symbols.power : "";
     const wiredSymbol = isWired ? symbols.powerPassthrough : "";
     const lowPowerModeSymbol = isLowPowerMode ? symbols.powerSaving : "";
-    const batteryText = noBattery ?
-        (isLowPowerMode ? "LPM On" : "Normal") : (batteryPercentage + "%");
+    const batteryText = noBattery ? "" : (batteryPercentage + "%");
     const timeRemainingText =
         (batteryPercentage == 100 && isWired) || timeRemaining == "-:--" ?
         "" : timeRemaining;
