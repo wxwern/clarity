@@ -6,7 +6,7 @@ const render = ({ cpuData }) => {
 
     const cpuLoadAvg = cpuData.loadAverage;
     const cpuCoreCount = cpuData.coreCount;
-    const hasSignificantLoad = cpuLoadAvg > (cpuCoreCount*0.5 || 4);
+    const hasSignificantLoad = cpuLoadAvg > 4;
     const hasLoad = hasSignificantLoad || cpuLoadAvg > 2;
     const isThermalLimited = cpuData.thermalLimited;
     const cpuStatusText = isThermalLimited ? "HOT" : "";

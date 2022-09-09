@@ -47,7 +47,7 @@ fi
 #
 CPU_TEMP_LIMITED=$((s=( $(pmset -g therm | grep 'CPU_Speed_Limit') ) && (( "${s[2]}" >= 75 )) && echo "false") || echo "true")
 LOAD_AVERAGE=$(sysctl -n vm.loadavg | awk '{print $2}')
-CORES_AVAILABLE=$(nproc || echo 0)
+CORES_AVAILABLE=$(if [[ -z "$(which nproc)" ]]; then echo 0; else nproc; fi)
 
 #
 # TIME MACHINE STATUS
