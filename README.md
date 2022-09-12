@@ -21,7 +21,7 @@ This provides workspace indicators on the left, yabai status at the center and s
 - If used with Übersicht interaction enabled, set `bar.jsx` to the background, `status.jsx` and `spaces.jsx` to the foreground.
 - You may need to configure the background tint colour of this bar at `lib/styles.jsx` - `.colors.bgTint` property to match your wallpaper.
 - You need to set `.alignBottom` to `false` in `lib/styles.jsx` to switch it to a top bar.
-- Some app icons may not load correctly if they're not in a standard location or not found as a `.icns` file (e.g. in a `.car` asset bundle instead). You can manually create a 16x16 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
+- Some app icons may not load correctly if they're not in a standard location (can't locate `.icns` file or asset in `Assets.car`, can't find icon name from `Info.plist`, etc.) - You can manually create a 16x16 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
 
 ### Clarity: Workspace Indicators only
 
