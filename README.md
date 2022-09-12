@@ -52,7 +52,8 @@ If you're forking this repository, I recommend forking from a specific branch if
 ## Dependencies
 
 - [SF Pro](https://developer.apple.com/fonts/) and [SF Symbols](https://developer.apple.com/sf-symbols/) - Apple's San Francisco font and symbols.
-
+- [acextract](https://github.com/bartoszj/acextract) - Assets.car extracter for extracting app icons if needed. A binary is included in the `scripts/` directory ([acextract v2.2](https://github.com/bartoszj/acextract/releases/tag/2.2)).
+-
 ## Usage
 
 ### Widgets available
