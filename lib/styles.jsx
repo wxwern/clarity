@@ -1,27 +1,28 @@
+import settings from './settings.jsx';
+
 export default {
   colors: {
-    fg: "#fffc",
-    dim: "#fff3",
-    bg: "#1114",
-    bgTint: "#1014",
-    minimalFg: "#fff8",
-    minimalDim: "#fff3",
-    minimalBg: "#ffffff0a",
-    red: "#ff4020",
+    fg:  "#ffffffcc",
+    dim: "#ffffff33",
+    bg:  "#11111144",
+    bgTint: settings.bar.backgroundTint + "44",
+    minimalFg:  "#ffffff88",
+    minimalDim: "#ffffff33",
+    minimalBg:  "#ffffff0a",
+    red:    "#ff4020",
     orange: "#ff8700",
-    green: "#0aaa1a",
+    green:  "#0aaa1a",
     button: {
-      bg: "#fff4",
+      bg:        "#ffffff44",
       halfDimBg: "#ffffff1a",
-      dimBg: "#ffffff0a",
-      fg: "#fffe",
-      halfDimFg: "#fff8",
-      dimFg: "#ffffff33",
+      dimBg:     "#ffffff0a",
+      fg:        "#ffffffee",
+      halfDimFg: "#ffffff88",
+      dimFg:     "#ffffff33",
     }
   },
   fontSize: "12px",
   fontWeight: 400,
   fontFamily: "SF Pro",
-  alignBottom: true
 }
 

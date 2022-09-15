@@ -1,4 +1,5 @@
 import styles from "./lib/styles.jsx";
+import settings from "./lib/settings.jsx";
 import parse from "./lib/parse.jsx";
 import { run } from "uebersicht";
 import Error from "./lib/Error.jsx";
@@ -20,7 +21,7 @@ const style = {
     height: "20px",
     lineHeight: "20px",
     width: "auto",
-    ...(styles.alignBottom ? {bottom: "0px"} : {top: "0px"}),
+    ...(settings.bar.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     right: "0px",
     fontFamily: styles.fontFamily,
     fontSize: styles.fontSize,
@@ -42,7 +43,7 @@ const showDesktopHitboxStyle = {
 const renderShowDesktopButton = () => {
     return (
         <div style={showDesktopHitboxStyle} onClick={() => {
-            run("skhd -k f11")
+            run("PATH=/usr/local/bin/:/opt/local/bin/:$PATH skhd -k f11")
         }}></div>
     )
 }
@@ -86,7 +87,7 @@ export const render = ({ output }) => {
     if (typeof output === "undefined") {
         return (
             <div style={style}>
-                <Clock/>
+                {settings.status.clock && <Clock/>}
             </div>
         );
     }
@@ -96,7 +97,7 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg="Can't parse status output!"/>
-                <Clock/>
+                {settings.status.clock && <Clock/>}
             </div>
         );
     }
@@ -104,28 +105,20 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg={data.error}/>
-                <Clock/>
+                {settings.status.clock && <Clock/>}
             </div>
         );
     }
 
-    /*
-    Available status items:
-
-    <WiFi wifiData={data.wifi}/>
-    <Ethernet ethernetData={data.ethernet}/>
-    <TimeMachine tmData={data.timeMachine}/>
-    <CPU cpuData={data.cpu}/>
-    <Power powerData={data.power}/>
-    <Clock/>
-    */
     return (
         <div style={style}>
-            <CPU cpuData={data.cpu}/>
-            <TimeMachine tmData={data.timeMachine}/>
-            <Power powerData={data.power}/>
-            <Clock/>
-            {renderShowDesktopButton()}
+            {settings.status.wifi && <WiFi wifiData={data.wifi}/>}
+            {settings.status.ethernet && <Ethernet ethernetData={data.ethernet}/>}
+            {settings.status.cpu && <CPU cpuData={data.cpu}/>}
+            {settings.status.timeMachine && <TimeMachine tmData={data.timeMachine}/>}
+            {settings.status.power && <Power powerData={data.power}/>}
+            {settings.status.clock && <Clock/>}
+            {settings.bottomRightClickToShowDesktop && renderShowDesktopButton()}
         </div>
     );
 };

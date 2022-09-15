@@ -36,7 +36,7 @@ const unselectedStyle = {
     color: styles.colors.button.dimFg,
     background: styles.colors.button.dimBg
 }
-const selectedStyleInactiveDisplay = {
+const halfSelectedStyle = {
     fontWeight: "bold",
     color: styles.colors.button.halfDimFg,
     background: styles.colors.button.halfDimBg,
@@ -118,10 +118,10 @@ const renderStickyWindow = (displayData, stickyWindow) => {
         }
     }
 
-    let contentStyle = {...desktopGroupBaseStyle, ...selectedStyleInactiveDisplay};
+    let contentStyle = {...desktopGroupBaseStyle, ...halfSelectedStyle};
     return (
         <div style={contentStyle} onClick={async () => {
-                stickyWindow.id && await run('yabai -m window --focus ' + stickyWindow.id);
+                stickyWindow.id && await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m window --focus ' + stickyWindow.id);
             }}>
             {stickyWindowSymbol} {getAppIconImgTag(stickyWindow["app"])}
         </div>
@@ -134,7 +134,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
     if (focused == 1) {
         contentStyle = {...contentStyle, ...selectedStyle};
     } else if (visible == 1) {
-        contentStyle = {...contentStyle, ...selectedStyleInactiveDisplay};
+        contentStyle = {...contentStyle, ...halfSelectedStyle};
     } else {
         contentStyle = {...contentStyle, ...unselectedStyle};
     }
@@ -184,15 +184,24 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
 
     return (
         <div style={contentStyle} onClick={async () => {
-                await run('yabai -m space --focus ' + index)
+                await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m space --focus ' + index)
             }}>
             {leadingStr} {itemRenders} {trailingStr}
         </div>
     );
 };
 
-const render = ({ displayData, spaceData, windowData }) => {
+const render = ({ displayData, spaceData, windowData, placeholder }) => {
+    if (typeof placeholder !== "undefined") return (
+        <div style={containerStyle}>
+            <div style={{...desktopGroupBaseStyle, ...unselectedStyle}}>
+                {placeholder}
+            </div>
+        </div>
+    );
     if (typeof spaceData === "undefined") return null;
+    if (typeof displayData === "undefined") return null;
+    if (typeof windowData === "undefined") windowData = [];
 
     const spaces = [];
 

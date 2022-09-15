@@ -1,4 +1,5 @@
 import styles from "./lib/styles.jsx";
+import settings from "./lib/settings.jsx";
 import parse from "./lib/parse.jsx";
 import symbols from "./lib/symbols.jsx";
 import Error from "./lib/Error.jsx";
@@ -7,7 +8,7 @@ const wallpaperBlurStyle = {
     backgroundColor: styles.colors.bgTint,
     WebkitBackdropFilter: "blur(10px)",
     position: "fixed",
-    ...(styles.alignBottom ? {
+    ...(settings.bar.alignBottom ? {
         bottom: "28px",
         top: "0"
     } : {
@@ -22,7 +23,7 @@ const wallpaperBlurStyle = {
 const style = {
     backgroundColor: styles.colors.bgTint,
     position: "fixed",
-    ...(styles.alignBottom ? {bottom: "0px"} : {top: "0px"}),
+    ...(settings.bar.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     left: "0px",
     right: "0px",
     height: "28px",
@@ -55,21 +56,14 @@ export const render = ({ output }) => {
     if (typeof data === "undefined") {
         return (
             <div style={style}>
-                <Error msg="Unrecognised script output!" />
+                <Error msg="Invalid Status Data!" />
             </div>
         );
     }
-    if (!data.spaces || !data.displays) {
+    if (typeof data.error !== "undefined" || !data.spaces || !data.displays) {
         return (
             <div style={style}>
-                <Error msg="Script output has missing data!" />
-            </div>
-        );
-    }
-    if (typeof data.error !== "undefined") {
-        return (
-            <div style={style}>
-                <Error msg={`Error: ${data.error}`}  />
+                <Error msg={data.error} />
             </div>
         );
     }
@@ -102,7 +96,7 @@ export const render = ({ output }) => {
     }
     outComps.push(symbols.space + " " + visibleSpaceData.index)
 
-    let outStr = outComps.join(" / ");
+    let outStr = settings.status.yabai ? outComps.join(" | ") : "";
     return (
         <div>
             <div style={backgroundStyle}></div>

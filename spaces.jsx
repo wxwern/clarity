@@ -2,6 +2,7 @@ import Desktop from "./lib/Desktop.jsx";
 import Error from "./lib/Error.jsx";
 import parse from "./lib/parse.jsx";
 import styles from "./lib/styles.jsx";
+import settings from "./lib/settings.jsx";
 
 const style = {
     padding: "0 8px",
@@ -12,7 +13,7 @@ const style = {
     overflow: "hidden",
     padding: "4px 8px",
     width: "auto",
-    ...(styles.alignBottom ? {bottom: "0px"} : {top: "0px"}),
+    ...(settings.bar.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     left: "0px",
     fontFamily: styles.fontFamily,
     lineHeight: styles.lineHeight,
@@ -27,13 +28,35 @@ export const command = "./clarity/scripts/windows.sh";
 
 export const render = ({ output }, ...args) => {
     const data = parse(output);
-    if (typeof data === "undefined") {
-        return null;
-    }
-    if (typeof data.error !== "undefined" || !data.spaces || !data.windows) {
-        return null;
-    }
     const displayId = Number(window.location.pathname.split("/")[1]);
+    if (typeof output === "undefined") {
+        return (
+            <div style={style}>
+                <Desktop placeholder={"..."}/>
+            </div>
+        );
+    }
+    if (typeof data === "undefined") {
+        return (
+            <div style={style}>
+                <Desktop placeholder={"invalid"}/>
+            </div>
+        );
+    }
+    if (typeof data.error !== "undefined") {
+        return (
+            <div style={style}>
+                <Desktop placeholder={"error"}/>
+            </div>
+        );
+    }
+    if (!data.spaces || !data.displays) {
+        return (
+            <div style={style}>
+                <Desktop placeholder={"unknown"}/>
+            </div>
+        );
+    }
     const display = data.displays.find(d => d.id === displayId);
     return (
         <div style={style}>

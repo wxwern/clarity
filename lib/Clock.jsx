@@ -12,7 +12,7 @@ const render = () => {
     return (<div>
         <span onClick={() => run("open /System/Applications/Calendar.app")}>{dateStr}</span>
         {", "}
-        <span onClick={() => run("open /System/Applications/Clock.app")}>{timeStr}</span>
+        <span onClick={() => run("open /System/Applications/Clock.app || open /System/Applications/Calendar.app")}>{timeStr}</span>
     </div>);
 }
 export default render;

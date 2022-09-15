@@ -1,10 +1,15 @@
 # Clarity
 
-A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support, using [nibar](https://github.com/kkga/nibar) as a base and with some inspiration by [simplebar](https://github.com/Jean-Tinland/simple-bar)'s design and feature set.
+A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support.
+This status bar is designed to clearly show important details within a minimal amount of space, putting focus onto the task you're doing. Plus, it's updated to complement modern macOS design.
 
-`nibar` provided a great launchpad to jump right into custom status bars. It was utilised as a starting point, then overhauled to satisfy my taste.
+This uses [nibar](https://github.com/kkga/nibar) as a base and with some inspiration by [simplebar](https://github.com/Jean-Tinland/simple-bar)'s design and feature set.
+
+As a result of this being primarily for personal use, the design of this status bar may have changes over time. Consider relying on a specific branch if you want to fix a style.
 
 ## Screenshots
+
+---
 
 ### Clarity: Workspace Indicators with Status Bar items
 
@@ -14,24 +19,32 @@ Branch: `workspace-and-status`
 
 This version is designed to complement macOS Big Sur+ menu bar by adding a new bottom bar. It may also replace the macOS menu bar if toggled to a top bar.
 
+<details markdown="1">
+<summary>
+[Click for more details]
+</summary>
+
 This provides workspace indicators on the left, yabai status at the center and some other miscellaneous status items at the right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
 
 *Config Notes:*
 - The height of this bar is **28px**.
+- Certain configurations like bar tint colour, visible status indicators and bar alignment may be adjusted in `lib/settings.jsx`.
 - If used with Übersicht interaction enabled, set `bar.jsx` to the background, `status.jsx` and `spaces.jsx` to the foreground.
-- You may need to configure the background tint colour of this bar at `lib/styles.jsx` - `.colors.bgTint` property to match your wallpaper.
-- You need to set `.alignBottom` to `false` in `lib/styles.jsx` to switch it to a top bar.
-- Some app icons may not load correctly if they're not in a standard location (can't locate `.icns` file or asset in `Assets.car`, can't find icon name from `Info.plist`, etc.) - You can manually create a 16x16 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
+- Some app icons may not load correctly if they're not in a standard location (can't locate `.icns` file or asset in `Assets.car`, can't find icon name from `Info.plist`, etc.) - You can manually create a 32x32 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
+</details>
+
+---
 
 ### Clarity: Workspace Indicators only
 
 Branch: `workspace-only`
 
-![](showcase/screenshot_v2L.png)
 ![](showcase/screenshot_v2W.png)
 ![](showcase/screenshot_v2D.png)
 
 This is a basic version designed to blend right below macOS Big Sur+ menu bar, with a workspace indicator that's visible when a padding of 8px is set on all sides of the screen using yabai.
+
+---
 
 ## Installation
 
@@ -47,7 +60,7 @@ Refer to the README file in the specified branch for details, as they may differ
 
 There are no guarantees that I'll update the other branches to reflect the latest yabai or macOS updates, except the one I'm currently using which will be in the `main` branch.
 
-If you're forking this repository, I recommend forking from a specific branch if you want to fix a style, as I may change things frequently.
+If you're forking this repository, I recommend working on a specific branch if you want to fix a style, as I may change things around drastically in the `main` branch.
 
 ## Dependencies
 
