@@ -1,7 +1,7 @@
 # Clarity
 
-A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar with [yabai](https://github.com/koekeishiya/yabai) support.
-This status bar is designed to clearly show important details within a minimal amount of space, putting focus onto the task you're doing. Plus, it's updated to complement modern macOS design.
+A simple [Übersicht](https://github.com/felixhageloh/uebersicht) widget status bar via [yabai](https://github.com/koekeishiya/yabai) support.
+This status bar is designed to clearly show important details for virtual desktop management within a minimal amount of space, putting focus onto the task you're doing. Plus, it's updated to complement modern macOS design.
 
 This uses [nibar](https://github.com/kkga/nibar) as a base and with some inspiration by [simplebar](https://github.com/Jean-Tinland/simple-bar)'s design and feature set.
 
@@ -16,7 +16,7 @@ By default, it gives workspace indicators on the left, yabai status at the cente
 
 ![](showcase/screenshot_v3.png)
 
-You can perform some basic customisation of its style via the `lib/settings.jsx` file, while preserving its design language. For example, you can choose a minimal design mode, and toggle between top and bottom alignment:
+You can perform some basic customisation of its style via the `lib/settings.jsx` file, while preserving its design language. For example, you can choose a minimal design mode, adjust the sizes and toggle between top and bottom alignment:
 
 ![](showcase/screenshot_v3_2.png)
 
@@ -59,7 +59,7 @@ $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Suppor
 There are three widgets total:
 - `spaces.jsx` for displaying workspaces (left). It has multi-display support.
 - `bar.jsx` with yabai state indicators and provides a background blur.
-- `status.jsx` for displaying miscus status items (right).
+- `status.jsx` for displaying selected status items (right).
 
 ### Refreshing yabai widgets
 
