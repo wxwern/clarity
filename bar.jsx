@@ -4,30 +4,15 @@ import parse from "./lib/parse.jsx";
 import symbols from "./lib/symbols.jsx";
 import Error from "./lib/Error.jsx";
 
-const wallpaperBlurStyle = {
-    backgroundColor: styles.colors.bgTint,
-    WebkitBackdropFilter: "blur(10px)",
-    position: "fixed",
-    ...(settings.bar.alignBottom ? {
-        bottom: "28px",
-        top: "0"
-    } : {
-        top: "28px",
-        bottom: "0"
-    }),
-    left: "0",
-    right: "0",
-    zIndex: 99,
-    transition: "opacity 1s ease-out",
-}
+
 const style = {
     backgroundColor: styles.colors.bgTint,
     position: "fixed",
     ...(settings.bar.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     left: "0px",
     right: "0px",
-    height: "28px",
-    lineHeight: "28px",
+    height    : styles.height + "px",
+    lineHeight: styles.height + "px",
     width: "auto",
     WebkitBackdropFilter: "blur(20px)",
     WebkitUserSelect: "none",
@@ -44,9 +29,32 @@ const dimmedStyle = {
     color: styles.colors.dim,
 }
 
+const wallpaperBlurStyle = settings.backgroundBlurOnWindowOpen ? {
+    backgroundColor: styles.colors.bgTint,
+    WebkitBackdropFilter: "blur(10px)",
+    position: "fixed",
+    ...(settings.bar.alignBottom ? {
+        bottom: style.height,
+        top: "0"
+    } : {
+        top: style.height,
+        bottom: "0"
+    }),
+    left: "0",
+    right: "0",
+    zIndex: 99,
+    transition: "opacity 1s ease-out",
+} : {display: "none"}
+
 export const refreshFrequency = false;
 export const command = "./clarity/scripts/spaces.sh";
 export const render = ({ output }) => {
+    if (settings.bar.fontSize > settings.bar.height || !settings.status) {
+        return (
+            <div style={style}/>
+        );
+    }
+
     if (typeof output === "undefined") {
         return (
             <div style={style}>Loading...</div>

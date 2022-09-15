@@ -8,39 +8,26 @@ This uses [nibar](https://github.com/kkga/nibar) as a base and with some inspira
 Note that as a result of this being primarily for personal use, the design of this status bar may have changes over time.
 
 
-## Configuration Screenshots
+## Screenshots
 
 ---
 
-This status bar provides some basic customisation of its style via the `lib/settings.jsx` file which will preserve its design language.
-
-By default, it gives workspace indicators on the left, yabai status at the center and some other miscellaneous status items at the right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
+### Configuration: Workspace Indicators with Status Bar items
 
 ![](showcase/screenshot_v3.png)
 
-You can also choose a more minimal design, and toggle between top and bottom alignment:
-
-![](showcase/screenshot_v3_2.png)
-
-Or by simply reducing the height value, you can shrink it down to a space-only indicator, which can be used and remain visible with yabai paddings alongside the macOS menu bar. Inspired by [@rosenpin's fork of this repo](https://github.com/rosenpin/clarity/tree/ba5ab5fcaab811a295a174baf83f6f37c369bb06).
-
-![](showcase/screenshot_v3_3.png)
-
 <details markdown="1">
 <summary>
-[Click for extra config notes]
+[Click for more details]
 </summary>
 
-- If used with Übersicht interaction enabled, it might be best to set `bar.jsx` to the background, while `status.jsx` and `spaces.jsx` are set to the foreground.
+This provides workspace indicators on the left, yabai status at the center and some other miscellaneous status items at the right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
+
+*Config Notes:*
+- Configurations like bar height, bar tint colour, visible status indicators and bar alignment may be adjusted in `lib/settings.jsx`.
+- If used with Übersicht interaction enabled, set `bar.jsx` to the background, `status.jsx` and `spaces.jsx` to the foreground.
 - Some app icons may not load correctly if they're not in a standard location (can't locate `.icns` file or asset in `Assets.car`, can't find icon name from `Info.plist`, etc.) - You can manually create a 32x32 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
-
 </details>
-
-## Legacy Versions and Designs
-
-Designs from legacy versions can be achieved with similar results with only minor editing of config and styles of the current one.
-
-If you still prefer to use them directly, you may find them in the legacy forks or tags, but note that the old codebase is significantly more messy.
 
 ---
 
@@ -50,20 +37,29 @@ Clone this repo to your Übersicht widgets directory.
 ```bash
 $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
 ```
+Choose the branch you prefer.
+```bash
+$ cd $HOME/Library/Application\ Support/Übersicht/widgets/clarity && git checkout <branch>
+```
+Refer to the README file in the specified branch for details, as they may differ from this one.
+
+There are no guarantees that I'll update the other branches to reflect the latest yabai or macOS updates, except the one I'm currently using which will be in the `main` branch.
+
+If you're forking this repository, I recommend working on a specific branch if you want to fix a style, as I may change things around drastically in the `main` branch.
 
 ## Dependencies
 
 - [SF Pro](https://developer.apple.com/fonts/) and [SF Symbols](https://developer.apple.com/sf-symbols/) - Apple's San Francisco font and symbols.
-- [acextract](https://github.com/bartoszj/acextract) - Assets.car extracter for extracting app icons if needed. Though, [acextract v2.2](https://github.com/bartoszj/acextract/releases/tag/2.2) is included in the `scripts/` directory and is automatically used.
+- [acextract](https://github.com/bartoszj/acextract) - Assets.car extracter for extracting app icons if needed. A binary is included in the `scripts/` directory ([acextract v2.2](https://github.com/bartoszj/acextract/releases/tag/2.2)).
 
 ## Usage
 
 ### Widgets available
 
 There are three widgets total:
-- `spaces.jsx` for displaying workspaces (left). It has multi-display support.
+- `spaces.jsx` for displaying workspaces (bottom left). It has multi-display support.
 - `bar.jsx` with yabai state indicators and provides a background blur.
-- `status.jsx` for displaying miscus status items (right).
+- `status.jsx` for displaying miscellaneous status items (bottom right).
 
 ### Refreshing yabai widgets
 

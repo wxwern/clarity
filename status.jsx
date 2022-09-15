@@ -11,15 +11,14 @@ import Ethernet from "./lib/Ethernet.jsx";
 import TimeMachine from "./lib/TimeMachine.jsx";
 
 const style = {
-    padding: "0 8px",
     display: "grid",
     gridAutoFlow: "column",
     gridGap: "16px",
     position: "fixed",
     overflow: "hidden",
-    padding: "4px 16px",
-    height: "20px",
-    lineHeight: "20px",
+    padding: styles.padding + "px" + " " + settings.bar.paddingHorizontal + "px",
+    height:     styles.heightWithoutPadding + "px",
+    lineHeight: styles.heightWithoutPadding + "px",
     width: "auto",
     ...(settings.bar.alignBottom ? {bottom: "0px"} : {top: "0px"}),
     right: "0px",
@@ -49,9 +48,21 @@ const renderShowDesktopButton = () => {
 }
 
 const refresh = (dispatch) => {
-    run("./clarity/scripts/status.sh").then( (output) => {
-        dispatch({type: 'DATA_UPDATE', output: output});
-    });
+    let disabled = true;
+    for (let key in settings.status) {
+        if (settings.status[key]) {
+            disabled = false;
+            break;
+        }
+    }
+
+    if (disabled) {
+        dispatch({type: 'DATA_UPDATE', output: {}});
+    } else {
+        run("./clarity/scripts/status.sh").then( (output) => {
+            dispatch({type: 'DATA_UPDATE', output: output});
+        });
+    }
 }
 
 export const refreshFrequency = 30000;
@@ -84,6 +95,12 @@ export const updateState = (event, previousState) => {
 }
 
 export const render = ({ output }) => {
+    if (settings.bar.fontSize > settings.bar.height || !settings.status) {
+        return (
+            <div style={style}/>
+        );
+    }
+
     if (typeof output === "undefined") {
         return (
             <div style={style}>
