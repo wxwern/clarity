@@ -8,17 +8,15 @@ This uses [nibar](https://github.com/kkga/nibar) as a base and with some inspira
 Note that as a result of this being primarily for personal use, the design of this status bar may have changes over time.
 
 
-## Configuration Screenshots
+## Screenshots
 
----
-
-This status bar provides some basic customisation of its style via the `lib/settings.jsx` file which will preserve its design language.
+### Clarity v3
 
 By default, it gives workspace indicators on the left, yabai status at the center and some other miscellaneous status items at the right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
 
 ![](showcase/screenshot_v3.png)
 
-You can also choose a more minimal design, and toggle between top and bottom alignment:
+You can perform some basic customisation of its style via the `lib/settings.jsx` file, while preserving its design language. For example, you can choose a minimal design mode, and toggle between top and bottom alignment:
 
 ![](showcase/screenshot_v3_2.png)
 
@@ -36,13 +34,11 @@ Or by simply reducing the height value, you can shrink it down to a space-only i
 
 </details>
 
-## Legacy Versions and Designs
+### Legacy Versions and Designs
 
-Designs from legacy versions can be achieved with similar results with only minor editing of config and styles of the current one.
+Designs from legacy versions can now be achieved with similar results with only minor editing of config and styles of the current one, so there's no need to use code I no longer maintain.
 
-If you still prefer to use them directly, you may find them in the legacy forks or tags, but note that the old codebase is significantly more messy.
-
----
+If you still prefer to use them directly, you may find them in the legacy forks or tags, but note that the old codebase is also significantly more messy and harder to edit.
 
 ## Installation
 
