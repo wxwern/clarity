@@ -42,7 +42,7 @@ const showDesktopHitboxStyle = {
 const renderShowDesktopButton = () => {
     return (
         <div style={showDesktopHitboxStyle} onClick={() => {
-            run("PATH=/usr/local/bin/:/opt/local/bin/:$PATH skhd -k f11")
+            run("PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m space mouse --toggle show-desktop")
         }}></div>
     )
 }

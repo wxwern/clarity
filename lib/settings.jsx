@@ -5,6 +5,8 @@ export default {
     // while maintaining the same design language.
     //
     // For modifying colours and other design elements, modify the `styles.jsx` file.
+    //
+    // Many elements require yabai to work.
     bar: {
         height: 28,                // Height of the bar in points. (default=28)
         paddingHorizontal: 16,     // Horizontal padding of the bar in points. (default=16, matches macOS Big Sur+ menu bar)
@@ -13,6 +15,7 @@ export default {
         fontSize: 12,              // Font size of the bar in points. May auto shrink if less space is available. (default=12)
         alignBottom: true,         // Whether to align the bar to the bottom if true, or otherwise align to the top. (default=true)
 
+        // Settings for space elements at the left.
         space: {
             minWidth: 12,              // Minimum width of a space element in points. (default=12)
             roundedCornersFactor: 0.8, // Amount of rounded corners (0 - 1) (default=0.8)
@@ -33,8 +36,8 @@ export default {
     // These status indicators refresh at 30s intervals.
     // The clock is synchronised to refresh at the :00 second mark.
     status: {
-        wifi: false,               // whether to show wifi indicator while it's connected
-        ethernet: false,           // whether show ethernet indicator while it's connected
+        wifi: true,                // whether to show wifi indicator while it's connected
+        ethernet: true,            // whether show ethernet indicator while it's connected
         timeMachine: true,         // whether to show time machine indicator while it's running
         cpu: true,                 // whether to show indicator for high cpu usage or thermal throttling
         power: true,               // whether to show battery & power mode indicators
@@ -44,10 +47,6 @@ export default {
 
     // Emulation of Windows bottom right click for showing desktop.
     // This simply adds an invisible clickable area at the bottom right.
-    //
-    // Requires skhd, and F11 to be bound to "Show Desktop" in
-    // System Preferences > Keyboard > Shortcuts > Mission Control.
-    // This binding should already be present by default.
     bottomRightClickToShowDesktop: true,
 
     // Whether to darken and blur your desktop wallpaper when a window is open.
