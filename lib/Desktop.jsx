@@ -74,7 +74,16 @@ const stackAppIconStyleOverride = {
     marginLeft: "-8px",
     filter: "drop-shadow(0 0 6px #333f)"
 };
-
+const appIconStyleOverride = (windowData) => {
+    let result = {};
+    if (windowData["is-minimized"] || windowData["is-hidden"]) {
+        result.opacity = 0.35;
+    }
+    if (windowData["stack-index"] > 0) {
+        result = {...result, ...stackAppIconStyleOverride};
+    }
+    return result;
+};
 
 
 //
@@ -141,7 +150,7 @@ const renderStickyWindow = (displayData, stickyWindow) => {
         <div style={contentStyle} onClick={async () => {
                 stickyWindow.id && await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m window --focus ' + stickyWindow.id);
             }}>
-            {stickyWindowSymbol} {getAppIconElement(stickyWindow["app"])}
+            {stickyWindowSymbol} {getAppIconElement(stickyWindow["app"], appIconStyleOverride(stickyWindow))}
         </div>
     );
 }
@@ -208,7 +217,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
             itemRenders.push((
                 <div style={stackDesktopSubgroupStyle}>
                     {tempStackData.map(w =>
-                        getAppIconElement(w["app"], stackAppIconStyleOverride)
+                        getAppIconElement(w["app"], appIconStyleOverride(w))
                     )}
                 </div>
             ));
@@ -217,7 +226,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
         for (let w of nonStickyWindows) {
             if (w["stack-index"] == 0 || settings.bar.space.minimal || styles.heightWithoutPadding < 16) {
                 renderStack();
-                itemRenders.push(getAppIconElement(w["app"]));
+                itemRenders.push(getAppIconElement(w["app"], appIconStyleOverride(w)));
             } else {
                 tempStackData.push(w);
             }
