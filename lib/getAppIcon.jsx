@@ -6,6 +6,7 @@ const autosub = {
     "PowerPoint": "Microsoft PowerPoint",
     "OneNote": "Microsoft OneNote",
     "Outlook": "Microsoft Outlook",
+    "Code": "Visual Studio Code",
 }
 
 

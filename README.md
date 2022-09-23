@@ -30,7 +30,7 @@ Or by simply reducing the height value, you can shrink it down to a space-only i
 </summary>
 
 - If used with Übersicht interaction enabled, it might be best to set `bar.jsx` to the background, while `status.jsx` and `spaces.jsx` are set to the foreground.
-- Some app icons may not load correctly if they're not in a standard location (can't locate `.icns` file or asset in `Assets.car`, can't find icon name from `Info.plist`, etc.) - You can manually create a 32x32 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
+- Rarely, some app icons may not load correctly (can't locate `.icns` file or asset in `Assets.car`, can't find icon name from `Info.plist`, etc.) - You can manually create a 32x32 `.png` file in the auto-generated `appIcons` folder to supplement any missing app icons.
 
 </details>
 
