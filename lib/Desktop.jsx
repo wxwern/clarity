@@ -204,7 +204,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
         nonStickyWindows.sort((a,b) => {
             if (a.frame.x == b.frame.x) {
                 if (a.frame.y == b.frame.y) {
-                    return -(a["stack-index"] - b["stack-index"]);
+                    return (a["stack-index"] - b["stack-index"]);
                 }
                 return a.frame.y - b.frame.y;
             }
