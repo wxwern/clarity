@@ -192,7 +192,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
     }
 
     if (nativeFullscreen) {
-        if (minimal) {
+        if (settings.bar.space.minimal) {
             leadingStr += symbols.zoom;
         } else {
             trailingStr += symbols.zoom;
