@@ -20,6 +20,7 @@ if [[ ! -f "$1.icns" ]]; then
         "/System/Applications/$1.app/" \
         "/System/Applications/Utilities/$1.app/" \
         "/System/Library/CoreServices/$1.app/" \
+        "/System/Library/CoreServices/Applications/$1.app/" \
         "$HOME/Applications/$1.app/"
     do
         echo "Searching: $d..."
