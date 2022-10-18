@@ -33,7 +33,7 @@ export default {
         // Status indicator settings at the right.
         //
         // You can either configure individual indicators here,
-        // or set `status: false` or `status: {}` to disable all of it.
+        // or set `status: false` to disable all of it.
         //
         // These status indicators refresh at 30s intervals.
         // The clock is synchronised to refresh at the :00 second mark.
@@ -47,6 +47,9 @@ export default {
         },
 
         // Information indicator settings at the center.
+        //
+        // You can either configure individual indicators here,
+        // or set `status: false` to disable all of it.
         //
         // Configure the center indicators here.
         // This represents the current space state and shows focused app info.

@@ -47,9 +47,9 @@ const wallpaperBlurStyle = settings.backgroundBlurOnWindowOpen ? {
 } : {display: "none"}
 
 export const refreshFrequency = false;
-export const command = "./clarity/scripts/spaces.sh";
+export const command = settings.bar.info ? "./clarity/scripts/spaces.sh" : "";
 export const render = ({ output }) => {
-    if (settings.bar.fontSize > settings.bar.height || !settings.bar.status) {
+    if (settings.bar.fontSize > settings.bar.height || !settings.bar.info) {
         return (
             <div style={style}/>
         );
