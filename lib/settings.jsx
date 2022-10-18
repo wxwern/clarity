@@ -6,7 +6,10 @@ export default {
     //
     // For modifying colours and other design elements, modify the `styles.jsx` file.
     //
-    // Many elements require yabai to work.
+    // Note: Many elements require yabai, and configuration on yabai's end, to work. Particularly:
+    // - Spaces and center info indicators require yabai signals to trigger updates.
+    // - Yabai mode updates don't have signals. Thus, you may need triggers linked to the yabai mode switch call.
+    //
     bar: {
         height: 28,                // Height of the bar in points. (default=28)
         paddingHorizontal: 16,     // Horizontal padding of the bar in points. (default=16, matches macOS Big Sur+ menu bar)
@@ -26,23 +29,34 @@ export default {
             showApps : true,           // Whether to show app windows in a space. Will not be shown if too little space available. (default=true)
             showIndex: true,           // Whether to show the space index. Will not be shown if too little vertical space available. (default=true)
         },
-    },
 
-    // Status indicator settings
-    //
-    // You can either configure individual indicators here,
-    // or set `status: false` or `status: {}` to disable all of it.
-    //
-    // These status indicators refresh at 30s intervals.
-    // The clock is synchronised to refresh at the :00 second mark.
-    status: {
-        wifi: true,                // whether to show wifi indicator while it's connected
-        ethernet: true,            // whether show ethernet indicator while it's connected
-        timeMachine: true,         // whether to show time machine indicator while it's running
-        cpu: true,                 // whether to show indicator for high cpu usage or thermal throttling
-        power: true,               // whether to show battery & power mode indicators
-        clock: true,               // whether to show date and time
-        yabai: true,               // whether to show yabai current display, space and arrangement mode
+        // Status indicator settings at the right.
+        //
+        // You can either configure individual indicators here,
+        // or set `status: false` or `status: {}` to disable all of it.
+        //
+        // These status indicators refresh at 30s intervals.
+        // The clock is synchronised to refresh at the :00 second mark.
+        status: {
+            wifi: true,                // whether to show wifi indicator while it's connected
+            ethernet: true,            // whether show ethernet indicator while it's connected
+            timeMachine: true,         // whether to show time machine indicator while it's running
+            cpu: true,                 // whether to show indicator for high cpu usage or thermal throttling
+            power: true,               // whether to show battery & power mode indicators
+            clock: true,               // whether to show date and time
+        },
+
+        // Information indicator settings at the center.
+        //
+        // Configure the center indicators here.
+        // This represents the current space state and shows focused app info.
+        info: {
+            display: true,             // whether to show yabai current display index, if there's more than one display
+            space  : true,             // whether to show yabai current space index. This is a separate indicator from the space list.
+            yabaiMode   : true,        // whether to show yabai current mode (bsp, float, stack)  (bool, or "icon" or "full")
+            appName     : false,       // whether to show the name of the current focused app     (bool, or int representing max char length)
+            windowTitle : false,       // whether to show the title of the current focused window (bool, or int representing max char length)
+        },
     },
 
     // Emulation of Windows bottom right click for showing desktop.

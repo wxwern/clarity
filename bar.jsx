@@ -49,7 +49,7 @@ const wallpaperBlurStyle = settings.backgroundBlurOnWindowOpen ? {
 export const refreshFrequency = false;
 export const command = "./clarity/scripts/spaces.sh";
 export const render = ({ output }) => {
-    if (settings.bar.fontSize > settings.bar.height || !settings.status) {
+    if (settings.bar.fontSize > settings.bar.height || !settings.bar.status) {
         return (
             <div style={style}/>
         );
@@ -80,6 +80,7 @@ export const render = ({ output }) => {
     const displayId = Number(window.location.pathname.split("/")[1]);
     const displayData      = data.displays.find(d => d.id === displayId) || data.displays[0];
     const visibleSpaceData = displayData && data.spaces.filter(s => s.display === displayData.index && s["is-visible"])[0];
+    const focusedWindowData = data.focusedWindow;
 
     if (!displayData || !visibleSpaceData) {
         return (
@@ -93,18 +94,73 @@ export const render = ({ output }) => {
     let backgroundStyle = visibleSpaceData.windows.length > 0 ? wallpaperBlurStyle : {...wallpaperBlurStyle, opacity: 0};
 
     let outComps = [];
-    if (numDisplays > 1) {
+    let windowStr = "";
+
+    if (focusedWindowData) {
+        if (settings.bar.info.appName && focusedWindowData.app) {
+            if (typeof settings.bar.status.appName !== 'number') {
+                windowStr += focusedWindowData.app;
+            } else {
+                windowStr += focusedWindowData.app.substring(0, settings.bar.status.appName);
+            }
+        }
+        if (settings.bar.info.windowTitle && focusedWindowData.title) {
+            if (windowStr) {
+                windowStr += " - ";
+            }
+            if (typeof settings.bar.status.windowTitle !== 'number') {
+                windowStr += focusedWindowData.title;
+            } else {
+                windowStr += focusedWindowData.title.substring(0, +settings.bar.status.windowTitle);
+            }
+        }
+    }
+
+
+    if (settings.bar.info.display && numDisplays > 1) {
         outComps.push(symbols.display + " " + displayData.index);
     }
-    if (visibleSpaceData) {
-        outComps.push(
-            (visibleSpaceData.type === "bsp" ? symbols.bsp : symbols.float)
-            + " " + visibleSpaceData.type
-        );
-    }
-    outComps.push(symbols.space + " " + visibleSpaceData.index)
 
-    let outStr = settings.status.yabai ? outComps.join(" | ") : "";
+    if (settings.bar.info.yabaiMode && visibleSpaceData) {
+        let type = visibleSpaceData.type;
+
+        let modePref    = settings.bar.info.yabaiMode;
+        let iconOnly    = modePref === "icon";
+        let auto        = modePref === true;
+
+        switch (visibleSpaceData.type) {
+            case "bsp":
+            case "float":
+            case "stack":
+                if (windowStr && (auto || iconOnly)) {
+                    windowStr = symbols[type] + " " + windowStr;
+                } else if (iconOnly) {
+                    outComps.push(symbols[type]);
+                } else {
+                    outComps.push(symbols[type] + " " + type);
+                }
+                break;
+            default:
+                if (windowStr && (auto || iconOnly)) {
+                    windowStr = symbols.macWindow + " " + windowStr;
+                } else if (iconOnly) {
+                    outComps.push(symbols.float);
+                } else {
+                    outComps.push(symbols.float + " " + type);
+                }
+                break;
+        }
+    }
+
+    if (windowStr) {
+        outComps.push(windowStr);
+    }
+
+    if (settings.bar.info.space && typeof visibleSpaceData?.index !== undefined) {
+        outComps.push(symbols.space + " " + visibleSpaceData.index)
+    }
+
+    let outStr = outComps.join(" | ");
     return (
         <div>
             <div style={backgroundStyle}></div>

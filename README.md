@@ -66,10 +66,14 @@ There are three widgets total:
 The widgets for displaying yabai workspaces and status don't refresh automatically (to preserve battery). To refresh them, you can add these lines utilizing [yabai's signals](https://github.com/koekeishiya/yabai/wiki/Commands#automation-with-rules-and-signals) at the end of `.yabairc`:
 
 ```sh
+# clarity config updates
 REL_SPACES_IND="osascript -e 'tell application id \"tracesof.Uebersicht\" to refresh widget id \"clarity-spaces-jsx\"'"
 REL_BAR_IND="osascript -e 'tell application id \"tracesof.Uebersicht\" to refresh widget id \"clarity-bar-jsx\"'"
+
+# - if space indicators are enabled
 yabai -m signal --add event=space_changed   action="$REL_SPACES_IND"
 yabai -m signal --add event=display_changed action="$REL_SPACES_IND"
+# - if app icon indicators within space indicators are enabled
 yabai -m signal --add event=window_created   action="$REL_SPACES_IND"
 yabai -m signal --add event=window_moved     action="$REL_SPACES_IND"
 yabai -m signal --add event=window_resized   action="$REL_SPACES_IND"
@@ -80,8 +84,14 @@ yabai -m signal --add event=application_hidden action="$REL_SPACES_IND"
 yabai -m signal --add event=application_visible action="$REL_SPACES_IND"
 yabai -m signal --add event=mission_control_exit action="$REL_SPACES_IND"
 
+# - if center space indicators are enabled
 yabai -m signal --add event=space_changed    action="$REL_BAR_IND"
 yabai -m signal --add event=display_changed  action="$REL_BAR_IND"
+# - if window titles or app names are enabled
+yabai -m signal --add event=window_focused              action="$REL_BAR_IND"
+yabai -m signal --add event=window_title_changed        action="$REL_BAR_IND"
+yabai -m signal --add event=application_front_switched  action="$REL_BAR_IND"
+# - if wallpaper blur is enabled
 yabai -m signal --add event=window_created   action="$REL_BAR_IND"
 yabai -m signal --add event=window_moved     action="$REL_BAR_IND"
 yabai -m signal --add event=window_resized   action="$REL_BAR_IND"
@@ -92,7 +102,7 @@ yabai -m signal --add event=application_hidden action="$REL_BAR_IND"
 yabai -m signal --add event=application_visible action="$REL_BAR_IND"
 yabai -m signal --add event=mission_control_exit action="$REL_BAR_IND"
 
-# Refresh immediately on yabai load
+# refresh immediately on yabai load
 osascript -e "$REL_SPACES_IND"
 osascript -e "$REL_BAR_IND"
 ```

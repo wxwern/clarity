@@ -49,8 +49,8 @@ const renderShowDesktopButton = () => {
 
 const refresh = (dispatch) => {
     let disabled = true;
-    for (let key in settings.status) {
-        if (settings.status[key]) {
+    for (let key in settings.bar.status) {
+        if (settings.bar.status[key]) {
             disabled = false;
             break;
         }
@@ -95,7 +95,7 @@ export const updateState = (event, previousState) => {
 }
 
 export const render = ({ output }) => {
-    if (settings.bar.fontSize > settings.bar.height || !settings.status) {
+    if (settings.bar.fontSize > settings.bar.height || !settings.bar.status) {
         return (
             <div style={style}/>
         );
@@ -104,7 +104,7 @@ export const render = ({ output }) => {
     if (typeof output === "undefined") {
         return (
             <div style={style}>
-                {settings.status.clock && <Clock/>}
+                {settings.bar.status.clock && <Clock/>}
             </div>
         );
     }
@@ -114,7 +114,7 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg="Can't parse status output!"/>
-                {settings.status.clock && <Clock/>}
+                {settings.bar.status.clock && <Clock/>}
             </div>
         );
     }
@@ -122,19 +122,19 @@ export const render = ({ output }) => {
         return (
             <div style={style}>
                 <Error msg={data.error}/>
-                {settings.status.clock && <Clock/>}
+                {settings.bar.status.clock && <Clock/>}
             </div>
         );
     }
 
     return (
         <div style={style}>
-            {settings.status.wifi && <WiFi wifiData={data.wifi}/>}
-            {settings.status.ethernet && <Ethernet ethernetData={data.ethernet}/>}
-            {settings.status.cpu && <CPU cpuData={data.cpu}/>}
-            {settings.status.timeMachine && <TimeMachine tmData={data.timeMachine}/>}
-            {settings.status.power && <Power powerData={data.power}/>}
-            {settings.status.clock && <Clock/>}
+            {settings.bar.status.wifi && <WiFi wifiData={data.wifi}/>}
+            {settings.bar.status.ethernet && <Ethernet ethernetData={data.ethernet}/>}
+            {settings.bar.status.cpu && <CPU cpuData={data.cpu}/>}
+            {settings.bar.status.timeMachine && <TimeMachine tmData={data.timeMachine}/>}
+            {settings.bar.status.power && <Power powerData={data.power}/>}
+            {settings.bar.status.clock && <Clock/>}
             {settings.bottomRightClickToShowDesktop && renderShowDesktopButton()}
         </div>
     );
