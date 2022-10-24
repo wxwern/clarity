@@ -43,6 +43,11 @@ export default {
             timeMachine: true,         // whether to show time machine indicator while it's running
             cpu: true,                 // whether to show indicator for high cpu usage or thermal throttling
             power: true,               // whether to show battery & power mode indicators
+            secureInput: false,        // whether to show an when Secure Input is enabled by some app or process
+                                       //    - this may be useful to know when you're typing in a sensitive field,
+                                       //      or to know when you should try the lock-unlock workaround when macOS is stuck in Secure Input mode,
+                                       //      breaking apps monitoring for keyboard shortcuts like skhd, Alfred, etc.
+                                       //      (https://apple.stackexchange.com/questions/331557/is-there-a-way-to-fix-or-disable-secure-input)
             clock: true,               // whether to show date and time
         },
 

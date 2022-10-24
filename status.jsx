@@ -9,6 +9,7 @@ import CPU from "./lib/CPU.jsx";
 import WiFi from "./lib/WiFi.jsx";
 import Ethernet from "./lib/Ethernet.jsx";
 import TimeMachine from "./lib/TimeMachine.jsx";
+import SecureInput from "./lib/SecureInput.jsx";
 
 const style = {
     display: "grid",
@@ -129,6 +130,7 @@ export const render = ({ output }) => {
 
     return (
         <div style={style}>
+            {settings.bar.status.secureInput && <SecureInput secureInputData={data.secureInput}/>}
             {settings.bar.status.wifi && <WiFi wifiData={data.wifi}/>}
             {settings.bar.status.ethernet && <Ethernet ethernetData={data.ethernet}/>}
             {settings.bar.status.cpu && <CPU cpuData={data.cpu}/>}

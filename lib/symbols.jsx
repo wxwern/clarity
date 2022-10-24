@@ -37,6 +37,7 @@ const symbols = {
     timeMachineAlt: "􀯛",
     clock: "􀐫",
     calendar: "􀉉",
+    secureInput: "􀎡􀅫",
     numbers: [
         "􀃈",
         "􀃊",

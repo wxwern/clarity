@@ -75,7 +75,10 @@ if [[ ! -z "$ETHERNET_INTERFACE" ]]; then
 fi
 ETHERNET_CONNECTED=$(if [[ "$ETHERNET_STATUS" == "active" ]]; then echo true; else echo false; fi)
 
-
+#
+# SECURE TEXT INPUT
+#
+SECURE_TEXT_INPUT_ENABLED=$(if [ "$(ioreg -l -d 1 -w 0 | grep SecureInput | wc -l)" -gt 0 ]; then echo "true"; else echo "false"; fi)
 
 
 # final output!
@@ -105,6 +108,9 @@ echo $(cat <<-EOF
     },
     "timeMachine": {
         "running": $TM_STATUS
+    },
+    "secureInput": {
+        "enabled": $SECURE_TEXT_INPUT_ENABLED
     }
 }
 EOF
