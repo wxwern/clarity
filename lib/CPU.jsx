@@ -8,7 +8,9 @@ const render = ({ cpuData }) => {
     const cpuCoreCount = cpuData.coreCount;
     const hasSignificantLoad = cpuLoadAvg > 4;
     const hasLoad = hasSignificantLoad || cpuLoadAvg > 2;
-    const isThermalLimited = cpuData.thermalLimited;
+    const isSpeedLimited = cpuData.speedLimited;
+    const isPowerLimited = cpuData.powerLimited;
+    const isThermalLimited = isSpeedLimited && !isPowerLimited;
 
     if (isThermalLimited) {
         cpuStyle.color = styles.colors.red;
@@ -19,9 +21,12 @@ const render = ({ cpuData }) => {
 
     if (!hasLoad && !isThermalLimited) cpuStyle.display = "none";
 
+    const symbol = isThermalLimited ? symbols.overheat : symbols.cpu;
+    const text = isThermalLimited ? "HOT": "";
+
     return (
         <div style={cpuStyle}>
-            {isThermalLimited ? symbols.overheat : symbols.cpu} {isThermalLimited ? "HOT": ""}
+            {symbol} {text}
         </div>
     );
 };

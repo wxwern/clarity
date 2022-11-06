@@ -45,7 +45,8 @@ fi
 #
 # CPU STATUS
 #
-CPU_TEMP_LIMITED=$((s=( $(pmset -g therm | grep 'CPU_Speed_Limit') ) && (( "${s[2]}" >= 75 )) && echo "false") || echo "true")
+CPU_LIMITED=$((s=( $(pmset -g therm | grep 'CPU_Speed_Limit') ) && (( "${s[2]}" >= 75 )) && echo "false") || echo "true")
+CPU_POWER_LIMITED=$(([[ "$BATTERY_PERCENTAGE" -lt 10 && "$BATTERY_PERCENTAGE" -ge 0 && "$BATTERY_CHARGING" == "false" ]] && echo "true") || echo "false") # macOS throttles CPU when battery is low
 LOAD_AVERAGE=$(sysctl -n vm.loadavg | awk '{print $2}')
 CORES_AVAILABLE=$(if [[ -z "$(which nproc)" ]]; then echo 0; else nproc; fi)
 
@@ -97,7 +98,8 @@ echo $(cat <<-EOF
     "cpu": {
         "loadAverage": $LOAD_AVERAGE,
         "coreCount": $CORES_AVAILABLE,
-        "thermalLimited": $CPU_TEMP_LIMITED
+        "speedLimited": $CPU_LIMITED,
+        "powerLimited": $CPU_POWER_LIMITED
     },
     "wifi": {
         "connected": $WIFI_CONNECTED,
