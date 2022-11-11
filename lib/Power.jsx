@@ -1,3 +1,4 @@
+import settings from "./settings.jsx";
 import styles from "./styles.jsx";
 import symbols from "./symbols.jsx";
 
@@ -14,8 +15,8 @@ const render = ({ powerData }) => {
     const chargingSymbol = isCharging ? symbols.power : "";
     const wiredSymbol = isWired ? symbols.powerPassthrough : "";
     const lowPowerModeSymbol = isLowPowerMode ? symbols.powerSaving : "";
-    const batteryText = noBattery ? "" : (batteryPercentage + "%");
-    const timeRemainingText =
+    let batteryText = noBattery ? "" : (batteryPercentage + "%");
+    let timeRemainingText =
         (batteryPercentage == 100 && isWired) || timeRemaining == "-:--" ?
         "" : timeRemaining;
 
@@ -27,9 +28,27 @@ const render = ({ powerData }) => {
         batteryStyle.color = styles.colors.green;
         chargeSymStyle.color = styles.colors.orange;
     }
-    const suppStyle = {
+
+    let suppStyle = {
         fontSize: "9px",
         fontWeight: "bold"
+    }
+
+    switch (settings?.bar?.status?.details?.power) {
+        case "percentage":
+            timeRemainingText = "";
+            break;
+        case "time":
+            batteryText = (batteryPercentage == 100 && isWired) ? "-:--" : timeRemaining;
+            timeRemainingText = "";
+            break;
+        case "all":
+        case true:
+            break;
+        default:
+            batteryText = "";
+            timeRemainingText = "";
+            break;
     }
 
     return (
