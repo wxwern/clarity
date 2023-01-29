@@ -70,6 +70,13 @@ const appIconStyle = {
     objectFit: "contain",
     filter: "drop-shadow(0 0 6px #333a)"
 };
+const appExtraInfoStyle = {
+    fontWeight: "normal",
+    opacity: 0.8,
+    margin: "0px 2px",
+    marginTop: "-1px",
+    fontSize: "10px",
+}
 const stackAppIconStyleOverride = {
     marginLeft: "-8px",
     filter: "drop-shadow(0 0 6px #333f)"
@@ -214,6 +221,12 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
     if (settings.bar.space.showApps) {
         let nonStickyWindows = windows.filter(w => !w["is-sticky"])
         nonStickyWindows.sort((a,b) => {
+            if (a["is-floating"] != b["is-floating"]) {
+                return a["is-floating"] ? -1 : 1;
+            }
+            if (a["has-fullscreen-zoom"] != b["has-fullscreen-zoom"]) {
+                return a["has-fullscreen-zoom"] ? -1 : 1;
+            }
             if (a.frame.x == b.frame.x) {
                 if (a.frame.y == b.frame.y) {
                     return (a["stack-index"] - b["stack-index"]);
@@ -225,7 +238,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
 
         let tempStackData = [];
         function renderStack() {
-            if (tempStackData.length == 0) return;
+            if (tempStackData.length == 0) return false;
             itemRenders.push((
                 <div style={stackDesktopSubgroupStyle}>
                     {tempStackData.map(w =>
@@ -234,16 +247,49 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
                 </div>
             ));
             tempStackData = [];
+            return true;
         }
-        for (let w of nonStickyWindows) {
+        function renderSeparator(w1, w2) {
+            if (settings.bar.space.minimal || styles.heightWithoutPadding < 16) return;
+            if (!w1) return;
+            if (
+                (!w2 && (w1["is-floating"] || w1["has-fullscreen-zoom"])) ||
+                (!!w2 && w1["is-floating"] != w2["is-floating"]) ||
+                (!!w2 && w1["has-fullscreen-zoom"] != w2["has-fullscreen-zoom"])
+            ) {
+                let isLeadingZoom = w1["has-fullscreen-zoom"] && (!w2 || !w2["has-fullscreen-zoom"]);
+                let isLeadingFloating = w1["is-floating"] && (!w2 || !w2["is-floating"]);
+                let zoomSymbol = isLeadingZoom ? symbols.zoom : "";
+                let floatingSymbol = isLeadingFloating ? symbols.float : "";
+                let sepSymbol = !isLeadingZoom && !isLeadingFloating ? "|" : "";
+                itemRenders.push(<span style={appExtraInfoStyle}>{floatingSymbol}{zoomSymbol}{sepSymbol}{!!w2 ? " " : ""}</span>);
+            }
+        }
+        for (let i = 0; i < nonStickyWindows.length; i++) {
+            let w = nonStickyWindows[i];
             if (w["stack-index"] == 0 || settings.bar.space.minimal || styles.heightWithoutPadding < 16) {
-                renderStack();
+                if (renderStack()) {
+                    if (i - 1 >= 0) {
+                        let prevW = nonStickyWindows[i - 1];
+                        renderSeparator(prevW, w);
+                    }
+                }
+
                 itemRenders.push(getAppIconElement(w, appIconStyleOverride(w)));
+
+                if (i + 1 < nonStickyWindows.length) {
+                    let nextW = nonStickyWindows[i+1];
+                    renderSeparator(w, nextW);
+                }
+
             } else {
                 tempStackData.push(w);
             }
         }
-        renderStack();
+        renderStack()
+        if (nonStickyWindows.length > 0) {
+            renderSeparator(nonStickyWindows[nonStickyWindows.length - 1], null);
+        }
     }
 
     return (
