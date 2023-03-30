@@ -12,30 +12,43 @@ cd appIcons
 
 if [[ ! -f "$1.icns" ]]; then
 
-    # Locate the app.
+    # Locate the app
     BASE_APP_URL=""
 
-    # List of directories to search through
-    directories=(/Applications /Applications/Utilities /System/Applications /System/Library/CoreServices $HOME/Applications)
+    app_parent_directories=(
+        "/Applications"
+        "/Applications/Utilities"
+        "/System/Applications"
+        "/System/Applications/Utilities"
+        "/System/Library/CoreServices"
+        "/System/Library/CoreServices/Applications"
+        "$HOME/Applications"
+    )
 
-    # Loop through each directory in the list
-    for dir in "${directories[@]}"; do
-        for d in $dir/*; do
-            if [ -d "$d" ] && [[ "$d" != *.app ]]; then
-                echo "Searching: $d..."
-                if [[ -d "$d/$1.app" ]]; then
-                    BASE_APP_URL="$d/$1.app"
-                    break
-                fi
-            fi
-        done
-
+    for dir in "${app_parent_directories[@]}"; do
+        # Loop through each directory to search for the app path
         echo "Searching: $dir..."
         if [[ -d "$dir/$1.app" ]]; then
-            BASE_APP_URL="$dir/$1.app"
-            break
+            BASE_APP_URL="$dir/$1.app";
+            break;
         fi
     done
+
+    if [[ -z "$BASE_APP_URL" ]]; then
+        # We can't find the app at the given directories...
+        for dir in "${app_parent_directories[@]}"; do
+            # Loop through all subdirectories within the directory to find the app path
+            for d in $dir/*; do
+                if [ -d "$d" ] && [[ "$d" != *.app ]] && [[ "$d" != *.bundle ]]; then
+                    echo "Searching: $d..."
+                    if [[ -d "$d/$1.app" ]]; then
+                        BASE_APP_URL="$d/$1.app";
+                        break 2;
+                    fi
+                fi
+            done
+        done
+    fi
 
     if [[ -z "$BASE_APP_URL" ]]; then
         echo "App $1 not found!"
