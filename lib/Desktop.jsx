@@ -129,10 +129,13 @@ const getAppIconElement = (appData, styleOverrides) => {
             }}
             onError={async e => {
                 let target = e.target;
-                target.onerror = null;
+                target.onerror = () => {
+                    console.error("Cannot find app icon for " + appIconName + "!");
+                    console.error("Please check clarity/scripts/prepAppIcon.sh for more information of how Clarity obtains app icons. You may fix this by including more directories to search for, or by manually including custom icons in clarity/appIcon/, or by manually adding new mappings in clarity/lib/getAppIcon.jsx (if the running app name as seen in Menu Bar does not match the *.app name).")
+                };
                 await runScript();
-                console.log("Reloading app icon at path: " + path);
-                target.src = path;
+                console.log("Attempting reload of app icon via path: " + relAppIconPath);
+                target.src = relAppIconPath;
             }}
             onDragStart={e => { e.preventDefault(); return false; }}>
         </img>
