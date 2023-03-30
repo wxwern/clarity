@@ -14,21 +14,29 @@ if [[ ! -f "$1.icns" ]]; then
 
     # Locate the app.
     BASE_APP_URL=""
-    for d in \
-        "/Applications/$1.app/" \
-        "/Applications/Utilities/$1.app/" \
-        "/System/Applications/$1.app/" \
-        "/System/Applications/Utilities/$1.app/" \
-        "/System/Library/CoreServices/$1.app/" \
-        "/System/Library/CoreServices/Applications/$1.app/" \
-        "$HOME/Applications/$1.app/"
-    do
-        echo "Searching: $d..."
-        if [[ -d "$d" ]]; then
-            BASE_APP_URL="$d"
+
+    # List of directories to search through
+    directories=(/Applications /Applications/Utilities /System/Applications /System/Library/CoreServices $HOME/Applications)
+
+    # Loop through each directory in the list
+    for dir in "${directories[@]}"; do
+        for d in $dir/*; do
+            if [ -d "$d" ] && [[ "$d" != *.app ]]; then
+                echo "Searching: $d..."
+                if [[ -d "$d/$1.app" ]]; then
+                    BASE_APP_URL="$d/$1.app"
+                    break
+                fi
+            fi
+        done
+
+        echo "Searching: $dir..."
+        if [[ -d "$dir/$1.app" ]]; then
+            BASE_APP_URL="$dir/$1.app"
             break
         fi
     done
+
     if [[ -z "$BASE_APP_URL" ]]; then
         echo "App $1 not found!"
         exit 1
