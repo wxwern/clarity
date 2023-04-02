@@ -105,14 +105,14 @@ const getAppIconElement = (appData, styleOverrides) => {
     if (!settings.bar.space.showApps) return null;
     if (settings.bar.space.minimal || styles.heightWithoutPadding < 16) return (<span>{symbols.app}</span>);
 
-    let appIconName      = getAppIconName(appName)
+    let appIconName      = getAppIconName(appName);
     let relAppIconPath   = appIconName ? getAppIconPath(appName) : null;
     let obtainIconScript = appIconName ? ("./clarity/scripts/prepAppIcon.sh " + JSON.stringify(appIconName)) : null;
 
     let runScript = async () => {
         if (obtainIconScript) {
             if (obtainIconRan[appIconName] == null) {
-                console.log("Attempting auto retrieval of app icon for " + appIconName + "!");
+                console.log("Attempting auto extraction of app icon for " + appIconName + "!");
                 return (obtainIconRan[appIconName] = run(obtainIconScript));
             } else {
                 return obtainIconRan[appIconName];
@@ -130,12 +130,18 @@ const getAppIconElement = (appData, styleOverrides) => {
             onError={async e => {
                 let target = e.target;
                 target.onerror = () => {
-                    console.error("Cannot find app icon for " + appIconName + "!");
-                    console.error("Please check clarity/scripts/prepAppIcon.sh for more information of how Clarity obtains app icons. You may fix this by including more directories to search for, or by manually including custom icons in clarity/appIcon/, or by manually adding new mappings in clarity/lib/getAppIcon.jsx (if the running app name as seen in Menu Bar does not match the *.app name).")
+                    target.onerror = null;
+                    target.src = null;
                 };
-                await runScript();
-                console.log("Attempting reload of app icon via path: " + relAppIconPath);
-                target.src = relAppIconPath;
+                console.log("Cache miss! App icon for " + appIconName + " will be cached at " + relAppIconPath);
+                let result = await runScript();
+                if (result && result.indexOf("FAILED") == -1) {
+                    console.log("Sucessfully cached app icon for " + appIconName + "!");
+                    target.src = relAppIconPath;
+                } else {
+                    console.error("Cannot find app icon for " + appIconName + "!");
+                    console.error("Please check and run clarity/scripts/prepAppIcon.sh for more information of how Clarity obtains app icons. You may fix this by including more directories to search for, or by manually including custom icons in clarity/appIcon/, or by manually adding new mappings in clarity/lib/getAppIcon.jsx (if the running app name as seen in Menu Bar does not match the *.app name).")
+                }
             }}
             onDragStart={e => { e.preventDefault(); return false; }}>
         </img>

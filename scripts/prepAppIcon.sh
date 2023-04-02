@@ -51,7 +51,7 @@ if [[ ! -f "$1.icns" ]]; then
     fi
 
     if [[ -z "$BASE_APP_URL" ]]; then
-        echo "App $1 not found!"
+        echo "FAILED: App $1 not found!"
         exit 1
     fi
 
@@ -78,7 +78,7 @@ if [[ ! -f "$1.icns" ]]; then
         APP_ICON_NAME="$(ls *.icns | head -n 1 | rev | cut -c6- | rev)"
     fi
     if [[ -z "$APP_ICON_NAME" ]]; then
-        echo "App icon not found!"
+        echo "FAILED: App icon not found!"
         exit 1
     fi
 
@@ -96,7 +96,7 @@ if [[ ! -f "$1.icns" ]]; then
         cd -
         if [[ -f "$1.icns" ]]; then rm "$1.icns"; fi
         if [[ -f "$1.png" ]]; then rm "$1.png"; fi
-        ln -s "$BASE_APP_URL/Contents/Resources/$APP_ICON_NAME.icns" "$1.icns"
+        ln -sf "$BASE_APP_URL/Contents/Resources/$APP_ICON_NAME.icns" "$1.icns"
         echo "Linked icns file!"
     else
         echo "App icon not found at $APP_ICON_NAME.icns, trying $APP_ICON_NAME""16x16@2x.png in Assets.car"
@@ -109,7 +109,7 @@ if [[ ! -f "$1.icns" ]]; then
             rm -r "$1/"
             echo "Copied 16x16@2x png file and created icns file for that size!"
         else
-            echo "We can't find anything! :("
+            echo "FAILED: We can't find anything! :("
             exit 1
         fi
     fi

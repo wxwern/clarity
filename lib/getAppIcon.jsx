@@ -11,6 +11,7 @@ const autosub = {
 
 
 const getAppIconName = (appName) => {
+    appName = appName.trim().replace(/[\u200b-\u200f\u2028-\u202f\u205f-\u206f]/g, "") // remove certain zero-width characters
     if (autosub[appName] != null) {
         appName = autosub[appName];
     }
