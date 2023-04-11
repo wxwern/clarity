@@ -124,7 +124,7 @@ const getAppIconElement = (appData, styleOverrides) => {
         <img style={{...appIconStyle, ...styleOverrides}} src={relAppIconPath} alt={appName}
             onMouseDownCapture={async () => {
                 if (appWindowId) {
-                    await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m window --focus ' + appWindowId);
+                    await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m window --focus ' + appWindowId);
                 }
             }}
             onError={async e => {
@@ -176,7 +176,7 @@ const renderStickyWindow = (displayData, stickyWindow) => {
     let contentStyle = {...desktopGroupBaseStyle, ...halfSelectedStyle};
     return (
         <div style={contentStyle} onMouseDownCapture={async () => {
-                stickyWindow.id && await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m window --focus ' + stickyWindow.id);
+                stickyWindow.id && await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m window --focus ' + stickyWindow.id);
             }}>
             {stickyWindowSymbol} {getAppIconElement(stickyWindow, appIconStyleOverride(stickyWindow))}
         </div>
@@ -196,7 +196,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
         }
         return (
             <div style={contentStyle} onMouseDownCapture={async () => {
-                await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m space --focus ' + index)
+                await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}/>
         );
     }
@@ -303,7 +303,7 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
 
     return (
         <div style={contentStyle} onMouseDownCapture={async () => {
-                await run('PATH=/usr/local/bin/:/opt/local/bin/:$PATH yabai -m space --focus ' + index)
+                await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}>
             {leadingStr} {itemRenders} {trailingStr}
         </div>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH=/usr/local/bin/:/opt/local/bin/:$PATH
+PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH
 
 # Check if yabai exists
 if ! [ -x "$(command -v yabai)" ]; then
