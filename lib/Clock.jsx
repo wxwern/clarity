@@ -10,9 +10,9 @@ const render = () => {
     const timeStr = date.toLocaleTimeString("en-SG", timeFormatOptions);
 
     return (<div>
-        <span onClick={() => run("open /System/Applications/Calendar.app")}>{dateStr}</span>
+        <span style={{verticalAlign: "middle"}} onClick={() => run("open /System/Applications/Calendar.app")}>{dateStr}</span>
         {", "}
-        <span onClick={() => run("open /System/Applications/Clock.app || open /System/Applications/Calendar.app")}>{timeStr}</span>
+        <span style={{verticalAlign: "middle"}} onClick={() => run("open /System/Applications/Clock.app || open /System/Applications/Calendar.app")}>{timeStr}</span>
     </div>);
 }
 export default render;

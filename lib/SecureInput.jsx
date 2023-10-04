@@ -8,7 +8,7 @@ const render = ({ secureInputData }) => {
     if (!secureInputData.enabled) siStyle.display = "none";
     return (
         <div style={siStyle}>
-            {symbols.secureInput}
+            <span style={{verticalAlign: "middle"}}>{symbols.secureInput}</span>
         </div>
     );
 };

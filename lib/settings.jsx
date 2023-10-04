@@ -18,7 +18,7 @@ export default {
         fontSize: 12,              // Font size of the bar in points. May auto shrink if less space is available. (default=12)
         alignBottom: true,         // Whether to align the bar to the bottom if true, or otherwise align to the top. (default=true)
 
-        // Settings for space elements at the left.
+        // Settings for space elements at the left. Requires yabai with signals set up.
         space: {
             minWidth: 12,              // Minimum width of a space element in points. (default=12)
             roundedCornersFactor: 0.8, // Amount of rounded corners (0 - 1) (default=0.8)
@@ -37,23 +37,44 @@ export default {
         //
         // These status indicators refresh at 30s intervals.
         // The clock is synchronised to refresh at the :00 second mark.
+        //
+        // No requirements unless specified.
         status: {
-            wifi: true,                // whether to show wifi indicator while it's connected
+            wifi: false,                // whether to show wifi indicator while it's connected
+                                       //    - requires specifying interface in scripts/status.sh, though en0 should be correct
             ethernet: true,            // whether show ethernet indicator while it's connected
+                                       //    - requires specifying interface in scripts/status.sh
             timeMachine: true,         // whether to show time machine indicator while it's running
-            cpu: true,                 // whether to show indicator for high cpu usage or thermal throttling
+            cpu: true,                 // whether to show indicator for cpu usage and related details
             power: true,               // whether to show battery & power mode indicators
-            secureInput: true,        // whether to show an when Secure Input is enabled by some app or process
+            secureInput: true,         // whether to show an when Secure Input is enabled by some app or process
                                        //    - this may be useful to know when you're typing in a sensitive field,
                                        //      or to know when you should try the lock-unlock workaround when macOS is stuck in Secure Input mode,
                                        //      breaking apps monitoring for keyboard shortcuts like skhd, Alfred, etc.
                                        //      (https://apple.stackexchange.com/questions/331557/is-there-a-way-to-fix-or-disable-secure-input)
             clock: true,               // whether to show date and time
 
-            // This picks whether detailed text is shown alongside the status indicators.
-            details: {
-                network: false,        // whether to show detailed network text (bool, "wifi", "ethernet", "active" or "all")
-                power: true,           // whether to show detailed power text   (bool, "percentage", "time" or "all")
+            // This picks advanced config options for the indicators.
+            advanced: {
+                cpu: {
+                    showSyspower: true,           // whether to show the system power usage in Watts (requires jq & macOS 13+)
+                    showSysload : true,           // whether to show the system load in unix load average format
+                    showThermalThrottle: true,    // whether to show the thermal throttling status (unconfirmed for Apple Silicon)
+
+                    visibleSyspowerThreshold: 20, // system power draw before displaying (default=20W, requires jq & macOS 13+ to be used)
+                    visibleSysloadThreshold: 2.0, // average system load before displayed (default=2.0 unix load avg)
+                },
+                network: {
+                    showActiveText: false,         // whether to show SSID/Ethernet text for whichever network is in use (assumes Ethernet is priority)
+
+                    alwaysShowWiFiSSID: false,     // whether to show the SSID when connected to a WiFi network
+                    alwaysShowEthernetText: false, // whether to show the text "Ethernet" when connected to Ethernet
+                },
+                power: {
+                    showPercentage: true,         // whether to show the battery percentage
+                    showTimeRemaining: true,      // whether to show the time remaining to full or to empty
+                    showNetPower: true,           // whether to show the net power draw or net charge rate in Watts (requires jq & macOS 13)
+                }
             }
         },
 
@@ -65,6 +86,8 @@ export default {
         //
         // Configure the center indicators here.
         // This represents the current space state and shows focused app info.
+        //
+        // Requires yabai with signals set up.
         info: {
             display: true,             // whether to show yabai current display index, if there's more than one display
             space  : true,             // whether to show yabai current space index. This is a separate indicator from the space list.

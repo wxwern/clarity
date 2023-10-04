@@ -49,8 +49,10 @@ $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Suppor
 
 ## Dependencies
 
+- [`yabai`](https://github.com/koekeishiya/yabai) with macOS 12+ - For window and desktop indicator and management.
 - [SF Pro](https://developer.apple.com/fonts/) and [SF Symbols](https://developer.apple.com/sf-symbols/) - Apple's San Francisco font and symbols.
 - [acextract](https://github.com/bartoszj/acextract) - Assets.car extracter for extracting app icons if needed. Though, [acextract v2.2](https://github.com/bartoszj/acextract/releases/tag/2.2) is included in the `scripts/` directory and is automatically used.
+- `jq` with macOS 13+ (optional) - Used in the status bar script to "parse" and confirm a converted `ioreg` output in JSON for detailed battery power stats. Only available on macOS 13+. (used for battery net power draw/input, and system power draw)
 
 ## Usage
 

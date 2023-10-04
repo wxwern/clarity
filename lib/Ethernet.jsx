@@ -7,23 +7,15 @@ const render = ({ wifiData, ethernetData }) => {
 
     let showText = false;
 
-    switch (settings?.bar?.status?.details?.network) {
-        case "active":
-            if (!ethernetData?.connected) {
-                break;
-            }
-        case "ethernet":
-        case "all":
-        case true:
-            showText = true;
-            break;
-        default:
-            break;
+    let advanced = settings.bar.status?.advanced?.network ?? {};
+
+    if (advanced.alwaysShowEthernetText || (advanced.showActiveText && ethernetData.connected)) {
+        showText = true;
     }
 
     return (
         <div style={etherStyle}>
-            {symbols.ethernet} {showText ? "Ethernet" : ""}
+            <span style={{verticalAlign: "middle"}}>{symbols.ethernet} {showText ? "Ethernet" : ""}</span>
         </div>
     );
 };

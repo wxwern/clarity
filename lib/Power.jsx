@@ -20,6 +20,21 @@ const render = ({ powerData }) => {
         (batteryPercentage == 100 && isWired) || timeRemaining == "-:--" ?
         "" : timeRemaining;
 
+    const powerIn_mW  = powerData.detailed["SystemPowerIn"] || 0;
+    const powerUse_mW = powerData.detailed["SystemLoad"] || 0;
+    const netPowerIn_mW =
+        powerData.detailed.hasOwnProperty("SystemLoad") &&
+        powerData.detailed.hasOwnProperty("SystemPowerIn") ?
+        (powerIn_mW - powerUse_mW) : 0;
+    const netPowerIn_W = Math.round(netPowerIn_mW / 1000);
+
+    let netPowerInText = Object.keys(powerData.detailed).length > 0 ?
+        ((netPowerIn_W >= 0 ? ("+" + netPowerIn_W) : netPowerIn_W) + "W") : "";
+
+    const baseSpanChildStyle = {
+        verticalAlign: "middle"
+    };
+
     let batteryStyle = {}
     let chargeSymStyle = {}
     if (batteryPercentage <= 20 && !isCharging) {
@@ -29,31 +44,28 @@ const render = ({ powerData }) => {
         chargeSymStyle.color = styles.colors.orange;
     }
 
-    let suppStyle = {
-        fontSize: "9px",
-        fontWeight: "bold"
-    }
+    const advanced = settings.bar.status?.advanced?.power ?? {};
 
-    switch (settings?.bar?.status?.details?.power) {
-        case "percentage":
-            timeRemainingText = "";
-            break;
-        case "time":
-            batteryText = (batteryPercentage == 100 && isWired) ? "-:--" : timeRemaining;
-            timeRemainingText = "";
-            break;
-        case "all":
-        case true:
-            break;
-        default:
-            batteryText = "";
-            timeRemainingText = "";
-            break;
+    if (!advanced.showTimeRemaining) timeRemainingText = "";
+    if (!advanced.showPercentage) batteryText = "";
+    if (!advanced.showNetPower) netPowerInText = "";
+
+    let suppBlockStyle = {
+        display: "inline-block",
+        fontSize: "70%",
+        fontWeight: "bold",
+        lineHeight: "normal",
+        verticalAlign: "middle",
     }
+    if (!netPowerInText && !timeRemainingText) suppBlockStyle.display = "none";
 
     return (
         <div>
-            <span style={batteryStyle}>{batterySymbol}</span> <span style={chargeSymStyle}>{chargingSymbol || wiredSymbol}</span> {lowPowerModeSymbol} {batteryText} <span style={suppStyle}>{timeRemainingText}</span>
+            <span style={{...baseSpanChildStyle, ...batteryStyle}}>{batterySymbol}</span>&nbsp;
+            <span style={{...baseSpanChildStyle, ...chargeSymStyle}}>{chargingSymbol || wiredSymbol}</span>&nbsp;
+            <span style={baseSpanChildStyle}>{lowPowerModeSymbol}</span>&nbsp;
+            <span style={baseSpanChildStyle}>{batteryText}</span>&nbsp;
+            <span style={suppBlockStyle}>{netPowerInText ? timeRemainingText : ""}<br />{netPowerInText || timeRemainingText}</span>
         </div>
     );
 }

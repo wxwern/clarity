@@ -5,7 +5,7 @@ const render = ({ tmData }) => {
     if (!tmData.running) tmStyle.display = "none";
     return (
         <div style={tmStyle}>
-            {symbols.timeMachineAlt}
+            <span style={{verticalAlign: "middle"}}>{symbols.timeMachineAlt}</span>
         </div>
     );
 };
