@@ -49,7 +49,7 @@ $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Suppor
 
 ## Dependencies
 
-- [SF Pro](https://developer.apple.com/fonts/) and [SF Symbols](https://developer.apple.com/sf-symbols/) - Apple's San Francisco font and symbols.
+- [San Francisco fonts](https://developer.apple.com/fonts/) and [San Francisco symbols](https://developer.apple.com/sf-symbols/) - font and symbols used by Apple platforms. Should be available by default on macOS.
 - [acextract](https://github.com/bartoszj/acextract) - Assets.car extracter for extracting app icons if needed. Though, [acextract v2.2](https://github.com/bartoszj/acextract/releases/tag/2.2) is included in the `scripts/` directory and is automatically used.
 
 ## Usage

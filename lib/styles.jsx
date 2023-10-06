@@ -29,6 +29,6 @@ export default {
         Math.round(settings.bar.height-settings.bar.paddingVertical-10)
     )) + "px",
     fontWeight: 400,
-    fontFamily: "SF Pro",
+    fontFamily: "SF Compact",
 }
 
