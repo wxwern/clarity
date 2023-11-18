@@ -112,7 +112,7 @@ const getAppIconElement = (appData, styleOverrides) => {
     let runScript = async () => {
         if (obtainIconScript) {
             if (obtainIconRan[appIconName] == null) {
-                console.log("Attempting auto extraction of app icon for " + appIconName + "!");
+                console.log("[clarity]", "Attempting auto extraction of app icon for " + appIconName + "!");
                 return (obtainIconRan[appIconName] = run(obtainIconScript));
             } else {
                 return obtainIconRan[appIconName];
@@ -133,14 +133,14 @@ const getAppIconElement = (appData, styleOverrides) => {
                     target.onerror = null;
                     target.src = null;
                 };
-                console.log("Cache miss! App icon for " + appIconName + " will be cached at " + relAppIconPath);
+                console.log("[clarity]", "Cache miss! App icon for " + appIconName + " will be cached at " + relAppIconPath);
                 let result = await runScript();
                 if (result && result.indexOf("FAILED") == -1) {
-                    console.log("Sucessfully cached app icon for " + appIconName + "!");
+                    console.log("[clarity]", "Sucessfully cached app icon for " + appIconName + "!");
                     target.src = relAppIconPath;
                 } else {
-                    console.error("Cannot find app icon for " + appIconName + "!");
-                    console.error("Please check and run clarity/scripts/prepAppIcon.sh for more information of how Clarity obtains app icons. You may fix this by including more directories to search for, or by manually including custom icons in clarity/appIcon/, or by manually adding new mappings in clarity/lib/getAppIcon.jsx (if the running app name as seen in Menu Bar does not match the *.app name).")
+                    console.error("[clarity]", "Cannot find app icon for " + appIconName + "!");
+                    console.error("[clarity]", "Please check and run clarity/scripts/prepAppIcon.sh for more information of how Clarity obtains app icons. You may fix this by including more directories to search for, or by manually including custom icons in clarity/appIcon/, or by manually adding new mappings in clarity/lib/getAppIcon.jsx (if the running app name as seen in Menu Bar does not match the *.app name).")
                 }
             }}
             onDragStart={e => { e.preventDefault(); return false; }}>
