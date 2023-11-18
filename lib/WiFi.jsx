@@ -12,23 +12,16 @@ const render = ({ wifiData, ethernetData }) => {
 
     let showSSID = false;
 
-    switch (settings?.bar?.status?.details?.network) {
-        case "active":
-            if (ethernetData?.connected) {
-                break;
-            }
-        case "wifi":
-        case "all":
-        case true:
-            showSSID = true;
-            break;
-        default:
-            break;
+    let advanced = settings.bar.status?.advanced?.network ?? {};
+
+    if (advanced.alwaysShowWiFiSSID ||
+        (advanced.showActiveText && wifiData.connected && !ethernetData.connected)) {
+        showSSID = true;
     }
 
     return (
         <div style={wifiStyle}>
-            {symbols.wifi} {showSSID ? ssid : ""}
+            <span style={{verticalAlign: "middle"}}>{symbols.wifi} {showSSID ? ssid : ""}</span>
         </div>
     );
 };

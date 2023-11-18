@@ -16,7 +16,7 @@ By default, it gives workspace indicators on the left, yabai status at the cente
 
 ![](showcase/screenshot_v3.png)
 
-You can perform some basic customisation of its style via the `lib/settings.jsx` file, while preserving its design language. For example, you can choose a minimal design mode, adjust the sizes and toggle between top and bottom alignment:
+You can perform some basic customisation of its style via the `config/settings.jsx` file, while preserving its design language. For example, you can choose a minimal design mode, adjust the sizes and toggle between top and bottom alignment:
 
 ![](showcase/screenshot_v3_2.png)
 
@@ -47,10 +47,14 @@ Clone this repo to your Übersicht widgets directory.
 $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
 ```
 
+Then, add the lines listed at the [refreshing yabai widgets section](#refreshing-yabai-widgets) to sync the widgets to yabai's state.
+
 ## Dependencies
 
-- [San Francisco fonts](https://developer.apple.com/fonts/) and [San Francisco symbols](https://developer.apple.com/sf-symbols/) - font and symbols used by Apple platforms. Should be available by default on macOS.
+- [`yabai` v5+](https://github.com/koekeishiya/yabai) with macOS 12+ - For window and desktop indicator and management.
+- [SF Pro](https://developer.apple.com/fonts/) and [SF Symbols](https://developer.apple.com/sf-symbols/) - Apple's San Francisco font and symbols. Should be available by default on macOS.
 - [acextract](https://github.com/bartoszj/acextract) - Assets.car extracter for extracting app icons if needed. Though, [acextract v2.2](https://github.com/bartoszj/acextract/releases/tag/2.2) is included in the `scripts/` directory and is automatically used.
+- [`jq`](https://formulae.brew.sh/formula/jq) with macOS 13+ (optional) - Used in the status bar script to "parse" and confirm a converted `ioreg` output in JSON for detailed battery power stats. Only available on macOS 13+. (used for battery net power draw/input, and system power draw)
 
 ## Usage
 
@@ -60,6 +64,14 @@ There are three widgets total:
 - `spaces.jsx` for displaying workspaces (left). It has multi-display support.
 - `bar.jsx` with yabai state indicators and provides a background blur.
 - `status.jsx` for displaying selected status items (right).
+
+### Configuration
+
+Simple configuration options may be performed by editing `config/settings.jsx` and `config/styles.jsx`.
+
+They are blank by default - you should start off by copying the contents of the `*.example.jsx` files onto the equivalent `*.jsx` files, then modifying the settings to your liking. All properties are clearly documented in comments.
+
+**Note:** Avoid modifying the example files - those should be for reference only. That way, you can monitor when they are updated with new features, documentation changes, etc.
 
 ### Refreshing yabai widgets
 
@@ -72,6 +84,8 @@ REL_BAR_IND="osascript -e 'tell application id \"tracesof.Uebersicht\" to refres
 
 # - if space indicators are enabled
 yabai -m signal --add event=space_changed   action="$REL_SPACES_IND"
+yabai -m signal --add event=space_created   action="$REL_SPACES_IND"
+yabai -m signal --add event=space_destroyed action="$REL_SPACES_IND"
 yabai -m signal --add event=display_changed action="$REL_SPACES_IND"
 # - if app icon indicators within space indicators are enabled
 yabai -m signal --add event=window_created   action="$REL_SPACES_IND"
@@ -86,6 +100,8 @@ yabai -m signal --add event=mission_control_exit action="$REL_SPACES_IND"
 
 # - if center space indicators are enabled
 yabai -m signal --add event=space_changed    action="$REL_BAR_IND"
+yabai -m signal --add event=space_created    action="$REL_BAR_IND"
+yabai -m signal --add event=space_destroyed  action="$REL_BAR_IND"
 yabai -m signal --add event=display_changed  action="$REL_BAR_IND"
 # - if window titles or app names are enabled
 yabai -m signal --add event=window_focused              action="$REL_BAR_IND"
@@ -110,5 +126,6 @@ osascript -e "$REL_BAR_IND"
 ### Caveats
 
 - Your wallpaper should not be too busy or too bright, as this status bar is only designed with a dark background in mind.
+- Using yabai signals may cause you to have trouble quitting Übersicht without stopping yabai, since yabai events triggering a widget refresh may launch Übersicht even if it's not running.
 
 

@@ -82,8 +82,10 @@ export const command = (dispatch) => {
             action()
         }, nextTimeout);
     }
-    refresh(dispatch);
     scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), 60000);
+
+    // Do standard refreshes normally
+    refresh(dispatch);
 }
 export const updateState = (event, previousState) => {
   switch(event.type) {
@@ -133,7 +135,7 @@ export const render = ({ output }) => {
             {settings.bar.status.secureInput && <SecureInput secureInputData={data.secureInput}/>}
             {settings.bar.status.wifi && <WiFi wifiData={data.wifi} ethernetData={data.ethernet}/>}
             {settings.bar.status.ethernet && <Ethernet wifiData={data.wifi} ethernetData={data.ethernet}/>}
-            {settings.bar.status.cpu && <CPU cpuData={data.cpu}/>}
+            {settings.bar.status.cpu && <CPU cpuData={data.cpu} powerData={data.power}/>}
             {settings.bar.status.timeMachine && <TimeMachine tmData={data.timeMachine}/>}
             {settings.bar.status.power && <Power powerData={data.power}/>}
             {settings.bar.status.clock && <Clock/>}

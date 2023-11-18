@@ -1,8 +1,9 @@
 #!/bin/bash
 
-WIFI_INTERFACE="en7"
+WIFI_INTERFACE="en0"
 ETHERNET_INTERFACE="en7"
-VPN_WIREGUARD_IP_PREFIX="10.10.0"
+
+PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH
 
 #
 # BATTERY STATUS
@@ -40,7 +41,15 @@ if [[ -z "$BATTERY_PERCENTAGE" ]]; then
     BATTERY_PERCENTAGE=-100;
     POWER_TIME_REMAINING="-:--"
     BATTERY_STATUS_DETAILED="Wired-only power"
+    EXTRA_BATT_DETAILS="{}"
+else
+    EXTRA_BATT_DETAILS="{$(/usr/sbin/ioreg -w 0 -f -r -c AppleSmartBattery | grep "\"PowerTelemetryData\"" | sed -r 's/[=]/:/g')}"
+    EXTRA_BATT_DETAILS="$(echo "$EXTRA_BATT_DETAILS" | jq '.PowerTelemetryData' -M 2>/dev/null)"
+    if [[ $? != 0 ]]; then
+        EXTRA_BATT_DETAILS="{}"
+    fi
 fi
+
 
 #
 # CPU STATUS
@@ -93,7 +102,8 @@ echo $(cat <<-EOF
         "wired": $IS_WIRED,
         "lowPowerMode": $LOW_POWER_MODE,
         "status": "$BATTERY_STATUS_DETAILED",
-        "timeRemaining": "$POWER_TIME_REMAINING"
+        "timeRemaining": "$POWER_TIME_REMAINING",
+        "detailed": $EXTRA_BATT_DETAILS
     },
     "cpu": {
         "loadAverage": $LOAD_AVERAGE,
