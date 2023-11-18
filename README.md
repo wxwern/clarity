@@ -49,6 +49,18 @@ $ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Suppor
 
 Then, add the lines listed at the [refreshing yabai widgets section](#refreshing-yabai-widgets) to sync the widgets to yabai's state.
 
+**PS:** take note of the [dependencies](#dependencies) required to make the widgets work correctly.
+
+## Updating
+
+First, pull changes from the live branch:
+```sh
+cd $HOME/Library/Application\ Support/Übersicht/widgets/clarity
+git pull origin main
+```
+
+Then, make sure to **quit and restart Übersicht** (as Übersicht occasionally fails to correctly detect changes from git).
+
 ## Dependencies
 
 - [`yabai` v5+](https://github.com/koekeishiya/yabai) with macOS 12+ - For window and desktop indicator and management.
