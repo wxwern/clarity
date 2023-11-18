@@ -82,8 +82,10 @@ export const command = (dispatch) => {
             action()
         }, nextTimeout);
     }
-    refresh(dispatch);
     scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), 60000);
+
+    // Do standard refreshes normally
+    refresh(dispatch);
 }
 export const updateState = (event, previousState) => {
   switch(event.type) {

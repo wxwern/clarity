@@ -3,6 +3,8 @@
 WIFI_INTERFACE="en0"
 ETHERNET_INTERFACE="en7"
 
+PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH
+
 #
 # BATTERY STATUS
 #

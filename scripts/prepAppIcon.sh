@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH
+
 if [[ -z "$1" ]]; then
     echo "App name required as first argument."
     exit 1
