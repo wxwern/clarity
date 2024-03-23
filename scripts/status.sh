@@ -54,8 +54,22 @@ fi
 #
 # CPU STATUS
 #
-CPU_LIMITED=$((s=( $(pmset -g therm | grep 'CPU_Speed_Limit') ) && (( "${s[2]}" >= 75 )) && echo "false") || echo "true")
-CPU_POWER_LIMITED=$(([[ "$BATTERY_PERCENTAGE" -lt 10 && "$BATTERY_PERCENTAGE" -ge 0 && "$BATTERY_CHARGING" == "false" ]] && echo "true") || echo "false") # macOS throttles CPU when battery is low
+CPU_LIMITED=$(
+    (
+        s=( $(pmset -g therm | grep 'CPU_Speed_Limit' || true) ) && \
+        ([ -z "$s" ] || (( "${s[2]}" >= 75 ))) && \
+        echo "false"
+    ) || echo "true"
+)
+CPU_POWER_LIMITED=$(
+    (
+        [[ "$BATTERY_PERCENTAGE" -lt 10 && \
+            "$BATTERY_PERCENTAGE" -ge 0 && \
+            "$BATTERY_CHARGING" == "false" ]] && \
+            echo "true"
+    ) || echo "false"
+) # macOS throttles CPU when battery is low
+
 LOAD_AVERAGE=$(sysctl -n vm.loadavg | awk '{print $2}')
 CORES_AVAILABLE=$(if [[ -z "$(which nproc)" ]]; then echo 0; else nproc; fi)
 
