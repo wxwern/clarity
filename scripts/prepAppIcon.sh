@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH
+PATH=/opt/homebrew/bin/:/usr/local/bin/:$PATH
 
 if [[ -z "$1" ]]; then
     echo "App name required as first argument."
@@ -11,6 +11,8 @@ cd "$(dirname "$0")"
 cd ..
 mkdir -p appIcons
 cd appIcons
+
+APP_ICONS_STORAGE_PATH="$(pwd)"
 
 if [[ ! -f "$1.icns" ]]; then
 
@@ -61,23 +63,47 @@ if [[ ! -f "$1.icns" ]]; then
     echo
 
     # Get the icon name required from the app
-    cd "$BASE_APP_URL/Contents/Resources/"
-    APP_ICON_NAME=""
-    if [[ -z "$APP_ICON_NAME" ]]; then
-        echo "Checking CFBundleIconName..."
-        APP_ICON_NAME="$(/usr/libexec/PlistBuddy -c 'print :CFBundleIconName' ../Info.plist)"
+    cd "$BASE_APP_URL" || exit 1
+
+    cd ./Contents/Resources/ 2>/dev/null
+
+    if [[ $? -ne 0 ]]; then
+        INFO_PLIST_REL_PATH="./Info.plist"
+    else
+        INFO_PLIST_REL_PATH="../Info.plist"
     fi
-    if [[ -z "$APP_ICON_NAME" ]]; then
+
+    APP_RESOURCES_PATH="$(pwd)"
+
+    echo "App Resources Path: $APP_RESOURCES_PATH"
+    echo
+
+    echo "Checking $INFO_PLIST_REL_PATH..."
+
+    APP_ICON_NAME=""
+    if [[ -z "$APP_ICON_NAME" && -f "$INFO_PLIST_REL_PATH" ]]; then
+        echo "Checking CFBundleIconName..."
+        APP_ICON_NAME="$(/usr/libexec/PlistBuddy -c 'print :CFBundleIconName' "$INFO_PLIST_REL_PATH" 2>/dev/null)"
+    fi
+    if [[ -z "$APP_ICON_NAME" && -f "$INFO_PLIST_REL_PATH" ]]; then
         echo "Checking CFBundleIconFile..."
-        APP_ICON_NAME="$(/usr/libexec/PlistBuddy -c 'print :CFBundleIconFile' ../Info.plist)"
+        APP_ICON_NAME="$(/usr/libexec/PlistBuddy -c 'print :CFBundleIconFile' "$INFO_PLIST_REL_PATH" 2>/dev/null)"
     fi
     if [[ -z "$APP_ICON_NAME" ]]; then
         echo "Checking icns files with AppIcon name..."
-        APP_ICON_NAME="$(ls *AppIcon*.icns | head -n 1 | rev | cut -c6- | rev)"
+        APP_ICON_NAME="$(ls ./*AppIcon*.icns 2>/dev/null | head -n 1 | rev | cut -c6- | rev)"
+    fi
+    if [[ -z "$APP_ICON_NAME" ]]; then
+        echo "Checking png files with AppIcon16x16@2x name..."
+        APP_ICON_NAME="$(ls ./*AppIcon*@16x16.png 2>/dev/null | head -n 1 | rev | cut -c5- | rev)"
+    fi
+    if [[ -z "$APP_ICON_NAME" ]]; then
+        echo "Checking png files with AppIcon name..."
+        APP_ICON_NAME="$(ls ./*AppIcon*.png 2>/dev/null | head -n 1 | rev | cut -c5- | rev)"
     fi
     if [[ -z "$APP_ICON_NAME" ]]; then
         echo "Checking icns files..."
-        APP_ICON_NAME="$(ls *.icns | head -n 1 | rev | cut -c6- | rev)"
+        APP_ICON_NAME="$(ls ./*.icns 2>/dev/null | head -n 1 | rev | cut -c6- | rev)"
     fi
     if [[ -z "$APP_ICON_NAME" ]]; then
         echo "FAILED: App icon not found!"
@@ -95,21 +121,47 @@ if [[ ! -f "$1.icns" ]]; then
 
     if [[ -f "$APP_ICON_NAME.icns" ]]; then
         echo "App icon located at $APP_ICON_NAME.icns"
-        cd -
-        if [[ -f "$1.icns" ]]; then rm "$1.icns"; fi
-        if [[ -f "$1.png" ]]; then rm "$1.png"; fi
-        ln -sf "$BASE_APP_URL/Contents/Resources/$APP_ICON_NAME.icns" "$1.icns"
+        printf "Navigating to app icons storage: "
+        cd "$APP_ICONS_STORAGE_PATH" || (echo "FAILED: Can't navigate to app icons storage!" && exit 1)
+        pwd
+
+        if [[ -f "$1.icns" ]]; then rm "./$1.icns"; fi
+        if [[ -f "$1.png" ]]; then rm "./$1.png"; fi
+
+        ln -sf "$APP_RESOURCES_PATH/$APP_ICON_NAME.icns" "$1.icns"
         echo "Linked icns file!"
+
+    elif [[ -f "$APP_ICON_NAME.png" ]]; then
+        echo "App icon located at $APP_ICON_NAME.png"
+        printf "Navigating to app icons storage: "
+        cd "$APP_ICONS_STORAGE_PATH" || (echo "FAILED: Can't navigate to app icons storage!" && exit 1)
+        pwd
+
+        if [[ -f "$1.icns" ]]; then rm "./$1.icns"; fi
+        if [[ -f "$1.png" ]]; then rm "./$1.png"; fi
+
+        ln -s "$APP_RESOURCES_PATH/$APP_ICON_NAME.png" "$1.png"
+
+        echo "Linked png file directly to target location!"
+
     else
         echo "App icon not found at $APP_ICON_NAME.icns, trying $APP_ICON_NAME""16x16@2x.png in Assets.car"
-        cd -
-        ../scripts/acextract -i "$BASE_APP_URL/Contents/Resources/Assets.car" -o "$1/"
+        printf "Navigating to app icons storage: "
+        cd "$APP_ICONS_STORAGE_PATH" || (echo "FAILED: Can't navigate to app icons storage!" && exit 1)
+        pwd
+
+        if [[ -f "$1.icns" ]]; then rm "./$1.icns"; fi
+        if [[ -f "$1.png" ]]; then rm "./$1.png"; fi
+
+        ../scripts/acextract -i "$APP_RESOURCES_PATH/Assets.car" -o "$1/"
         if [[ -f "$1/$APP_ICON_NAME""16x16@2x.png" ]]; then
             echo "App icon found in Assets.car!"
-            sips -s format icns "$1/$APP_ICON_NAME""16x16@2x.png" --out "$1.icns"
+
             cp "$1/$APP_ICON_NAME""16x16@2x.png" "$1.png"
-            rm -r "$1/"
-            echo "Copied 16x16@2x png file and created icns file for that size!"
+            rm -r "./$1/"
+
+            echo "Extracted 16x16@2x png from Assets.car!"
+
         else
             echo "FAILED: We can't find anything! :("
             exit 1
@@ -125,5 +177,5 @@ if [[ ! -f "$1.png" ]]; then
         sips -Z 32 -s format png "$1.icns" --out "$1.png" && echo "Created png file!"
     fi
 else
-    echo "$1 png file already exists!"
+    echo "$1 png file exists!"
 fi
