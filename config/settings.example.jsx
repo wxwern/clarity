@@ -61,10 +61,10 @@ export default {
                 cpu: {
                     showSyspower: true,           // whether to show the system power usage in Watts (requires jq & macOS 13+)
                     showSysload : true,           // whether to show the system load in unix load average format
-                    showThermalThrottle: true,    // whether to show the thermal throttling status (unconfirmed for Apple Silicon)
+                    showThermalThrottle: true,    // whether to show the thermal throttling status (may not work for Apple Silicon)
 
-                    visibleSyspowerThreshold: 20, // system power draw before displaying (default=20W, requires jq & macOS 13+ to be used)
-                    visibleSysloadThreshold: 2.0, // average system load before displayed (default=2.0 unix load avg)
+                    visibleSyspowerThreshold: 10, // system power draw before displaying (default=10W, requires jq & macOS 13+ to be used)
+                    visibleSysloadThreshold: 4.0, // average system load before displayed (default=4.0 unix load avg)
                 },
                 network: {
                     showActiveText: false,         // whether to show SSID/Ethernet text for whichever network is in use (assumes Ethernet is priority)
