@@ -129,16 +129,20 @@ const getAppIconElement = (appData, styleOverrides) => {
             }}
             onError={async e => {
                 let target = e.target;
-                target.onerror = () => {
+                target.onerror = target.onError = () => {
                     target.onerror = null;
+                    target.onError = null;
                     target.src = null;
                 };
                 console.log("[clarity]", "Cache miss! App icon for " + appIconName + " will be cached at " + relAppIconPath);
+                console.log("[clarity]", "Executing:", obtainIconScript);
+
                 let result = await runScript();
                 if (result && result.indexOf("FAILED") == -1) {
                     console.log("[clarity]", "Sucessfully cached app icon for " + appIconName + "!");
                     target.src = relAppIconPath;
                 } else {
+                    console.log(result);
                     console.error("[clarity]", "Cannot find app icon for " + appIconName + "!");
                     console.error("[clarity]", "Please check and run clarity/scripts/prepAppIcon.sh for more information of how Clarity obtains app icons. You may fix this by including more directories to search for, or by manually including custom icons in clarity/appIcon/, or by manually adding new mappings in clarity/lib/getAppIcon.jsx (if the running app name as seen in Menu Bar does not match the *.app name).")
                 }

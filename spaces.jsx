@@ -29,15 +29,16 @@ export const refreshFrequency = false;
 export const command = "./clarity/scripts/windows.sh";
 
 export const render = ({ output }, ...args) => {
-    const data = parse(output);
-    const displayId = Number(window.location.pathname.split("/")[1]);
-    if (typeof output === "undefined") {
+    if (typeof output === "undefined" || !output) {
         return (
             <div style={style}>
                 <Desktop placeholder={"..."}/>
             </div>
         );
     }
+    const data = output ? parse(output) : undefined;
+    const displayId = Number(window.location.pathname.split("/")[1]);
+
     if (typeof data === "undefined") {
         return (
             <div style={style}>

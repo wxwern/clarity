@@ -55,7 +55,7 @@ export const render = ({ output }) => {
         );
     }
 
-    if (typeof output === "undefined") {
+    if (typeof output === "undefined" || !output) {
         return (
             <div style={style}>Loading...</div>
         )

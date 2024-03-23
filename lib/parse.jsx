@@ -2,7 +2,7 @@ const parse = data => {
   try {
     return JSON.parse(data);
   } catch (e) {
-    console.error("[clarity]", e);
+    console.error("[clarity]", e, data);
     return undefined;
   }
 };
