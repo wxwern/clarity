@@ -100,9 +100,22 @@ fi
 ETHERNET_CONNECTED=$(if [[ "$ETHERNET_STATUS" == "active" ]]; then echo true; else echo false; fi)
 
 #
+# VPN STATUS
+#
+VPN_CONNECTED=$(if [[ -z "$(ifconfig -v | grep 'VPN')" ]]; then echo false; else echo true; fi)
+
+#
 # SECURE TEXT INPUT
 #
 SECURE_TEXT_INPUT_ENABLED=$(if [ "$(ioreg -l -d 1 -w 0 | grep SecureInput | wc -l)" -gt 0 ]; then echo "true"; else echo "false"; fi)
+
+#
+# FOCUSED DISPLAY
+#
+FOCUSED_DISPLAY=$(yabai -m query --displays --display | jq '.id' -M 2>/dev/null)
+if [[ "$?" != 0 || -z "$FOCUSED_DISPLAY" ]]; then
+    FOCUSED_DISPLAY="null"
+fi
 
 
 # final output!
@@ -132,12 +145,16 @@ echo $(cat <<-EOF
     "ethernet": {
         "connected": $ETHERNET_CONNECTED
     },
+    "vpn": {
+        "connected": $VPN_CONNECTED
+    },
     "timeMachine": {
         "running": $TM_STATUS
     },
     "secureInput": {
         "enabled": $SECURE_TEXT_INPUT_ENABLED
-    }
+    },
+    "focusedDisplayId": $FOCUSED_DISPLAY
 }
 EOF
 )

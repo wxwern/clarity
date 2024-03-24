@@ -46,6 +46,7 @@ export default {
                                        //    - requires specifying interface in scripts/status.sh, though en0 should be correct
             ethernet: true,            // whether show ethernet indicator while it's connected
                                        //    - requires specifying interface in scripts/status.sh
+            vpn: true,                 // whether to show when vpn is connected
             timeMachine: true,         // whether to show time machine indicator while it's running
             cpu: true,                 // whether to show indicator for cpu usage and related details
             power: true,               // whether to show battery & power mode indicators

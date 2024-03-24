@@ -93,6 +93,7 @@ The widgets for displaying yabai workspaces and status don't refresh automatical
 # clarity config updates
 REL_SPACES_IND="osascript -e 'tell application id \"tracesof.Uebersicht\" to refresh widget id \"clarity-spaces-jsx\"'"
 REL_BAR_IND="osascript -e 'tell application id \"tracesof.Uebersicht\" to refresh widget id \"clarity-bar-jsx\"'"
+REL_STATUS_IND="osascript -e 'tell application id \"tracesof.Uebersicht\" to refresh widget id \"clarity-status-jsx\"'"
 
 # - if space indicators are enabled
 yabai -m signal --add event=space_changed   action="$REL_SPACES_IND"
@@ -130,9 +131,14 @@ yabai -m signal --add event=application_hidden action="$REL_BAR_IND"
 yabai -m signal --add event=application_visible action="$REL_BAR_IND"
 yabai -m signal --add event=mission_control_exit action="$REL_BAR_IND"
 
+# - if status indicators are enabled
+yabai -m signal --add event=display_changed  action="$REL_STATUS_IND"
+
 # refresh immediately on yabai load
-osascript -e "$REL_SPACES_IND"
-osascript -e "$REL_BAR_IND"
+sh -c "$REL_SPACES_IND"
+sh -c "$REL_BAR_IND"
+sh -c "$REL_STATUS_IND"
+
 ```
 
 ### Caveats
