@@ -28,7 +28,7 @@ const symbols = {
     ],
     batteryCharging: "􀢋",
     power: "􀋦",
-    powerPassthrough: "􀋨",
+    powerPassthrough: "􁣸",
     powerSaving: "􀥳",
     wifi: "􀙇",
     ethernet: "􀩲",

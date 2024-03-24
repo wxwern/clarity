@@ -10,7 +10,7 @@ const render = ({ powerData }) => {
     const isLowPowerMode = powerData.lowPowerMode;
     const timeRemaining = powerData.timeRemaining;
 
-    const batterySymbol = noBattery ?
+    const batterySymbol = noBattery || (isWired && !isCharging) ?
         "" : symbols.battery[Math.round(0.01*batteryPercentage*(symbols.battery.length-1))];
     const chargingSymbol = isCharging ? symbols.power : "";
     const wiredSymbol = isWired ? symbols.powerPassthrough : "";
@@ -30,6 +30,10 @@ const render = ({ powerData }) => {
 
     let netPowerInText = Object.keys(powerData.detailed).length > 0 ?
         ((netPowerIn_W >= 0 ? ("+" + netPowerIn_W) : netPowerIn_W) + "W") : "";
+
+    if (netPowerIn_mW > -500 && netPowerIn_mW < 2000) {
+        netPowerInText = "";
+    }
 
     const baseSpanChildStyle = {
         verticalAlign: "middle"
