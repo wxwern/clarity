@@ -29,8 +29,13 @@ const defaultStyle = {
     color: styles.colors.minimalFg,
     fontWeight: styles.fontWeight,
     WebkitUserSelect: "none",
+    transition: "all 100ms ease-out",
     cursor: "default",
     zIndex: 102,
+};
+
+const dimmedStyle = {
+    color: styles.colors.dim,
 };
 
 const showDesktopHitboxStyle = {
@@ -120,7 +125,7 @@ export const render = ({ output }) => {
     const displayId = Number(window.location.pathname.split("/")[1]);
     console.log(displayId, data.focusedDisplayId)
     if (data.focusedDisplayId && data.focusedDisplayId !== displayId) {
-        style.opacity = "0.5";
+        style = {...style, ...dimmedStyle};
     }
 
     if (typeof data === "undefined") {
