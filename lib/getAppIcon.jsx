@@ -7,6 +7,7 @@ const autosub = {
     "OneNote": "Microsoft OneNote",
     "Outlook": "Microsoft Outlook",
     "Code": "Visual Studio Code",
+    "IntelliJ IDEA": "IntelliJ IDEA CE",
 }
 
 
