@@ -3,6 +3,7 @@ import styles from "./styles.jsx";
 import settings from "./settings.jsx";
 import { getAppIconPath, getAppIconName } from "./getAppIcon.jsx";
 import { run } from "uebersicht";
+import {applyBarHeight, getAutoBarHeight} from "./autoBarHeight.jsx";
 
 //
 // Styles
@@ -20,8 +21,9 @@ const containerStyle = {
 const desktopGroupBaseStyle = {
     minWidth: settings.bar.space.minWidth + "px",
     height: containerStyle.height,
+    lineHeight: containerStyle.lineHeight,
     padding: "0 " + settings.bar.space.paddingHorizontal + "px",
-    margin: "0px",
+    margin: "auto 0px",
     borderRadius: Math.max(0, Math.round(styles.heightWithoutPadding*settings.bar.space.roundedCornersFactor/2)) + "px",
     textAlign: "center",
     cursor: "pointer",
@@ -188,8 +190,9 @@ const renderStickyWindow = (displayData, stickyWindow) => {
 }
 
 // Renders single space element
-const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
-    let contentStyle = desktopGroupBaseStyle;
+const renderSpace = (displayData, index, focused, visible, nativeFullscreen, windows) => {
+
+    let contentStyle = {...desktopGroupBaseStyle};
     if (styles.heightWithoutPadding < 16) {
         if (focused == 1) {
             contentStyle = {...contentStyle, ...selectedStyleMinimal};
@@ -203,6 +206,13 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
                 await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}/>
         );
+    }
+
+    const autoBarHeight = getAutoBarHeight(displayData.frame.w, displayData.frame.h, displayData.uuid);
+    if (autoBarHeight > settings.bar.height) {
+        const delta = autoBarHeight - settings.bar.height;
+        contentStyle.padding = delta/8 + "px " + (settings.bar.space.paddingHorizontal + delta/8) + "px";
+        contentStyle.borderRadius = Math.max(0, Math.round((styles.heightWithoutPadding + delta/2)*settings.bar.space.roundedCornersFactor/2)) + "px";
     }
 
     if (focused == 1) {
@@ -315,8 +325,11 @@ const renderSpace = (index, focused, visible, nativeFullscreen, windows) => {
 };
 
 const render = ({ displayData, spaceData, windowData, placeholder }) => {
+
+    let _containerStyle = {...containerStyle};
+
     if (typeof placeholder !== "undefined") return (
-        <div style={containerStyle}>
+        <div style={_containerStyle}>
             <div style={{...desktopGroupBaseStyle, ...unselectedStyle}}>
                 {placeholder}
             </div>
@@ -326,10 +339,14 @@ const render = ({ displayData, spaceData, windowData, placeholder }) => {
     if (typeof displayData === "undefined") return null;
     if (typeof windowData === "undefined") windowData = [];
 
+    const [dw, dh, duuid] = [displayData.frame.w, displayData.frame.h, displayData.uuid];
+    applyBarHeight(dw, dh, duuid)(_containerStyle, -settings.bar.paddingVertical*2);
+
     const spaces = [];
 
     spaceData.forEach(function(space) {
         spaces.push(renderSpace(
+            displayData,
             space.index,
             space["has-focus"],
             space["is-visible"],
@@ -345,7 +362,7 @@ const render = ({ displayData, spaceData, windowData, placeholder }) => {
     });
 
     return (
-        <div style={containerStyle}>
+        <div style={_containerStyle}>
             {stickyWindowElements}
             {spaces}
         </div>

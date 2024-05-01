@@ -110,12 +110,13 @@ VPN_CONNECTED=$(if [[ -z "$(ifconfig -v | grep 'VPN')" ]]; then echo false; else
 SECURE_TEXT_INPUT_ENABLED=$(if [ "$(ioreg -l -d 1 -w 0 | grep SecureInput | wc -l)" -gt 0 ]; then echo "true"; else echo "false"; fi)
 
 #
-# FOCUSED DISPLAY
+# DISPLAY DATA
 #
-FOCUSED_DISPLAY=$(yabai -m query --displays --display | jq '.id' -M 2>/dev/null)
-if [[ "$?" != 0 || -z "$FOCUSED_DISPLAY" ]]; then
-    FOCUSED_DISPLAY="null"
+DISPLAY_DATA=$(yabai -m query --displays 2>/dev/null)
+if [[ "$?" != 0 || -z "$DISPLAY_DATA" ]]; then
+    DISPLAY_DATA="[]"
 fi
+(echo "$DISPLAY_DATA" | jq .) &>/dev/null || DISPLAY_DATA="[]"
 
 
 # final output!
@@ -154,7 +155,7 @@ echo $(cat <<-EOF
     "secureInput": {
         "enabled": $SECURE_TEXT_INPUT_ENABLED
     },
-    "focusedDisplayId": $FOCUSED_DISPLAY
+    "displays": $DISPLAY_DATA
 }
 EOF
 )

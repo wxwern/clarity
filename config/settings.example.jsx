@@ -13,12 +13,16 @@ export default {
     // - Yabai mode updates don't have signals. Thus, you may need triggers linked to the yabai mode switch call.
     //
     bar: {
-        height: 28,                // Height of the bar in points. (default=28)
+        height: 28,                // Height of the bar in points. (default=28, matches macOS Big Sur+ menu bar without notch)
         paddingHorizontal: 16,     // Horizontal padding of the bar in points. (default=16, matches macOS Big Sur+ menu bar)
         paddingVertical  : 4,      // Vertical padding of the bar in points. (default=4)
         backgroundTint: '#110011', // The tint colour for the bar. Must be a 6 char hex color code or null.
         fontSize: 12,              // Font size of the bar in points. May auto shrink if less space is available. (default=12)
         alignBottom: true,         // Whether to align the bar to the bottom if true, or otherwise align to the top. (default=true)
+
+        notchScreenUUID: null,         // The screen UUID where the bar's height will match the notch. (default=null, can be "auto" to auto-detect)
+                                       //   - this option may accept: null (disabled), "auto" (auto-detect), or a screen's UUID string.
+        notchScreenAspectRatio: 16/10, // The aspect ratio of the available screen area under the notch. Required to detect notch height. (default=16/10)
 
         // Settings for space elements at the left. Requires yabai with signals set up.
         space: {

@@ -3,7 +3,7 @@ import settings from "./lib/settings.jsx";
 import parse from "./lib/parse.jsx";
 import symbols from "./lib/symbols.jsx";
 import Error from "./lib/Error.jsx";
-
+import { applyBarHeight, getAutoBarHeight } from "./lib/autoBarHeight.jsx";
 
 const style = {
     backgroundColor: styles.colors.bgTint,
@@ -29,22 +29,22 @@ const dimmedStyle = {
     color: styles.colors.dim,
 }
 
-const wallpaperBlurStyle = settings.backgroundBlurOnWindowOpen ? {
-    backgroundColor: styles.colors.bgTint,
-    WebkitBackdropFilter: "blur(10px)",
+const getWallpaperBlurStyle = (screenWidth, screenHeight, screenUUID) => (settings.backgroundBlurOnWindowOpen ? {
+    backgroundColor: "#0002",
+    WebkitBackdropFilter: "blur(8px)",
     position: "fixed",
     ...(settings.bar.alignBottom ? {
-        bottom: style.height,
+        bottom: getAutoBarHeight(screenWidth, screenHeight, screenUUID) + "px",
         top: "0"
     } : {
-        top: style.height,
+        top: getAutoBarHeight(screenWidth, screenHeight, screenUUID) + "px",
         bottom: "0"
     }),
     left: "0",
     right: "0",
     zIndex: 99,
     transition: "opacity 1s ease-out",
-} : {display: "none"}
+} : {display: "none"});
 
 export const refreshFrequency = false;
 export const command = settings.bar.info ? "./clarity/scripts/spaces.sh" : "";
@@ -82,6 +82,8 @@ export const render = ({ output }) => {
     const visibleSpaceData = displayData && data.spaces.filter(s => s.display === displayData.index && s["is-visible"])[0];
     const focusedWindowData = data.focusedWindow;
 
+    const [dw, dh, duuid] = [displayData.frame.w, displayData.frame.h, displayData.uuid];
+
     if (!displayData || !visibleSpaceData) {
         return (
             <div style={style}>
@@ -90,8 +92,13 @@ export const render = ({ output }) => {
         );
     }
 
-    let currentStyle    = visibleSpaceData["has-focus"] ? style : {...style, ...dimmedStyle};
-    let backgroundStyle = visibleSpaceData.windows.length > 0 ? wallpaperBlurStyle : {...wallpaperBlurStyle, opacity: 0};
+    let currentStyle    = {...style};
+    let backgroundStyle = getWallpaperBlurStyle(dw, dh, duuid);
+
+    applyBarHeight(displayData.frame.w, displayData.frame.h, displayData.uuid)(currentStyle);
+
+    if (!visibleSpaceData["has-focus"]) currentStyle = {...currentStyle, ...dimmedStyle};
+    if (visibleSpaceData.windows.length == 0) backgroundStyle.opacity = 0;
 
     let outComps = [];
     let windowStr = "";

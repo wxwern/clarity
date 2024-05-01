@@ -3,9 +3,9 @@ import Error from "./lib/Error.jsx";
 import parse from "./lib/parse.jsx";
 import styles from "./lib/styles.jsx";
 import settings from "./lib/settings.jsx";
+import {applyBarHeight} from "./lib/autoBarHeight.jsx";
 
-const style = {
-    padding: "0 8px",
+const baseStyle = {
     display: "grid",
     gridAutoFlow: "column",
     gridGap: "16px",
@@ -29,6 +29,8 @@ export const refreshFrequency = false;
 export const command = "./clarity/scripts/windows.sh";
 
 export const render = ({ output }, ...args) => {
+    let style = {...baseStyle};
+
     if (typeof output === "undefined" || !output) {
         return (
             <div style={style}>
@@ -38,6 +40,10 @@ export const render = ({ output }, ...args) => {
     }
     const data = output ? parse(output) : undefined;
     const displayId = Number(window.location.pathname.split("/")[1]);
+    const displayData = data?.displays?.find(d => d.id === displayId);
+
+    const [dw, dh, duuid] = [displayData?.frame?.w || 0, displayData?.frame?.h || 0, displayData?.uuid];
+    style = applyBarHeight(dw, dh, duuid)(style, -settings.bar.paddingVertical*2);
 
     if (typeof data === "undefined") {
         return (

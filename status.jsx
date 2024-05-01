@@ -11,6 +11,7 @@ import VPN from "./lib/VPN.jsx";
 import Ethernet from "./lib/Ethernet.jsx";
 import TimeMachine from "./lib/TimeMachine.jsx";
 import SecureInput from "./lib/SecureInput.jsx";
+import {applyBarHeight} from "./lib/autoBarHeight.jsx";
 
 const defaultStyle = {
     display: "grid",
@@ -82,13 +83,13 @@ export const command = (dispatch) => {
             action()
             return
         }
-        nextTimeout = Math.min(Math.max(500, nextTimeout), 60000);
+        nextTimeout = Math.min(Math.max(500, nextTimeout), 30000);
 
         setTimeout(() => {
             action()
         }, nextTimeout);
     }
-    scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), 60000);
+    scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), 30000);
 
     // Do standard refreshes normally
     refresh(dispatch);
@@ -123,10 +124,13 @@ export const render = ({ output }) => {
     let style = {...defaultStyle};
 
     const displayId = Number(window.location.pathname.split("/")[1]);
-    console.log(displayId, data.focusedDisplayId)
-    if (data.focusedDisplayId && data.focusedDisplayId !== displayId) {
+    const displayData      = data?.displays.find(d => d.id === displayId) || data?.displays[0];
+    if (data && displayData && displayData["has-focus"] == false) {
         style = {...style, ...dimmedStyle};
     }
+
+    const [dw, dh, duuid] = [displayData?.frame?.w || 0, displayData?.frame?.h || 0, displayData?.uuid];
+    applyBarHeight(dw, dh, duuid)(style, -settings.bar.paddingVertical*2);
 
     if (typeof data === "undefined") {
         return (
