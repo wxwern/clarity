@@ -1,6 +1,6 @@
 // Import settings
-import defaultSettings from "../config/settings.example.jsx";
-import userSettings from "../config/settings.jsx";
+import defaultSettings from "./config/settings.example.jsx";
+import userSettings from "./config/settings.jsx";
 
 const settings = {
     ...defaultSettings,

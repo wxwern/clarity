@@ -1,4 +1,4 @@
-import settings from '../lib/settings.jsx'; // Use the complete lib/settings.jsx, not the settings.jsx in the config folder
+import settings from '../settings.jsx'; // Use the complete lib/settings.jsx, not the settings.jsx in the config folder
 
 export default {
     colors: {

@@ -1,6 +1,6 @@
 // Import styles
-import defaultStyles from "../config/styles.example.jsx";
-import userStyles from "../config/styles.jsx";
+import defaultStyles from "./config/styles.example.jsx";
+import userStyles from "./config/styles.jsx";
 
 const styles = {
     ...defaultStyles,
