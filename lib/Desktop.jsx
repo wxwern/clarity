@@ -223,6 +223,18 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
         contentStyle = {...contentStyle, ...unselectedStyle};
     }
 
+    windows = windows.filter(w => !settings.bar.space.windowExclusions.some(exclusion => {
+        for (let key in exclusion) {
+            const isRegex = exclusion[key].startsWith("/") && exclusion[key].endsWith("/");
+            if (isRegex) {
+                if (!new RegExp(exclusion[key].slice(1, -1)).test(w[key])) return false;
+            } else {
+                if (exclusion[key] != w[key]) return false;
+            }
+        }
+        return true;
+    }))
+
     let leadingStr = ""
     let itemRenders = [];
     let trailingStr = "";

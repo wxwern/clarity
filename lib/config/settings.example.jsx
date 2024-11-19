@@ -34,6 +34,16 @@ export default {
             minimal  : false,          // Whether to use a more minimal design for showing space info. (default=false)
             showApps : true,           // Whether to show app windows in a space. Will not be shown if too little space available. (default=true)
             showIndex: true,           // Whether to show the space index. Will not be shown if too little vertical space available. (default=true)
+
+            // List of window properties, which if any set of window property's keys all match a yabai window object,
+            // said match will be excluded from the space indicator. (default=[] i.e. none)
+            //
+            // Note the type signature of a yabai window: {app: string, title: string, role: string, subrole: string, ...}
+            // Regex supported by surrounding the rule in the format: "/regex/"
+            //
+            // For example, to exclude all Finder windows ending with "Info", you could add:
+            // {app: "Finder", title: "/^.+ Info$/"}
+            windowExclusions: [],
         },
 
         // Status indicator settings at the right.
