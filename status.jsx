@@ -27,7 +27,7 @@ const defaultStyle = {
     right: "0px",
     fontFamily: styles.fontFamily,
     fontSize: styles.fontSize,
-    color: styles.colors.minimalFg,
+    color: styles.colors.fg,
     fontWeight: styles.fontWeight,
     WebkitUserSelect: "none",
     transition: "all 100ms ease-out",

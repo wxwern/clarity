@@ -16,7 +16,7 @@ export default {
         height: 28,                // Height of the bar in points. (default=28, matches macOS Big Sur+ menu bar without notch)
         paddingHorizontal: 16,     // Horizontal padding of the bar in points. (default=16, matches macOS Big Sur+ menu bar)
         paddingVertical  : 4,      // Vertical padding of the bar in points. (default=4)
-        backgroundTint: '#110011', // The tint colour for the bar. Must be a 6 char hex color code or null.
+        backgroundTint: '#110011', // The tint colour for the bar. Must be a 6 or 8 char hex color code or null.
         fontSize: 12,              // Font size of the bar in points. May auto shrink if less space is available. (default=12)
         alignBottom: true,         // Whether to align the bar to the bottom if true, or otherwise align to the top. (default=true)
 

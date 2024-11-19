@@ -167,7 +167,7 @@ export const render = ({ output }) => {
         outComps.push(symbols.space + " " + visibleSpaceData.index)
     }
 
-    let outStr = outComps.join(" | ");
+    let outStr = outComps.join(" • ");
     return (
         <div>
             <div style={backgroundStyle}></div>
