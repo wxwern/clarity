@@ -68,7 +68,7 @@ const appIconStyle = {
     width: "16px",
     height: "16px",
     margin: "0px 1px",
-    marginTop: "-1px",
+    marginTop: "-2px",
     objectFit: "contain",
     filter: "drop-shadow(0 0 6px #333a)"
 };
@@ -76,7 +76,7 @@ const appExtraInfoStyle = {
     fontWeight: "normal",
     opacity: 0.8,
     margin: "0px 2px",
-    marginTop: "-1px",
+    marginTop: "-2px",
     fontSize: "10px",
 }
 const stackAppIconStyleOverride = {
@@ -235,6 +235,10 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
         return true;
     }))
 
+    windows = windows.filter(w => {
+        return w.opacity > 0 || w["is-visible"] || w["is-minimized"] || w["is-hidden"];
+    })
+
     let leadingStr = ""
     let itemRenders = [];
     let trailingStr = "";
@@ -360,7 +364,7 @@ const render = ({ displayData, spaceData, windowData, placeholder }) => {
         spaces.push(renderSpace(
             displayData,
             space.index,
-            space["has-focus"],
+            space["has-focus"] && space["is-visible"],
             space["is-visible"],
             space["is-native-fullscreen"],
             windowData.filter(w => w.space === space.index)

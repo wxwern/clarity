@@ -30,7 +30,7 @@ const dimmedStyle = {
 }
 
 const getWallpaperBlurStyle = (screenWidth, screenHeight, screenUUID) => (settings.backgroundBlurOnWindowOpen ? {
-    backgroundColor: "#0002",
+    backgroundColor: "#0005",
     WebkitBackdropFilter: "blur(8px)",
     position: "fixed",
     ...(settings.bar.alignBottom ? {
@@ -40,13 +40,14 @@ const getWallpaperBlurStyle = (screenWidth, screenHeight, screenUUID) => (settin
         top: getAutoBarHeight(screenWidth, screenHeight, screenUUID) + "px",
         bottom: "0"
     }),
+    opacity: 1,
     left: "0",
     right: "0",
     zIndex: 99,
     transition: "opacity 1s ease-out",
 } : {display: "none"});
 
-export const refreshFrequency = false;
+export const refreshFrequency = 10000;
 export const command = settings.bar.info ? "./clarity/scripts/spaces.sh" : "";
 export const render = ({ output }) => {
     if (settings.bar.fontSize > settings.bar.height || !settings.bar.info) {
@@ -68,7 +69,7 @@ export const render = ({ output }) => {
             </div>
         );
     }
-    if (typeof data.error !== "undefined" || !data.spaces || !data.displays) {
+    if (typeof data.error !== "undefined" || !data.spaces || !data.displays || !data.windows) {
         return (
             <div style={style}>
                 <Error msg={data.error} />
@@ -78,8 +79,26 @@ export const render = ({ output }) => {
 
     const numDisplays = data.displays.length;
     const displayId = Number(window.location.pathname.split("/")[1]);
-    const displayData      = data.displays.find(d => d.id === displayId) || data.displays[0];
-    const visibleSpaceData = displayData && data.spaces.filter(s => s.display === displayData.index && s["is-visible"])[0];
+    const displayData = data.displays
+        .find(d => d.id === displayId) || data.displays[0];
+    const visibleSpaceData = displayData && data.spaces
+        .find(s => s.display === displayData.index && s["is-visible"]) || data.spaces[0];
+    const visibleWindowData = visibleSpaceData && data.windows
+        .filter(w => w.space == visibleSpaceData.index)
+        .filter(w => w['is-visible'])
+        .filter(w => !settings.bar.space.windowExclusions.some(exclusion => {
+            for (let key in exclusion) {
+                const isRegex = exclusion[key].startsWith("/") && exclusion[key].endsWith("/");
+                if (isRegex) {
+                    if (!new RegExp(exclusion[key].slice(1, -1)).test(w[key])) return false;
+                } else {
+                    if (exclusion[key] != w[key]) return false;
+                }
+            }
+            return true;
+        }))
+
+
     const focusedWindowData = data.focusedWindow;
 
     const [dw, dh, duuid] = [displayData.frame.w, displayData.frame.h, displayData.uuid];
@@ -98,7 +117,7 @@ export const render = ({ output }) => {
     applyBarHeight(displayData.frame.w, displayData.frame.h, displayData.uuid)(currentStyle);
 
     if (!visibleSpaceData["has-focus"]) currentStyle = {...currentStyle, ...dimmedStyle};
-    if (visibleSpaceData.windows.length == 0) backgroundStyle.opacity = 0;
+    if (visibleWindowData.length <= 0) backgroundStyle.opacity = 0;
 
     let outComps = [];
     let windowStr = "";

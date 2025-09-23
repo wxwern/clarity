@@ -21,15 +21,30 @@ const render = ({ powerData }) => {
         "" : timeRemaining;
 
     const powerIn_mW  = powerData.detailed["SystemPowerIn"] || 0;
-    const powerUse_mW = powerData.detailed["SystemLoad"] || 0;
+    const powerUse_mW = (powerData.detailed["SystemLoad"] || 0);// - (powerData.detailed["SystemPowerIn"] || 0);
+        // AppleSmartBattery power use reporting appears to be bugged in macOS 15.?
+        // and power in is double counted into system load
+
     const netPowerIn_mW =
         powerData.detailed.hasOwnProperty("SystemLoad") &&
         powerData.detailed.hasOwnProperty("SystemPowerIn") ?
         (powerIn_mW - powerUse_mW) : 0;
-    const netPowerIn_W = Math.round(netPowerIn_mW / 1000);
+    let netPowerIn_W = Math.round(netPowerIn_mW / 1000);
+
+    if (netPowerIn_mW > 10 * 1000 * 1000) { // 10 kW
+        netPowerIn_W = Infinity;
+    }
+
+    if (-netPowerIn_mW > 10 * 1000 * 1000) { // -10 kW
+        netPowerIn_W = -Infinity;
+    }
 
     let netPowerInText = Object.keys(powerData.detailed).length > 0 ?
         ((netPowerIn_W >= 0 ? ("+" + netPowerIn_W) : netPowerIn_W) + "W") : "";
+
+    if (!isFinite(netPowerIn_W)) {
+        netPowerInText = "? W";
+    }
 
     if (netPowerIn_mW > -500 && netPowerIn_mW < 2000) {
         netPowerInText = "";

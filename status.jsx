@@ -73,7 +73,7 @@ const refresh = (dispatch) => {
     }
 }
 
-export const refreshFrequency = 30000;
+export const refreshFrequency = 10000;
 export const command = (dispatch) => {
     // This synchronises the update interval with the system clock starting from :00 seconds.
     const scheduleUpdate = (action, updateInterval) => {
@@ -83,13 +83,13 @@ export const command = (dispatch) => {
             action()
             return
         }
-        nextTimeout = Math.min(Math.max(500, nextTimeout), 30000);
+        nextTimeout = Math.min(Math.max(500, nextTimeout), refreshFrequency);
 
         setTimeout(() => {
             action()
         }, nextTimeout);
     }
-    scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), 30000);
+    scheduleUpdate(() => dispatch({type: 'TIME_UPDATE'}), refreshFrequency);
 
     // Do standard refreshes normally
     refresh(dispatch);

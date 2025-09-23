@@ -10,6 +10,7 @@ fi
 
 SPACES=$(yabai -m query --spaces 2>&1)
 DISPLAYS=$(yabai -m query --displays 2>&1)
+WINDOWS=$(yabai -m query --windows 2>&1)
 FOCUSED_WINDOW=$(yabai -m query --windows --window 2>&1)
 
 # check if yabai returned an unexpected item
@@ -24,6 +25,10 @@ if [[ $DISPLAYS == yabai-msg:* ]]; then
   echo "{\"error\":\"$DISPLAYS\"}"
   exit 1
 fi
+if [[ $WINDOWS == yabai-msg:* ]]; then
+  echo "{\"error\":\"$WINDOWS\"}"
+  exit 1
+fi
 if [[ $FOCUSED_WINDOW == yabai-msg:* || $FOCUSED_WINDOW =~ "could not retrieve"* ]]; then
   FOCUSED_WINDOW="null"
 fi
@@ -32,6 +37,7 @@ echo $(cat <<-EOF
 {
   "spaces": $SPACES,
   "displays": $DISPLAYS,
+  "windows": $WINDOWS,
   "focusedWindow": $FOCUSED_WINDOW
 }
 EOF

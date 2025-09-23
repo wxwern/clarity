@@ -8,6 +8,7 @@ const autosub = {
     "Outlook": "Microsoft Outlook",
     "Code": "Visual Studio Code",
     "IntelliJ IDEA": "IntelliJ IDEA CE",
+    "PS Remote Play": "RemotePlay",
 }
 
 

@@ -15,8 +15,15 @@ const render = ({ cpuData, powerData }) => {
     const isPowerLimited = cpuData.powerLimited;
     const isThermalLimited = isSpeedLimited && !isPowerLimited;
 
-    const powerUse_mW = powerData.detailed["SystemLoad"] || 0;
-    const powerUse_W = Math.round(powerUse_mW / 1000);
+    const powerUse_mW = (powerData.detailed["SystemLoad"] || 0); // - (powerData.detailed["SystemPowerIn"] || 0);
+        // AppleSmartBattery power use reporting appears to be bugged in macOS 15.?
+        // and power in is double counted into system load
+
+    let powerUse_W = Math.round(powerUse_mW / 1000);
+
+    if (powerUse_mW > 10 * 1000 * 1000) { // 10 kW
+        powerUse_W = Infinity;
+    }
 
     const hasPowerUse = !powerData.detailed.hasOwnProperty("SystemLoad") ||
         powerUse_mW/1000 >= (settings.bar.status?.advanced?.cpu?.visibleSyspowerThreshold || 999999);
@@ -33,9 +40,12 @@ const render = ({ cpuData, powerData }) => {
     const symbol = isThermalLimited ? symbols.overheat : symbols.cpu;
     const text = isThermalLimited ? "HOT": "";
 
-    const powerUseStr = settings.bar.status?.advanced?.cpu?.showSyspower && powerUse_W > 0 ? powerUse_W + "W" : "";
     const sysLoadStr = settings.bar.status?.advanced?.cpu?.showSysload ?
         (Math.round(cpuLoadAvg*10)/10).toLocaleString("en-US", {minimumFractionDigits: 1}) + "L" : "";
+    let powerUseStr = settings.bar.status?.advanced?.cpu?.showSyspower && powerUse_W > 0 ? powerUse_W + "W" : "";
+    if (!isFinite(powerUse_W)) {
+        powerUseStr = "? W";
+    }
 
     let suppBlockStyle = {
         display: "inline-block",
