@@ -14,7 +14,17 @@ Note that as a result of this being primarily for personal use, the design of th
 
 By default, it gives workspace indicators on the left, yabai status at the center and some other miscellaneous status items at the right. App icons are extracted from the .app bundle automatically and shown when opened. Your wallpaper is automatically blurred when you have any window open in the current space.
 
-![](showcase/screenshot_v3.png)
+![](showcase/screenshot_v3_1.png)
+
+ - **Left (spaces):**
+   ![](showcase/screenshot_v3_left.png)
+   Icons are automatically loaded from within the app package and cached within `clarity/appIcons`, and periodically refreshed every month.
+
+ - **Center (yabai status):**
+   ![](showcase/screenshot_v3_center.png)
+
+ - **Right (misc status):**
+   ![](showcase/screenshot_v3_right.png)
 
 You can perform some basic customisation of its style via the `config/settings.jsx` file, while preserving its design language.
 
