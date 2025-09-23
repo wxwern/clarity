@@ -119,7 +119,45 @@ if [[ ! -f "$1.icns" ]]; then
     echo "Expected App Icon Name: $APP_ICON_NAME"
     echo
 
-    if [[ -f "$APP_ICON_NAME.icns" ]]; then
+    if [[ -f "$APP_RESOURCES_PATH/Assets.car" ]]; then
+        echo "App icon not found at $APP_ICON_NAME.icns, trying $APP_ICON_NAME""16x16@2x.png in Assets.car"
+        printf "Navigating to app icons storage: "
+        cd "$APP_ICONS_STORAGE_PATH" || (echo "FAILED: Can't navigate to app icons storage!" && exit 1)
+        pwd
+
+        if [[ -f "$1.icns" ]]; then rm "./$1.icns"; fi
+        if [[ -f "$1.png" ]]; then rm "./$1.png"; fi
+
+        ../scripts/acextract -i "$APP_RESOURCES_PATH/Assets.car" -o "$1/"
+        if [[ -f "$1/$APP_ICON_NAME""16x16@2x.png" ]]; then
+            echo "App icon found in Assets.car!"
+
+            cp "$1/$APP_ICON_NAME""16x16@2x.png" "$1.png"
+            rm -r "./$1/"
+
+            echo "Extracted 16x16@2x png from Assets.car!"
+
+        elif ls "$1/$APP_ICON_NAME"*".png" 1> /dev/null 2>&1; then
+            # search for any image starting with $APP_ICON_NAME
+            echo "App icon found in Assets.car!"
+
+            cp "$1/$APP_ICON_NAME"*".png" "$1.png"
+            rm -r "./$1/"
+
+            echo "Extracted matching AppIcon*.png from Assets.car!"
+
+        elif ls "$1/AppIcon"*".png" 1> /dev/null 2>&1; then
+            # search for any image starting with AppIcon
+            echo "App icon found in Assets.car!"
+            cp "$1/AppIcon"*".png" "$1.png"
+            rm -r "./$1/"
+
+            echo "Extracted matching AppIcon*.png from Assets.car!"
+        else
+            echo "FAILED: We can't find anything! :("
+            exit 1
+        fi
+    elif [[ -f "$APP_ICON_NAME.icns" ]]; then
         echo "App icon located at $APP_ICON_NAME.icns"
         printf "Navigating to app icons storage: "
         cd "$APP_ICONS_STORAGE_PATH" || (echo "FAILED: Can't navigate to app icons storage!" && exit 1)
@@ -143,29 +181,6 @@ if [[ ! -f "$1.icns" ]]; then
         ln -s "$APP_RESOURCES_PATH/$APP_ICON_NAME.png" "$1.png"
 
         echo "Linked png file directly to target location!"
-
-    else
-        echo "App icon not found at $APP_ICON_NAME.icns, trying $APP_ICON_NAME""16x16@2x.png in Assets.car"
-        printf "Navigating to app icons storage: "
-        cd "$APP_ICONS_STORAGE_PATH" || (echo "FAILED: Can't navigate to app icons storage!" && exit 1)
-        pwd
-
-        if [[ -f "$1.icns" ]]; then rm "./$1.icns"; fi
-        if [[ -f "$1.png" ]]; then rm "./$1.png"; fi
-
-        ../scripts/acextract -i "$APP_RESOURCES_PATH/Assets.car" -o "$1/"
-        if [[ -f "$1/$APP_ICON_NAME""16x16@2x.png" ]]; then
-            echo "App icon found in Assets.car!"
-
-            cp "$1/$APP_ICON_NAME""16x16@2x.png" "$1.png"
-            rm -r "./$1/"
-
-            echo "Extracted 16x16@2x png from Assets.car!"
-
-        else
-            echo "FAILED: We can't find anything! :("
-            exit 1
-        fi
     fi
 else
     echo "$1 icns icon file already linked!"

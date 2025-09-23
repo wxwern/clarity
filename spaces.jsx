@@ -4,6 +4,7 @@ import parse from "./lib/parse.jsx";
 import styles from "./lib/styles.jsx";
 import settings from "./lib/settings.jsx";
 import {applyBarHeight} from "./lib/autoBarHeight.jsx";
+import { run } from "uebersicht";
 
 const baseStyle = {
     display: "grid",
@@ -27,6 +28,11 @@ const baseStyle = {
 
 export const refreshFrequency = 10000;
 export const command = "./clarity/scripts/windows.sh";
+
+export const init = () => {
+    // run auto icon cleanup
+    run("./clarity/scripts/cleanupAppIcons.sh");
+}
 
 export const render = ({ output }, ...args) => {
     let style = {...baseStyle};
