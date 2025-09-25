@@ -112,26 +112,36 @@ yabai -m signal --add event=space_changed   action="$REL_SPACES_IND"
 yabai -m signal --add event=space_created   action="$REL_SPACES_IND"
 yabai -m signal --add event=space_destroyed action="$REL_SPACES_IND"
 yabai -m signal --add event=display_changed action="$REL_SPACES_IND"
+yabai -m signal --add event=system_woke     action="$REL_SPACES_IND"
+yabai -m signal --add event=mission_control_exit action="$REL_SPACES_IND"
+
 # - if app icon indicators within space indicators are enabled
 yabai -m signal --add event=window_created   action="$REL_SPACES_IND"
 yabai -m signal --add event=window_moved     action="$REL_SPACES_IND"
+yabai -m signal --add event=window_focused   action="$REL_SPACES_IND"
 yabai -m signal --add event=window_resized   action="$REL_SPACES_IND"
 yabai -m signal --add event=window_destroyed action="$REL_SPACES_IND"
 yabai -m signal --add event=window_minimized   action="$REL_SPACES_IND"
 yabai -m signal --add event=window_deminimized action="$REL_SPACES_IND"
-yabai -m signal --add event=application_hidden action="$REL_SPACES_IND"
+yabai -m signal --add event=application_hidden  action="$REL_SPACES_IND"
 yabai -m signal --add event=application_visible action="$REL_SPACES_IND"
-yabai -m signal --add event=mission_control_exit action="$REL_SPACES_IND"
+yabai -m signal --add event=application_launched   action="$REL_SPACES_IND"
+yabai -m signal --add event=application_terminated action="$REL_SPACES_IND"
+yabai -m signal --add event=application_front_switched action="$REL_SPACES_IND"
 
 # - if center space indicators are enabled
-yabai -m signal --add event=space_changed    action="$REL_BAR_IND"
 yabai -m signal --add event=space_created    action="$REL_BAR_IND"
+yabai -m signal --add event=space_changed    action="$REL_BAR_IND"
 yabai -m signal --add event=space_destroyed  action="$REL_BAR_IND"
 yabai -m signal --add event=display_changed  action="$REL_BAR_IND"
+yabai -m signal --add event=system_woke      action="$REL_BAR_IND"
+yabai -m signal --add event=mission_control_exit action="$REL_BAR_IND"
+
 # - if window titles or app names are enabled
 yabai -m signal --add event=window_focused              action="$REL_BAR_IND"
 yabai -m signal --add event=window_title_changed        action="$REL_BAR_IND"
 yabai -m signal --add event=application_front_switched  action="$REL_BAR_IND"
+
 # - if wallpaper blur is enabled
 yabai -m signal --add event=window_created   action="$REL_BAR_IND"
 yabai -m signal --add event=window_moved     action="$REL_BAR_IND"
@@ -141,10 +151,12 @@ yabai -m signal --add event=window_minimized   action="$REL_BAR_IND"
 yabai -m signal --add event=window_deminimized action="$REL_BAR_IND"
 yabai -m signal --add event=application_hidden action="$REL_BAR_IND"
 yabai -m signal --add event=application_visible action="$REL_BAR_IND"
-yabai -m signal --add event=mission_control_exit action="$REL_BAR_IND"
+yabai -m signal --add event=application_launched action="$REL_BAR_IND"
+yabai -m signal --add event=application_terminated action="$REL_BAR_IND"
 
 # - if status indicators are enabled
 yabai -m signal --add event=display_changed  action="$REL_STATUS_IND"
+yabai -m signal --add event=system_woke      action="$REL_STATUS_IND"
 
 # refresh immediately on yabai load
 sh -c "$REL_SPACES_IND"

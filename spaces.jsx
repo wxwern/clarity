@@ -26,7 +26,7 @@ const baseStyle = {
     zIndex: 101,
 };
 
-export const refreshFrequency = 10000;
+export const refreshFrequency = 300000;
 export const command = "./clarity/scripts/windows.sh";
 
 export const init = () => {
