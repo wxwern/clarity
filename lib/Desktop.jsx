@@ -80,7 +80,6 @@ const appExtraInfoStyle = {
     opacity: 0.75,
     margin: "0px 1px",
     fontSize: "10px",
-    mixBlendMode: "color-dodge",
 }
 const stackAppIconStyleOverride = {
     marginLeft: "-10px",
@@ -91,7 +90,7 @@ const appIconStyleOverride = (windowData) => {
     let result = { transform: "", borderBottom: "0px solid #0000" };
 
     if (windowData["is-minimized"] || windowData["is-hidden"]) {
-        result.opacity = 0.5;
+        result.opacity = 0.85;
         result.transform = "translateY(+20%) rotateX(60deg)";
         result.filter = "grayscale(50%)";
         return result;
