@@ -47,7 +47,7 @@ const getWallpaperBlurStyle = (screenWidth, screenHeight, screenUUID) => (settin
     transition: "opacity 1s ease-out",
 } : {display: "none"});
 
-export const refreshFrequency = 300000;
+export const refreshFrequency = false;
 export const command = settings.bar.info ? "./clarity/scripts/spaces.sh" : "";
 export const render = ({ output }) => {
     if (settings.bar.fontSize > settings.bar.height || !settings.bar.info) {

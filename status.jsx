@@ -73,7 +73,7 @@ const refresh = (dispatch) => {
     }
 }
 
-export const refreshFrequency = 10000;
+export const refreshFrequency = 30000;
 export const command = (dispatch) => {
     // This synchronises the update interval with the system clock starting from :00 seconds.
     const scheduleUpdate = (action, updateInterval) => {
