@@ -9,6 +9,7 @@ const autosub = {
     "Code": "Visual Studio Code",
     "IntelliJ IDEA": "IntelliJ IDEA CE",
     "PS Remote Play": "RemotePlay",
+    "MuseScore Studio": "MuseScore 4",
 }
 
 
