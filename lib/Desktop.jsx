@@ -12,11 +12,12 @@ import {applyBarHeight, getAutoBarHeight} from "./autoBarHeight.jsx";
 const containerStyle = {
     display: "grid",
     gridAutoFlow: "column",
-    gridGap: "8px",
+    gridGap: settings.bar.space.gapHorizontal + "px",
     fontSize: styles.fontSize,
     height:     styles.heightWithoutPadding + "px",
     lineHeight: styles.heightWithoutPadding + "px",
     WebkitUserSelect: "none",
+    overflow: "hidden",
 };
 const desktopGroupBaseStyle = {
     minWidth: settings.bar.space.minWidth + "px",
@@ -34,7 +35,7 @@ const stackDesktopSubgroupStyle = {
     height: "100%",
     width: "auto",
     margin: "0",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
 }
 const unselectedStyle = {
     color: styles.colors.button.dimFg,
@@ -70,27 +71,62 @@ const appIconStyle = {
     margin: "0px 1px",
     marginTop: "-2px",
     objectFit: "contain",
-    filter: "drop-shadow(0 0 6px #333a)"
+    transition: "all 250ms ease-out",
+    filter: "drop-shadow(0 0 6px #333a)",
 };
 const appExtraInfoStyle = {
-    fontWeight: "normal",
-    opacity: 0.8,
-    margin: "0px 2px",
-    marginTop: "-2px",
+    fontWeight: "heavy",
+    position: "relative",
+    opacity: 0.75,
+    margin: "0px 1px",
     fontSize: "10px",
+    mixBlendMode: "color-dodge",
 }
 const stackAppIconStyleOverride = {
-    marginLeft: "-8px",
-    filter: "drop-shadow(0 0 6px #333f)"
+    marginLeft: "-10px",
+    filter: "drop-shadow(0 0 8px #0008)",
+    transform: "translateZ(-10px) rotateY(35deg)"
 };
 const appIconStyleOverride = (windowData) => {
-    let result = {};
+    let result = { transform: "", borderBottom: "0px solid #0000" };
+
     if (windowData["is-minimized"] || windowData["is-hidden"]) {
-        result.opacity = 0.35;
+        result.opacity = 0.5;
+        result.transform = "translateY(+20%) rotateX(60deg)";
+        result.filter = "grayscale(50%)";
+        return result;
     }
+
     if (windowData["stack-index"] > 0) {
-        result = {...result, ...stackAppIconStyleOverride};
+        result = {...stackAppIconStyleOverride};
+
+        if (windowData["has-focus"]) {
+            result.transform += " translateY(-10%)";
+        }
     }
+
+    if (windowData["is-visible"] && !windowData["is-sticky"]) {
+        if (windowData["has-focus"]) {
+            result.transform += " scale(1) translateY(-5%)";
+            if (windowData["stack-index"] > 0) {
+                result.filter = "drop-shadow(0px 1px 6px #ffff)";
+                result.borderBottom = "1.5px solid #ffff";
+                result.opacity = 1;
+            } else {
+                result.filter = "drop-shadow(0px 1px 6px #fff8)";
+                result.borderBottom = "1.5px solid #fffc";
+            }
+        } else {
+            if (windowData["stack-index"] > 0) {
+                result.transform += " translateY(+5%)";
+                result.opacity = 0.85;
+            } else {
+                result.filter = "drop-shadow(0 0 4px #fff2)",
+                result.transform += " translateY(+5%)";
+            }
+        }
+    }
+
     return result;
 };
 
@@ -122,7 +158,19 @@ const getAppIconElement = (appData, styleOverrides) => {
         }
     }
     if (!styleOverrides) styleOverrides = {};
-    return (
+    return (<span
+        key={"" + appData["id"]}
+        style={{
+            display: "inline-block",
+            padding: "0px",
+            margin: "0px",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: styleOverrides.opacity ? styleOverrides.opacity : 1,
+            perspective: "100px",
+            transition: "all 250ms ease-out",
+        }}
+    >
         <img style={{...appIconStyle, ...styleOverrides}} src={relAppIconPath} alt={appName}
             onMouseDownCapture={async () => {
                 if (appWindowId) {
@@ -151,19 +199,19 @@ const getAppIconElement = (appData, styleOverrides) => {
             }}
             onDragStart={e => { e.preventDefault(); return false; }}>
         </img>
-    );
+    </span>);
 }
 
 // Renders single sticky window element
-const renderStickyWindow = (displayData, stickyWindow) => {
-    if (styles.heightWithoutPadding < 16) return null;
+const renderStickyWindows = (displayData, stickyWindows) => {
+    if (styles.heightWithoutPadding < 16 || !stickyWindows.length) return null;
 
     let X = displayData.frame.x;
     let Y = displayData.frame.y;
     let W = displayData.frame.w;
     let H = displayData.frame.h;
-    let xMid = stickyWindow.frame.x - X + stickyWindow.frame.w/2;
-    let yMid = stickyWindow.frame.y - Y + stickyWindow.frame.h/2;
+    let xMid = stickyWindows[0].frame.x - X + stickyWindows[0].frame.w/2;
+    let yMid = stickyWindows[0].frame.y - Y + stickyWindows[0].frame.h/2;
     let stickyWindowSymbol = "";
     if (xMid <= W/2) {
         if (yMid <= H/2) {
@@ -179,12 +227,19 @@ const renderStickyWindow = (displayData, stickyWindow) => {
         }
     }
 
-    let contentStyle = {...desktopGroupBaseStyle, ...halfSelectedStyle};
+    const elements = [];
+    for (let i = 0; i < stickyWindows.length; i++) {
+        let w = stickyWindows[i];
+        elements.push(getAppIconElement(w, appIconStyleOverride(w)));
+    }
+
+    let contentStyle = {...desktopGroupBaseStyle, ...halfSelectedStyle, marginRight: (settings.bar.space.paddingHorizontal) + "px"};
     return (
         <div style={contentStyle} onMouseDownCapture={async () => {
-                stickyWindow.id && await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m window --focus ' + stickyWindow.id);
+                stickyWindows[0].id && await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m window --focus ' + stickyWindows[0].id);
             }}>
-            {stickyWindowSymbol} {getAppIconElement(stickyWindow, appIconStyleOverride(stickyWindow))}
+            <span>{stickyWindowSymbol}</span>
+            <span>{elements}</span>
         </div>
     );
 }
@@ -260,6 +315,9 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
     if (settings.bar.space.showApps) {
         let nonStickyWindows = windows.filter(w => !w["is-sticky"])
         nonStickyWindows.sort((a,b) => {
+            if ((a["is-hidden"] || a["is-minimized"]) != (b["is-hidden"] || b["is-minimized"])) {
+                return (a["is-hidden"] || a["is-minimized"]) ? 1 : -1;
+            }
             if (a["is-floating"] != b["is-floating"]) {
                 return a["is-floating"] ? -1 : 1;
             }
@@ -332,10 +390,12 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
     }
 
     return (
-        <div style={contentStyle} onMouseDownCapture={async () => {
+        <div style={{...contentStyle, position: "relative"}} onMouseDownCapture={async () => {
                 await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}>
-            {leadingStr} {itemRenders} {trailingStr}
+            <span>{leadingStr}</span>
+            <span>{itemRenders}</span>
+            <span>{trailingStr}</span>
         </div>
     );
 };
@@ -371,15 +431,20 @@ const render = ({ displayData, spaceData, windowData, placeholder }) => {
         ));
     });
 
-    let stickyWindows = windowData.filter(w => w["is-sticky"]);
-    let stickyWindowElements = [];
-    stickyWindows.forEach(stickyWindow => {
-        stickyWindowElements.push(renderStickyWindow(displayData, stickyWindow))
-    });
+    let stickyWindows = windowData
+        .filter(w => w["is-sticky"])
+        .sort((a,b) => {
+            if (a.frame.x == b.frame.x) {
+                return a.frame.y - b.frame.y;
+            }
+            return a.frame.x - b.frame.x;
+        });
+
+    let stickyWindowElement = renderStickyWindows(displayData, stickyWindows);
 
     return (
         <div style={_containerStyle}>
-            {stickyWindowElements}
+            {stickyWindowElement}
             {spaces}
         </div>
     );

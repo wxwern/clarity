@@ -27,8 +27,9 @@ export default {
         // Settings for space elements at the left. Requires yabai with signals set up.
         space: {
             minWidth: 12,              // Minimum width of a space element in points. (default=12)
-            roundedCornersFactor: 0.8, // Amount of rounded corners (0 - 1) (default=0.8)
-            paddingHorizontal   : 11,  // Horizontal padding of a space indicator in points. (default=11)
+            roundedCornersFactor: 1, // Amount of rounded corners (0 - 1) (default=0.8)
+            paddingHorizontal   : 12,  // Horizontal padding of a space indicator in points. (default=11)
+            gapHorizontal       : 6,   // Horizontal gap between space indicators in points. (default=6)
 
             icons: [],                 // List of icons (as unicode text) to use for spaces instead of indices. (default=[] i.e. none)
             minimal  : false,          // Whether to use a more minimal design for showing space info. (default=false)
