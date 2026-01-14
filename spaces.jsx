@@ -54,21 +54,21 @@ export const render = ({ output }, ...args) => {
     if (typeof data === "undefined") {
         return (
             <div style={style}>
-                <Desktop placeholder={"invalid"}/>
+                <Desktop placeholder={"..."} warning={"ERR: invalid data"}/>
             </div>
         );
     }
     if (typeof data.error !== "undefined") {
         return (
             <div style={style}>
-                <Desktop placeholder={"error"}/>
+                <Desktop placeholder={"..."} warning={"ERR: " + data.error}/>
             </div>
         );
     }
     if (!data.spaces || !data.displays) {
         return (
             <div style={style}>
-                <Desktop placeholder={"unknown"}/>
+                <Desktop placeholder={"..."} warning={"ERR: no spaces or displays data"}/>
             </div>
         );
     }
@@ -79,6 +79,7 @@ export const render = ({ output }, ...args) => {
                 displayData={display}
                 spaceData={data.spaces.filter(s => s.display === display.index)}
                 windowData={data.windows.filter(w => w.display === display.index)}
+                warning={typeof data.warning === "string" ? "WARN: " + data.warning : undefined}
             />
         </div>
     );

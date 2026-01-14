@@ -4,6 +4,7 @@ import settings from "./settings.jsx";
 import { getAppIconPath, getAppIconName } from "./getAppIcon.jsx";
 import { run } from "uebersicht";
 import {applyBarHeight, getAutoBarHeight} from "./autoBarHeight.jsx";
+import Error from "./Error.jsx";
 
 //
 // Styles
@@ -128,7 +129,6 @@ const appIconStyleOverride = (windowData) => {
 
     return result;
 };
-
 
 //
 // Functions
@@ -403,7 +403,7 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
     );
 };
 
-const render = ({ displayData, spaceData, windowData, placeholder }) => {
+const render = ({ displayData, spaceData, windowData, placeholder, warning }) => {
 
     let _containerStyle = {...containerStyle};
 
@@ -412,6 +412,7 @@ const render = ({ displayData, spaceData, windowData, placeholder }) => {
             <div style={{...desktopGroupBaseStyle, ...unselectedStyle}}>
                 {placeholder}
             </div>
+            {warning ? (<small style={{opacity: 0.5}}><Error msg={warning}/></small>) : undefined}
         </div>
     );
     if (typeof spaceData === "undefined") return null;
@@ -449,6 +450,7 @@ const render = ({ displayData, spaceData, windowData, placeholder }) => {
         <div style={_containerStyle}>
             {stickyWindowElement}
             {spaces}
+            {warning ? (<small style={{opacity: 0.5}}><Error msg={warning}/></small>) : undefined}
         </div>
     );
 };
