@@ -335,8 +335,9 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
         let tempStackData = [];
         function renderStack() {
             if (tempStackData.length == 0) return false;
+            const stackId = tempStackData[0]["id"] || Math.random().toString(36).substring(2, 15);
             itemRenders.push((
-                <div style={stackDesktopSubgroupStyle}>
+                <div style={stackDesktopSubgroupStyle} key={"stack-" + stackId} >
                     {tempStackData.map(w =>
                         getAppIconElement(w, appIconStyleOverride(w))
                     )}
@@ -389,7 +390,10 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
     }
 
     return (
-        <div style={{...contentStyle, position: "relative"}} onMouseDownCapture={async () => {
+        <div
+            style={{...contentStyle, position: "relative"}}
+            key={"space-" + index}
+            onMouseDownCapture={async () => {
                 await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}>
             <span>{leadingStr}</span>
