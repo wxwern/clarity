@@ -173,6 +173,7 @@ const getAppIconElement = (appData, styleOverrides) => {
         <img style={{...appIconStyle, ...styleOverrides}} src={relAppIconPath} alt={appName}
             onMouseDownCapture={async () => {
                 if (appWindowId) {
+                    console.log("[clarity]", "Focusing window " + appWindowId + " of app " + appName);
                     await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m window --focus ' + appWindowId);
                 }
             }}
@@ -235,6 +236,7 @@ const renderStickyWindows = (displayData, stickyWindows) => {
     let contentStyle = {...desktopGroupBaseStyle, ...halfSelectedStyle, marginRight: (settings.bar.space.paddingHorizontal) + "px"};
     return (
         <div style={contentStyle} onMouseDownCapture={async () => {
+                console.log("[clarity]", "Focusing sticky window " + stickyWindows[0].id);
                 stickyWindows[0].id && await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m window --focus ' + stickyWindows[0].id);
             }}>
             <span>{stickyWindowSymbol}</span>
@@ -257,6 +259,7 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
         }
         return (
             <div style={contentStyle} onMouseDownCapture={async () => {
+                console.log("[clarity]", "Focusing space " + index);
                 await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}/>
         );
@@ -394,6 +397,7 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
             style={{...contentStyle, position: "relative"}}
             key={"space-" + index}
             onMouseDownCapture={async () => {
+                console.log("[clarity]", "Focusing space " + index);
                 await run('PATH=/usr/local/bin/:/opt/homebrew/bin/:$PATH yabai -m space --focus ' + index)
             }}>
             <span>{leadingStr}</span>
