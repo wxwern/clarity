@@ -130,29 +130,31 @@ if [[ ! -f "$1.icns" ]]; then
 
         ../scripts/acextract -i "$APP_RESOURCES_PATH/Assets.car" -o "$1/"
         if [[ -f "$1/$APP_ICON_NAME""16x16@2x.png" ]]; then
-            echo "App icon found in Assets.car!"
+            echo "App icon found in Assets.car! $APP_ICON_NAME""16x16@2x.png"
 
-            cp "$1/$APP_ICON_NAME""16x16@2x.png" "$1.png"
+            cp "$1/$APP_ICON_NAME""16x16@2x.png" "$1.png" && echo "Extracted matching *.png from Assets.car!" || echo "FAILED"
             rm -r "./$1/"
-
-            echo "Extracted 16x16@2x png from Assets.car!"
 
         elif ls "$1/$APP_ICON_NAME"*".png" 1> /dev/null 2>&1; then
             # search for any image starting with $APP_ICON_NAME
-            echo "App icon found in Assets.car!"
+            echo "App icon found in Assets.car! $APP_ICON_NAME(*).png"
 
-            cp "$1/$APP_ICON_NAME"*".png" "$1.png"
+            # get first match
+            FIRST_MATCH="$(ls "$1/$APP_ICON_NAME"*".png" 2>/dev/null | head -n 1)"
+
+            cp "$FIRST_MATCH" "$1.png" && echo "Extracted matching *.png from Assets.car!" || echo "FAILED"
             rm -r "./$1/"
-
-            echo "Extracted matching AppIcon*.png from Assets.car!"
 
         elif ls "$1/AppIcon"*".png" 1> /dev/null 2>&1; then
             # search for any image starting with AppIcon
-            echo "App icon found in Assets.car!"
-            cp "$1/AppIcon"*".png" "$1.png"
+            echo "App icon found in Assets.car! AppIcon(*).png"
+
+            # get first match
+            FIRST_MATCH="$(ls "$1/AppIcon"*".png" 2>/dev/null | head -n 1)"
+
+            cp "$FIRST_MATCH" "$1.png" && echo "Extracted matching *.png from Assets.car!" || echo "FAILED"
             rm -r "./$1/"
 
-            echo "Extracted matching AppIcon*.png from Assets.car!"
         else
             echo "FAILED: We can't find anything! :("
             exit 1
@@ -189,8 +191,11 @@ echo
 
 if [[ ! -f "$1.png" ]]; then
     if [[ -f "$1.icns" ]]; then
-        sips -Z 32 -s format png "$1.icns" --out "$1.png" && echo "Created png file!"
+        sips -Z 32 -s format png "$1.icns" --out "$1.png" && echo "Created png file! (OK)"
+    else
+        echo "Did not find an appropriate icon file! (FAILED)"
+        exit 1
     fi
 else
-    echo "$1 png file exists!"
+    echo "$1 png file exists! (OK)"
 fi
