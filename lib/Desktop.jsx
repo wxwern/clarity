@@ -320,11 +320,11 @@ const renderSpace = (displayData, index, focused, visible, nativeFullscreen, win
             if ((a["is-hidden"] || a["is-minimized"]) != (b["is-hidden"] || b["is-minimized"])) {
                 return (a["is-hidden"] || a["is-minimized"]) ? 1 : -1;
             }
-            if (a["is-floating"] != b["is-floating"]) {
-                return a["is-floating"] ? -1 : 1;
-            }
             if (a["has-fullscreen-zoom"] != b["has-fullscreen-zoom"]) {
                 return a["has-fullscreen-zoom"] ? -1 : 1;
+            }
+            if (a["is-floating"] != b["is-floating"]) {
+                return a["is-floating"] ? -1 : 1;
             }
             if (a.frame.x == b.frame.x) {
                 if (a.frame.y == b.frame.y) {
