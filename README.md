@@ -56,7 +56,7 @@ If you still prefer to use them directly, you may find them in the legacy forks 
 
 Clone this repo to your Übersicht widgets directory.
 ```bash
-$ git clone https://github.com/wernjie/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
+$ git clone https://github.com/wxwern/clarity $HOME/Library/Application\ Support/Übersicht/widgets/clarity
 ```
 
 Then, add the lines listed at the [refreshing yabai widgets section](#refreshing-yabai-widgets) to sync the widgets to yabai's state.
